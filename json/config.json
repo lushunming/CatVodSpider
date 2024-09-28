@@ -120,7 +120,7 @@
       "api": "csp_FourKYingShi",
       "searchable": 1,
       "changeable": 1,
-      "ext": "{\"site\":\"https://4kvm.site/\"}"
+      "ext": {"site":"https://4kvm.site/"}
     },
     {
       "key": "Zxzj",
