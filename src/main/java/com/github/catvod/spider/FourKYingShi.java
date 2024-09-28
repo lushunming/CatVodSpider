@@ -118,6 +118,38 @@ public class FourKYingShi extends Spider {
         String name = doc.select("#single > div.content.right > div.sheader > div.data > h1").text();
         String pic = doc.selectFirst("#single > div.content.right > div.sheader > div.poster > img").attr("src");
         String playListUrl = doc.selectFirst("#seasons > div > div > a").attr("href");
+        Elements dooplayCounter = doc.select("#dooplay-ajax-counter");
+        if (dooplayCounter.size() > 0) {
+            String postId = dooplayCounter.get(0).attr("data-postid");
+            Elements dooplay = doc.select(" ul.ajax_mode > li.dooplay_player_option");
+
+            String type = dooplay.attr("data-type");
+            String dataName = dooplay.attr("data-nume");
+            String dtAjax = Utils.getVar(doc.html(), "dtAjax");
+            JsonObject dtAjaxJson = Json.safeObject(dtAjax);
+            String urlApi = dtAjaxJson.getAsJsonPrimitive("url_api").getAsString();
+            String url = dtAjaxJson.getAsJsonPrimitive("url").getAsString();
+            String playMethod = dtAjaxJson.getAsJsonPrimitive("play_method").getAsString();
+
+            if ("admin_ajax".equals(playMethod)) {
+/*
+ type: "POST",
+                url: dtAjax.url,
+                data: {
+                    action: "doo_player_ajax",
+                    post: e,
+                    nume: nume,
+                    type: type
+                },
+ */
+            } else if ("wp_json".equals(playMethod)) {
+
+                String embedReq = urlApi + postId + "?type=" + type + "&source=" + dataName;
+            }
+
+
+        }
+
 
         String html = OkHttp.string(playListUrl, getHeaders());
         String ifsrc = getStrByRegex(Pattern.compile("ifsrc:'(.*?)',"), html);
