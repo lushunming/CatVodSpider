@@ -5,6 +5,7 @@ import com.github.catvod.bean.Class;
 import com.github.catvod.bean.Result;
 import com.github.catvod.bean.Vod;
 import com.github.catvod.crawler.Spider;
+import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.net.OkHttp;
 import com.github.catvod.utils.Json;
 import com.github.catvod.utils.Utils;
@@ -31,12 +32,15 @@ public class FourKYingShi extends Spider {
     @Override
     public void init(String extend) throws Exception {
         super.init(extend);
+        SpiderDebug.log("4k影视ext：" + extend);
+
         JsonObject extendJson = Json.safeObject(extend);
 
         String html = OkHttp.string(extendJson.get("site").getAsString(), getHeaders());
         Document doc = Jsoup.parse(html);
         Element element = doc.selectFirst("li > a");
         siteUrl = StringUtils.isAllBlank(element.attr("href")) ? siteUrl : element.attr("href");
+        SpiderDebug.log("4k影视siteUrl：" + siteUrl);
     }
 
     private HashMap<String, String> getHeaders() {
