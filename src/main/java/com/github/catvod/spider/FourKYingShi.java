@@ -9,6 +9,8 @@ import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.net.OkHttp;
 import com.github.catvod.utils.Json;
 import com.github.catvod.utils.Utils;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.apache.commons.lang3.StringUtils;
@@ -132,19 +134,12 @@ public class FourKYingShi extends Spider {
             String playMethod = dtAjaxJson.getAsJsonPrimitive("play_method").getAsString();
 
             if ("admin_ajax".equals(playMethod)) {
-/*
- type: "POST",
-                url: dtAjax.url,
-                data: {
-                    action: "doo_player_ajax",
-                    post: e,
-                    nume: nume,
-                    type: type
-                },
- */
+                String result = OkHttp.post(url, ImmutableMap.of("action", "doo_player_ajax", "post", postId, "nume", dataName, "type", type));
+
             } else if ("wp_json".equals(playMethod)) {
 
                 String embedReq = urlApi + postId + "?type=" + type + "&source=" + dataName;
+                String result = OkHttp.string(embedReq);
             }
 
 
