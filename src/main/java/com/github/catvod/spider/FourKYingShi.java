@@ -31,16 +31,22 @@ public class FourKYingShi extends Spider {
 
     @Override
     public void init(String extend) throws Exception {
-        super.init(extend);
-        SpiderDebug.log("4k影视ext：" + extend);
+        try {
+            super.init(extend);
+            SpiderDebug.log("4k影视ext：" + extend);
 
-        JsonObject extendJson = Json.safeObject(extend);
+            JsonObject extendJson = Json.safeObject(extend);
 
-        String html = OkHttp.string(extendJson.get("site").getAsString(), getHeaders());
-        Document doc = Jsoup.parse(html);
-        Element element = doc.selectFirst("li > a");
-        siteUrl = StringUtils.isAllBlank(element.attr("href")) ? siteUrl : element.attr("href");
-        SpiderDebug.log("4k影视siteUrl：" + siteUrl);
+            String html = OkHttp.string(extendJson.get("site").getAsString(), getHeaders());
+            Document doc = Jsoup.parse(html);
+            Element element = doc.selectFirst("li > a");
+            siteUrl = StringUtils.isAllBlank(element.attr("href")) ? siteUrl : element.attr("href");
+            SpiderDebug.log("4k影视siteUrl：" + siteUrl);
+        } catch (Exception e) {
+            SpiderDebug.log(e.getMessage());
+            throw new RuntimeException(e);
+        }
+
     }
 
     private HashMap<String, String> getHeaders() {
