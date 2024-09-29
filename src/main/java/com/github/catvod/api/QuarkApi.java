@@ -19,7 +19,6 @@ import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -64,7 +63,6 @@ public class QuarkApi {
         }
         return new Object[]{ProxyVideo.proxy(url, header)};
     }
-
 
 
     /**
@@ -353,7 +351,7 @@ public class QuarkApi {
 
     private boolean getVip() throws Exception {
         Map<String, Object> listData = Json.parseSafe(api("member?pr=ucpro&fr=pc&uc_param_str=&fetch_subscribe=true&_ch=home&fetch_identity=true", null, null, 0, "GET"), Map.class);
-        return "EXP_SVIP".equals(((Map<String, String>) listData.get("data")).get("member_type"));
+        return ((Map<String, String>) listData.get("data")).get("member_type").contains("VIP");
     }
 
     public List<String> getPlayFormatList() {
