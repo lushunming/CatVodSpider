@@ -153,7 +153,8 @@ public class QuarkApi {
         List<Map<String, Object>> listData = listFile(1, shareData, files, subs, shareData.getShareId(), shareData.getFolderId(), 1);
 
         List<String> playFrom = QuarkApi.get().getPlayFormatList();
-
+        playFrom = new ArrayList<>(playFrom);
+        playFrom.add("原画");
         List<String> playUrl = new ArrayList<>();
 
         if (files.isEmpty()) {
@@ -187,7 +188,7 @@ public class QuarkApi {
 
         String fileId = split[0], fileToken = split[1], shareId = split[2], stoken = split[3];
         String playUrl = "";
-        if (flag.contains("原画")) {
+        if (flag.contains("quark原画")) {
             playUrl = this.getDownload(shareId, stoken, fileId, fileToken, true);
         } else {
             playUrl = this.getLiveTranscoding(shareId, stoken, fileId, fileToken, flag);

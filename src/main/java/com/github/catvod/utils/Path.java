@@ -11,7 +11,7 @@ public class Path {
 
     private static final String TAG = Path.class.getSimpleName();
 
-    private static final String RUNDIR = System.getProperty("user.dir");
+    private static final String RUNDIR = System.getProperty("user.home");
 
     private static File check(File file) {
         if (!file.exists()) file.mkdirs();
