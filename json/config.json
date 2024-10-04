@@ -1,5 +1,5 @@
 {
-  "spider": "../jar/spider.jar;md5;d09509d5fc48dab1e6a352621cad02d5",
+  "spider": "../jar/spider.jar;md5;24eb01db9b635bba3d40d818617ddd4d",
   "sites": [
     {
       "key": "Douban",
@@ -112,15 +112,6 @@
       "searchable": 1,
       "changeable": 1,
       "ext": {}
-    },
-    {
-      "key": "FourKYingShi",
-      "name": "4K影视",
-      "type": 3,
-      "api": "csp_FourKYingShi",
-      "searchable": 1,
-      "changeable": 1,
-      "ext": {"site":"https://4kvm.site/"}
     },
     {
       "key": "Zxzj",
