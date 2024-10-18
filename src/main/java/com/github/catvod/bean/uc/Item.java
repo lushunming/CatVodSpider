@@ -1,4 +1,4 @@
-package com.github.catvod.bean.quark;
+package com.github.catvod.bean.uc;
 
 import com.github.catvod.utils.Utils;
 

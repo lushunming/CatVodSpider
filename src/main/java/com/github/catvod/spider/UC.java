@@ -1,7 +1,8 @@
 package com.github.catvod.spider;
 
 
-import com.github.catvod.api.QuarkApi;
+
+import com.github.catvod.api.UCApi;
 import com.github.catvod.bean.Result;
 import com.github.catvod.bean.uc.ShareData;
 import com.github.catvod.crawler.Spider;
@@ -15,27 +16,27 @@ import java.util.Map;
 /**
  * @author ColaMint & Adam & FongMi
  */
-public class Quark extends Spider {
-    public static final String patternQuark = "(https:\\/\\/pan\\.quark\\.cn\\/s\\/[^\"]+)";
+public class UC extends Spider {
+    public static final String patternUC = "(https:\\/\\/drive\\.uc\\.cn\\/s\\/[^\"]+)";
 
 
     @Override
     public void init(String extend) throws Exception {
 
-        QuarkApi.get().setCookie(extend);
+        UCApi.get().setCookie(extend);
     }
 
     @Override
     public String detailContent(List<String> ids) throws Exception {
 
-        ShareData shareData = QuarkApi.get().getShareData(ids.get(0));
-        return Result.string(QuarkApi.get().getVod(shareData));
+        ShareData shareData = UCApi.get().getShareData(ids.get(0));
+        return Result.string(UCApi.get().getVod(shareData));
     }
 
 
     @Override
     public String playerContent(String flag, String id, List<String> vipFlags) throws Exception {
-        return QuarkApi.get().playerContent(id.split("\\+\\+"), flag);
+        return UCApi.get().playerContent(id.split("\\+\\+"), flag);
 
     }
 
@@ -51,11 +52,11 @@ public class Quark extends Spider {
             return TextUtils.join("$$$",  QuarkApi.get().getPlayFormatList());
         }*/
         for (int i = 1; i <= ids.size(); i++) {
-            for (String s : QuarkApi.get().getPlayFormatList()) {
-                playFrom.add(String.format(Locale.getDefault(),  "quark" + "#%02d"+ "-" +s , i));
+            for (String s : UCApi.get().getPlayFormatList()) {
+                playFrom.add(String.format(Locale.getDefault(),  "uc" + "#%02d"+ "-" +s , i));
 
             }
-            playFrom.add("quark-原画");
+            playFrom.add("uc-原画");
 
         }
         return StringUtils.join(playFrom, "$$$");
@@ -70,15 +71,15 @@ public class Quark extends Spider {
     public String detailContentVodPlayUrl(List<String> ids) throws Exception {
         List<String> playUrl = new ArrayList<>();
         for (String id : ids) {
-            ShareData shareData = QuarkApi.get().getShareData(id);
-            playUrl.add(QuarkApi.get().getVod(shareData).getVodPlayUrl());
+            ShareData shareData = UCApi.get().getShareData(id);
+            playUrl.add(UCApi.get().getVod(shareData).getVodPlayUrl());
         }
         return StringUtils.join(playUrl, "$$$");
     }
 
     public static Object[] proxy(Map<String, String> params) throws Exception {
         String type = params.get("type");
-        if ("video".equals(type)) return QuarkApi.get().proxyVideo(params);
+        if ("video".equals(type)) return UCApi.get().proxyVideo(params);
         //if ("sub".equals(type)) return AliYun.get().proxySub(params);
         return null;
     }

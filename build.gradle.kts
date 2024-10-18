@@ -53,6 +53,9 @@ dependencies {
 tasks.withType<Jar> {
     destinationDirectory = file("$rootDir/jar")
     archiveBaseName = "spider"
+    from(sourceSets["main"].allSource)
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
     manifest {
         attributes["Main-Class"] = "org.github.catvod.Main"
     }
@@ -60,6 +63,7 @@ tasks.withType<Jar> {
         modJson()
     }
 }
+
 
 fun modJson() {
     val files = listOf("$rootDir/json/config.json", "$rootDir/json/configAll.json")
