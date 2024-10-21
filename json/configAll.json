@@ -1,5 +1,5 @@
 {
-  "spider": "../jar/spider.jar;md5;d8564a11c706a4d1ab71872f12a91c32",
+  "spider": "../jar/spider.jar;md5;4f0b4b567ac164400279017bffc4ad5f",
   "sites": [
     {
       "key": "Douban",
@@ -35,6 +35,16 @@
       "name": "Jable",
       "type": 3,
       "api": "csp_Jable",
+      "searchable": "1",
+      "filterable": "0",
+      "changeable": 0,
+      "ext": {}
+    },
+    {
+      "key": "Miss",
+      "name": "Miss",
+      "type": 3,
+      "api": "csp_Miss",
       "searchable": "1",
       "filterable": "0",
       "changeable": 0,

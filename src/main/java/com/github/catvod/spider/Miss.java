@@ -12,10 +12,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Miss extends Spider {
 
-    private final String url = "https://missav.com/";
+    private final String url = "https://missav.com/dm10/cn";
 
     @Override
     public String homeContent(boolean filter) throws Exception {
@@ -25,7 +27,7 @@ public class Miss extends Spider {
         Document doc = Jsoup.parse(OkHttp.string(url));
         for (Element a : doc.select("a.block.px-4.py-2.text-sm.leading-5.text-nord5.bg-nord3")) {
             String typeId = a.attr("href").replace(url, "");
-            if (typeId.startsWith("dm") || typeId.contains("VR")) {
+            if (typeId.contains("dm") || typeId.contains("VR")) {
                 classes.add(new Class(typeId, a.text()));
                 filters.put(typeId, Arrays.asList(new Filter("filters", "過濾", Arrays.asList(new Filter.Value("全部", ""), new Filter.Value("單人作品", "individual"), new Filter.Value("中文字幕", "chinese-subtitle")))));
             }
@@ -45,7 +47,7 @@ public class Miss extends Spider {
     @Override
     public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception {
         List<Vod> list = new ArrayList<>();
-        String target = url + tid;
+        String target = tid;
         String filters = extend.get("filters");
         if (StringUtils.isEmpty(filters)) target += "?page=" + pg;
         else target += "?filters=" + extend.get("filters") + "&page=" + pg;
@@ -64,7 +66,7 @@ public class Miss extends Spider {
 
     @Override
     public String detailContent(List<String> ids) throws Exception {
-        Document doc = Jsoup.parse(OkHttp.string(url + ids.get(0)));
+        Document doc = Jsoup.parse(OkHttp.string(ids.get(0)));
         String name = doc.select("meta[property=og:title]").attr("content");
         String pic = doc.select("meta[property=og:image]").attr("content");
         Vod vod = new Vod();
@@ -88,12 +90,30 @@ public class Miss extends Spider {
 
     @Override
     public String playerContent(String flag, String id, List<String> vipFlags) throws Exception {
-        return Result.get().parse().url(url + id).string();
+        Document doc = Jsoup.parse(OkHttp.string(id));
+        String m3u8Prefix = "https://surrit.com/";
+        String m3u8Suffix = "/playlist.m3u8";
+        String uuid = extractUUID(doc.html());
+
+
+        String m3u8 = m3u8Prefix + uuid + m3u8Suffix;
+
+        return Result.get().parse().url(m3u8).string();
+    }
+
+    private String extractUUID(String data) {
+
+        Pattern pattern = Pattern.compile("sixyik\\.com\\\\/(.*?)\\\\/seek\\\\/_0\\.jpg");
+        Matcher matcher = pattern.matcher(data);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        return null;
     }
 
     private String searchContent(String key, String pg) {
         List<Vod> list = new ArrayList<>();
-        Document doc = Jsoup.parse(OkHttp.string(url + "search/" + key + "?page=" + pg));
+        Document doc = Jsoup.parse(OkHttp.string(url + "/search/" + key + "?page=" + pg));
         for (Element div : doc.select("div.thumbnail")) {
             String id = div.select("a.text-secondary").attr("href").replace(url, "");
             String name = div.select("a.text-secondary").text();

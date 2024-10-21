@@ -1,5 +1,5 @@
 {
-  "spider": "../jar/spider.jar;md5;d8564a11c706a4d1ab71872f12a91c32",
+  "spider": "../jar/spider.jar;md5;4f0b4b567ac164400279017bffc4ad5f",
   "sites": [
     {
       "key": "Douban",
@@ -27,7 +27,8 @@
       "searchable": 1,
       "changeable": 0,
       "ext": {}
-    }, {
+    },
+    {
       "key": "KuaKeBa",
       "name": "夸克吧",
       "type": 3,
