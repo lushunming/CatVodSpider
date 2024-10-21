@@ -33,7 +33,7 @@ public class UCApi {
     ;
     private String cookie = "";
     private String ckey = "";
-     private Map<String, Map<String, Object>> shareTokenCache = new HashMap<>();
+    private Map<String, Map<String, Object>> shareTokenCache = new HashMap<>();
     private String pr = "pr=UCBrowser&fr=pc";
     private List<String> subtitleExts = Arrays.asList(".srt", ".ass", ".scc", ".stl", ".ttml");
     private Map<String, String> saveFileIdCaches = new HashMap<>();
@@ -150,7 +150,7 @@ public class UCApi {
     }
 
     public Vod getVod(ShareData shareData) throws Exception {
-      //  getShareToken(shareData);
+        //  getShareToken(shareData);
         List<Item> files = new ArrayList<>();
         List<Item> subs = new ArrayList<>();
         List<Map<String, Object>> listData = listFile(1, shareData, files, subs, shareData.getShareId(), shareData.getFolderId(), 1);
@@ -229,6 +229,7 @@ public class UCApi {
         } else {
             okResult = OkHttp.post(this.apiUrl + url, Json.toJson(data), getHeaders());
         }
+        System.out.println(url + ":" + Json.toJson(okResult));
         if (okResult.getResp().get("Set-Cookie") != null) {
             Matcher matcher = Pattern.compile("__puus=([^;]+)").matcher(StringUtils.join(okResult.getResp().get("Set-Cookie"), ";;;"));
             if (matcher.find()) {
@@ -402,7 +403,41 @@ public class UCApi {
         map.put("size", prePage);
         map.put("sort", "file_type:asc,file_name:asc");
         map.put("web_platform", "windows");
-        Map<String, Object> listData = Json.parseSafe(api("share/sharepage/v2/detail?" + pr, Collections.emptyMap(), map, 0, "GET"), Map.class);
+        Map<String, Object> listData = Json.parseSafe(api("share/sharepage/v2/detail?" + pr, Collections.emptyMap(), map, 0, "POST"), Map.class);
+        System.out.println("listFile:" + Json.toJson(listData));
+        if (listData.get("data") == null) return Collections.emptyList();
+        Map<String,Object> stokenMap = ((Map<String,Object>)((Map<String, Object>) listData.get("data")).get("token_info"));
+        List<Map<String, Object>> items = (List<Map<String, Object>>) ((Map<String,Object>)((Map<String, Object>) listData.get("data")).get("detail_info")).get("list");
+        this.shareTokenCache.put(shareData.getShareId(),stokenMap);
+        if (items == null) return Collections.emptyList();
+        List<Map<String, Object>> subDir = new ArrayList<>();
+        for (Map<String, Object> item : items) {
+            if (Boolean.TRUE.equals(item.get("dir"))) {
+                subDir.add(item);
+            } else if (Boolean.TRUE.equals(item.get("file")) && "video".equals(item.get("obj_category"))) {
+                if ((Double) item.get("size") < 1024 * 1024 * 5) continue;
+                item.put("stoken", this.shareTokenCache.get(shareData.getShareId()).get("stoken"));
+                videos.add(Item.objectFrom(item, shareData.getShareId(), shareIndex));
+            } else if ("file".equals(item.get("type")) && this.subtitleExts.contains("." + Utils.getExt((String) item.get("file_name")))) {
+                subtitles.add(Item.objectFrom(item, shareData.getShareId(), shareIndex));
+            }
+        }
+        if (page < Math.ceil((Double) ((Map<String, Object>)((Map<String, Object>) listData.get("metadata")).get("detail_meta")).get("_page") / prePage)) {
+            List<Map<String, Object>> nextItems = listFile1(shareIndex, shareData, videos, subtitles, shareId, folderId, page + 1);
+            items.addAll(nextItems);
+        }
+        for (Map<String, Object> dir : subDir) {
+            List<Map<String, Object>> subItems = listFile1(shareIndex, shareData, videos, subtitles, shareId, dir.get("fid").toString(), null);
+            items.addAll(subItems);
+        }
+        return items;
+    }
+
+    private List<Map<String, Object>> listFile1(int shareIndex, ShareData shareData, List<Item> videos, List<Item> subtitles, String shareId, String folderId, Integer page) throws Exception {
+        int prePage = 200;
+        page = page != null ? page : 1;
+
+        Map<String, Object> listData = Json.parseSafe(api("share/sharepage/detail?" + this.pr + "&pwd_id=" + shareId + "&stoken=" + encodeURIComponent((String) this.shareTokenCache.get(shareId).get("stoken")) + "&pdir_fid=" + folderId + "&force=0&_page=" + page + "&_size=" + prePage + "&_sort=file_type:asc,file_name:asc", Collections.emptyMap(), Collections.emptyMap(), 0, "GET"), Map.class);
         if (listData.get("data") == null) return Collections.emptyList();
         List<Map<String, Object>> items = (List<Map<String, Object>>) ((Map<String, Object>) listData.get("data")).get("list");
         if (items == null) return Collections.emptyList();
@@ -412,18 +447,18 @@ public class UCApi {
                 subDir.add(item);
             } else if (Boolean.TRUE.equals(item.get("file")) && "video".equals(item.get("obj_category"))) {
                 if ((Double) item.get("size") < 1024 * 1024 * 5) continue;
-               // item.put("stoken", this.shareTokenCache.get(shareData.getShareId()).get("stoken"));
+                item.put("stoken", this.shareTokenCache.get(shareData.getShareId()).get("stoken"));
                 videos.add(Item.objectFrom(item, shareData.getShareId(), shareIndex));
             } else if ("file".equals(item.get("type")) && this.subtitleExts.contains("." + Utils.getExt((String) item.get("file_name")))) {
                 subtitles.add(Item.objectFrom(item, shareData.getShareId(), shareIndex));
             }
         }
         if (page < Math.ceil((double) ((Map<String, Object>) listData.get("metadata")).get("_total") / prePage)) {
-            List<Map<String, Object>> nextItems = listFile(shareIndex, shareData, videos, subtitles, shareId, folderId, page + 1);
+            List<Map<String, Object>> nextItems = listFile1(shareIndex, shareData, videos, subtitles, shareId, folderId, page + 1);
             items.addAll(nextItems);
         }
         for (Map<String, Object> dir : subDir) {
-            List<Map<String, Object>> subItems = listFile(shareIndex, shareData, videos, subtitles, shareId, dir.get("fid").toString(), null);
+            List<Map<String, Object>> subItems = listFile1(shareIndex, shareData, videos, subtitles, shareId, dir.get("fid").toString(), null);
             items.addAll(subItems);
         }
         return items;
@@ -506,7 +541,7 @@ public class UCApi {
     public void getFilesByShareUrl(int shareIndex, String shareInfo, List<Item> videos, List<Item> subtitles) throws Exception {
         ShareData shareData = getShareData((String) shareInfo);
         if (shareData == null) return;
-    //    getShareToken(shareData);
+        //    getShareToken(shareData);
 
         listFile(shareIndex, shareData, videos, subtitles, shareData.getShareId(), shareData.getFolderId(), 1);
         if (!subtitles.isEmpty()) {
@@ -566,7 +601,7 @@ public class UCApi {
         }
         if (this.saveDirId == null) return null;
         if (stoken == null) {
-          //  getShareToken(new ShareData(shareId, null));
+            //  getShareToken(new ShareData(shareId, null));
         }
 
         Map<String, Object> saveResult = Json.parseSafe(api("share/sharepage/save?" + this.pr, null, ImmutableMap.of("fid_list", ImmutableList.of(fileId), "fid_token_list", ImmutableList.of(fileToken), "to_pdir_fid", this.saveDirId, "pwd_id", shareId, "stoken", stoken != null ? stoken : (String) this.shareTokenCache.get(shareId).get("stoken"), "pdir_fid", "0", "scene", "link"), 0, "POST"), Map.class);
