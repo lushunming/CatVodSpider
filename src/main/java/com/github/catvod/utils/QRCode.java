@@ -46,6 +46,20 @@ public class QRCode {
         }
     }
 
+    public static BufferedImage Bytes2Bimap(byte[] b) {
+        if (b.length != 0) {
+            try {
+
+                return ImageIO.read(new ByteArrayInputStream(b));
+            } catch (Exception ex) {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+
     public static BufferedImage base64StringToImage(String strBase64) {
         try {
             byte[] arr = Base64.decode(strBase64);

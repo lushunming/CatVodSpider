@@ -71,7 +71,9 @@ public class OkHttp {
     public static String string(OkHttpClient client, String url, Map<String, String> header) {
         return string(client, url, null, header);
     }
-
+    public static Map<String, List<String>>  getLocationHeader(String url, Map<String, String> header) throws IOException {
+        return client().newBuilder().followRedirects(false).followSslRedirects(false).build().newCall(new Request.Builder().url(url).headers(Headers.of(header)).build()).execute().headers().toMultimap();
+    }
     public static String string(OkHttpClient client, String url, Map<String, String> params, Map<String, String> header) {
         return url.startsWith("http") ? new OkRequest(GET, url, params, header).execute(client).getBody() : "";
     }

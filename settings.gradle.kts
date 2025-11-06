@@ -1,10 +1,12 @@
 pluginManagement {
     repositories {
+        maven("https://repo.huaweicloud.com/repository/maven/")
         gradlePluginPortal()
         mavenCentral()
         google()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
         maven("https://maven.hq.hydraulic.software")
+
     }
 
     plugins {

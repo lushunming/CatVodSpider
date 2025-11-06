@@ -17,8 +17,10 @@ import java.awt.*;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -517,5 +519,25 @@ public class Util {
         }
         return 0;
     }
+    public static String sha1Hex(String input) throws NoSuchAlgorithmException {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            byte[] messageDigest = md.digest(input.getBytes(Charset.defaultCharset()));
+            return bytesToHex(messageDigest);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    public static String bytesToHex(byte[] bytes) {
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : bytes) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+        return hexString.toString();
+    }
 }
