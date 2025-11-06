@@ -1,5 +1,5 @@
 {
-  "spider": "../jar/spider.jar;md5;7c30b2869f09bca49eb1ae7cd2b960e7",
+  "spider": "../jar/spider.jar;md5;4143f3c4fe8b923a48ee2eeacb8176a2",
   "sites": [
     {
       "key": "Intruduce",
@@ -235,6 +235,28 @@
       "searchable": 1,
       "changeable": 1,
       "ext": "{\"site\": [\"https://tv.yydsys.top/\"]}"
+    },
+    {
+      "key": "TgSearchBaidu",
+      "name": "☁TgSearchBaidu┃网盘",
+      "type": 3,
+      "api": "csp_TgSearchBaidu",
+      "searchable": 1,
+      "filterable": 0,
+      "ext": {
+        "api_urls": [
+          "https://psweb.banye.tech:7777/api/search",
+          "https://so.566987.xyz/api/search",
+          "http://152.69.222.142:8088/api/search"
+        ],
+        "sources": [
+          "夸克",
+          "百度",
+          "123盘",
+          "天翼",
+          "移动"
+        ]
+      }
     },
     {
       "key": "csp_AList",

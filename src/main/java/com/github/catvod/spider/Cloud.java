@@ -1,7 +1,9 @@
 package com.github.catvod.spider;
 
 
+import com.github.catvod.api.Pan123Api;
 import com.github.catvod.crawler.Spider;
+import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.utils.Json;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonObject;
@@ -20,6 +22,10 @@ public class Cloud extends Spider {
     private Quark quark = null;
     private Ali ali = null;
     private UC uc = null;
+    private YiDongYun yiDongYun = null;
+    private BaiDuPan baiDuPan = null;
+    private Pan123 pan123 = null;
+
 
     @Override
     public void init(String extend) throws Exception {
@@ -27,9 +33,15 @@ public class Cloud extends Spider {
         quark = new Quark();
         ali = new Ali();
         uc = new UC();
+        yiDongYun = new YiDongYun();
+        baiDuPan = new BaiDuPan();
+        pan123 = new Pan123();
         uc.init(ext.has("uccookie") ? ext.get("uccookie").getAsString() : "");
         quark.init(ext.has("cookie") ? ext.get("cookie").getAsString() : "");
         ali.init(ext.has("token") ? ext.get("token").getAsString() : "");
+        yiDongYun.init("");
+        baiDuPan.init( "");
+        pan123.init( "");
     }
 
     @Override
@@ -40,6 +52,13 @@ public class Cloud extends Spider {
             return quark.detailContent(shareUrl);
         } else if (shareUrl.get(0).matches(patternUC)) {
             return uc.detailContent(shareUrl);
+        }else if (shareUrl.get(0).contains(YiDongYun.URL_START)) {
+            return yiDongYun.detailContent(shareUrl);
+        } else if (shareUrl.get(0).contains(BaiDuPan.URL_START)) {
+            return baiDuPan.detailContent(shareUrl);
+        } else if (shareUrl.get(0).matches(Pan123Api.regex)) {
+            SpiderDebug.log("Pan123Api shareUrl：" + Json.toJson(shareUrl));
+            return pan123.detailContent(shareUrl);
         }
         return null;
     }
@@ -50,7 +69,15 @@ public class Cloud extends Spider {
             return quark.playerContent(flag, id, vipFlags);
         } else if (flag.contains("uc")) {
             return uc.playerContent(flag, id, vipFlags);
-        } else {
+        } else if (flag.contains("移动")) {
+            return yiDongYun.playerContent(flag, id, vipFlags);
+        }/* else {
+            return ali.playerContent(flag, id, vipFlags);
+        }*/ else if (flag.contains("BD")) {
+            return baiDuPan.playerContent(flag, id, vipFlags);
+        } else if (flag.contains("pan123")) {
+            return pan123.playerContent(flag, id, vipFlags);
+        }else {
             return ali.playerContent(flag, id, vipFlags);
         }
     }
@@ -67,7 +94,13 @@ public class Cloud extends Spider {
                     from.add(quark.detailContentVodPlayFrom(ImmutableList.of(shareLink)));
                 } else if (shareLink.matches(Ali.pattern.pattern()) && ali != null) {
                     from.add(ali.detailContentVodPlayFrom(ImmutableList.of(shareLink)));
-                } else {
+                }  else if (shareLink.contains(YiDongYun.URL_START)) {
+                    from.add(yiDongYun.detailContentVodPlayFrom(List.of(shareLink), i));
+                } else if (shareLink.contains(BaiDuPan.URL_START)) {
+                    from.add(baiDuPan.detailContentVodPlayFrom(List.of(shareLink), i));
+                } else if (shareLink.matches(Pan123Api.regex)) {
+                    from.add(pan123.detailContentVodPlayFrom(List.of(shareLink), i));
+                }else {
                     from.add("网盘未配置");
                 }
             } catch (Exception e) {
@@ -87,7 +120,13 @@ public class Cloud extends Spider {
                     urls.add(quark.detailContentVodPlayUrl(ImmutableList.of(shareLink)));
                 } else if (shareLink.matches(patternUC) && uc != null) {
                     urls.add(uc.detailContentVodPlayUrl(ImmutableList.of(shareLink)));
-                } else {
+                } else if (shareLink.contains(YiDongYun.URL_START)) {
+                    urls.add(yiDongYun.detailContentVodPlayUrl(List.of(shareLink)));
+                } else if (shareLink.contains(BaiDuPan.URL_START)) {
+                    urls.add(baiDuPan.detailContentVodPlayUrl(List.of(shareLink)));
+                } else if (shareLink.matches(Pan123Api.regex)) {
+                    urls.add(pan123.detailContentVodPlayUrl(List.of(shareLink)));
+                }else {
                     urls.add("http://error.com/网盘未配置");
                 }
 //            } catch (Exception e) {
