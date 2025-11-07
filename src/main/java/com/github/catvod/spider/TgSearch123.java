@@ -1,6 +1,5 @@
 package com.github.catvod.spider;
 
-
 import com.github.catvod.bean.Result;
 import com.github.catvod.bean.Vod;
 import com.github.catvod.net.OkHttp;
@@ -14,7 +13,7 @@ import org.apache.http.util.TextUtils;
 
 import java.util.*;
 
-public class TgSearchBaidu extends Cloud {
+public class TgSearch123 extends Cloud {
     private static final String KEY_API_URLS = "api_urls";
     private static final String KEY_DOMAIN_MAP = "siteurl";
     private static final String KEY_SOURCES = "sources";
@@ -36,8 +35,8 @@ public class TgSearchBaidu extends Cloud {
     private String[] extInfos = null;
 
     @Override
-    public synchronized void init(String extend) throws Exception {
-        super.init( extend);
+    public synchronized void init( String extend) throws Exception {
+        super.init(extend);
 
         this.apiUrls.clear();
 

@@ -1,5 +1,5 @@
 {
-  "spider": "../jar/spider.jar;md5;4143f3c4fe8b923a48ee2eeacb8176a2",
+  "spider": "../jar/spider.jar;md5;3622979da9670caa323b95027f4610c9",
   "sites": [
     {
       "key": "Intruduce",
@@ -10,85 +10,121 @@
       "changeable": 0
     },
     {
-      "key": "Douban",
-      "name": "豆瓣|首页",
+      "key": "LeiJing",
+      "name": "雷鲸|189Pan",
       "type": 3,
-      "api": "csp_Douban",
-      "searchable": 0,
-      "changeable": 0,
+      "api": "csp_LeiJing",
+      "searchable": 1,
+      "changeable": 1,
       "ext": {}
     },
     {
-      "key": "BD",
-      "name": "BD|首页",
+      "key": "BiXin",
+      "name": "彼心|139Pan",
       "type": 3,
-      "api": "csp_BD",
-      "searchable": 1,
-      "changeable": 0,
-      "ext": "aHR0cHM6Ly92LnhseXMubHRkLnVhLw=="
-    },
-    {
-      "key": "Ddrk",
-      "name": "低端|首页",
-      "type": 3,
-      "api": "csp_Ddrk",
+      "api": "csp_BiXin",
       "searchable": 1,
       "changeable": 1,
+      "ext": {}
+    },
+    {
+      "key": "Qupans",
+      "name": "Qupans|Pan",
+      "type": 3,
+      "api": "csp_Qupans",
+      "searchable": 1,
+      "changeable": 1,
+      "ext": {}
+    },
+    {
+      "key": "TgSearchQuark",
+      "name": "☁TgSearchQuark┃网盘",
+      "type": 3,
+      "api": "csp_TgSearchQuark",
+      "searchable": 1,
+      "filterable": 0,
       "ext": {
-        "site": "https://ddys.info/"
+        "api_urls": [
+          "https://psweb.banye.tech:7777/api/search",
+          "https://so.566987.xyz/api/search",
+          "http://152.69.222.142:8088/api/search"
+        ],
+        "sources": [
+          "夸克"
+        ]
       }
     },
     {
-      "key": "NCat",
-      "name": "网飞猫 | 影视",
+      "key": "TgSearchBaidu",
+      "name": "☁TgSearchBaidu┃网盘",
       "type": 3,
-      "api": "csp_NCat",
+      "api": "csp_TgSearchBaidu",
       "searchable": 1,
-      "changeable": 0,
-      "ext": {}
+      "filterable": 0,
+      "ext": {
+        "api_urls": [
+          "https://psweb.banye.tech:7777/api/search",
+          "https://so.566987.xyz/api/search",
+          "http://152.69.222.142:8088/api/search"
+        ],
+        "sources": [
+          "百度"
+        ]
+      }
     },
     {
-      "key": "Tvb",
-      "name": "Tvb|首页",
+      "key": "TgSearch123",
+      "name": "☁TgSearch123┃网盘",
       "type": 3,
-      "api": "csp_HkTv",
+      "api": "csp_TgSearch123",
       "searchable": 1,
-      "changeable": 1
+      "filterable": 0,
+      "ext": {
+        "api_urls": [
+          "https://psweb.banye.tech:7777/api/search",
+          "https://so.566987.xyz/api/search",
+          "http://152.69.222.142:8088/api/search"
+        ],
+        "sources": [
+          "123盘"
+        ]
+      }
     },
     {
-      "key": "XuanFeng",
-      "name": "旋风|广告",
+      "key": "TgSearch189",
+      "name": "☁TgSearch189┃网盘",
       "type": 3,
-      "api": "csp_XuanFeng",
+      "api": "csp_TgSearch189",
       "searchable": 1,
-      "changeable": 1
+      "filterable": 0,
+      "ext": {
+        "api_urls": [
+          "https://psweb.banye.tech:7777/api/search",
+          "https://so.566987.xyz/api/search",
+          "http://152.69.222.142:8088/api/search"
+        ],
+        "sources": [
+          "天翼"
+        ]
+      }
     },
     {
-      "key": "xb6v",
-      "name": "xb6v",
+      "key": "TgSearch139",
+      "name": "☁TgSearch139┃网盘",
       "type": 3,
-      "api": "csp_Xb6v",
+      "api": "csp_TgSearch139",
       "searchable": 1,
-      "changeable": 0,
-      "ext": ""
-    },
-    {
-      "key": "YHDM",
-      "name": "樱花动漫",
-      "type": 3,
-      "api": "csp_YHDM",
-      "searchable": 1,
-      "changeable": 0,
-      "ext": ""
-    },
-    {
-      "key": "DM84",
-      "name": "动漫巴士",
-      "type": 3,
-      "api": "csp_Dm84",
-      "searchable": 1,
-      "changeable": 0,
-      "ext": ""
+      "filterable": 0,
+      "ext": {
+        "api_urls": [
+          "https://psweb.banye.tech:7777/api/search",
+          "https://so.566987.xyz/api/search",
+          "http://152.69.222.142:8088/api/search"
+        ],
+        "sources": [
+          "移动"
+        ]
+      }
     },
     {
       "key": "ChangZhang",
