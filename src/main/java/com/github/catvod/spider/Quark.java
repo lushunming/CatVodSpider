@@ -44,14 +44,15 @@ public class Quark extends Spider {
      * @param ids share_link 集合
      * @return 詳情內容視頻播放來源
      */
-    public String detailContentVodPlayFrom(List<String> ids) {
+    public String detailContentVodPlayFrom(List<String> ids,int index) {
         List<String> playFrom = new ArrayList<>();
        /* if (ids.size() < 2){
             return TextUtils.join("$$$",  QuarkApi.get().getPlayFormatList());
         }*/
         for (int i = 1; i <= ids.size(); i++) {
+            playFrom.add("quark原画" + i + index);
             for (String s : QuarkApi.get().getPlayFormatList()) {
-                playFrom.add(String.format(Locale.getDefault(), "quark" + s + "#%02d", i));
+                playFrom.add(String.format(Locale.getDefault(), "quark" + s + "#%02d%02d", i, index));
 
             }
 

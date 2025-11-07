@@ -65,7 +65,6 @@ public class QuarkApi {
     }
 
 
-
     /**
      * 代理m3u8
      *
@@ -195,19 +194,22 @@ public class QuarkApi {
 
         String fileId = split[0], fileToken = split[1], shareId = split[2], stoken = split[3];
         String playUrl = "";
-        if (flag.contains("原画")) {
+        Map<String, String> header = getHeaders();
+        header.remove("Host");
+        header.remove("Content-Type");
+        if (flag.contains("quark原画")) {
             playUrl = this.getDownload(shareId, stoken, fileId, fileToken, true);
         } else {
             playUrl = this.getLiveTranscoding(shareId, stoken, fileId, fileToken, flag);
+            return Result.get().url(proxyVideoUrl(playUrl, header)).octet().header(header).string();
         }
         if (StringUtils.isBlank(playUrl)) {
             SpiderDebug.log("获取播放地址失败!");
             return "";
         }
-        Map<String, String> header = getHeaders();
-        header.remove("Host");
-        header.remove("Content-Type");
-        return Result.get().url(proxyVideoUrl(playUrl, header)).octet().header(header).string();
+        return Result.get().url(ProxyServer.INSTANCE.buildProxyUrl(playUrl, header)).octet().header(header).string();
+
+
     }
 
     private String proxyVideoUrl(String url, Map<String, String> header) {
@@ -372,7 +374,7 @@ public class QuarkApi {
 
     public List<String> getPlayFormatList() {
         if (this.isVip) {
-            return Arrays.asList("4K", "超清", "高清", "普画");
+            return Arrays.asList("4K"/*, "超清", "高清", "普画"*/);
         } else {
             return Collections.singletonList("普画");
         }
@@ -589,15 +591,7 @@ public class QuarkApi {
         // ===== 转存请求参数 =====
         SpiderDebug.log("转存请求参数 -> shareId=" + shareId + ", stoken=" + stoken + ", fileId=" + fileId + ", fileToken=" + fileToken + ", saveDirId=" + saveDirId);
 
-        Map<String, Object> params = ImmutableMap.of(
-                "fid_list", ImmutableList.of(fileId),
-                "fid_token_list", ImmutableList.of(fileToken),
-                "to_pdir_fid", this.saveDirId,
-                "pwd_id", shareId,
-                "stoken", stoken,
-                "pdir_fid", "0",
-                "scene", "link"
-        );
+        Map<String, Object> params = ImmutableMap.of("fid_list", ImmutableList.of(fileId), "fid_token_list", ImmutableList.of(fileToken), "to_pdir_fid", this.saveDirId, "pwd_id", shareId, "stoken", stoken, "pdir_fid", "0", "scene", "link");
         SpiderDebug.log("转存请求参数Map=" + params);
 
         Map<String, Object> saveResult = Json.parseSafe(api("share/sharepage/save?" + this.pr, null, params, 0, "POST"), Map.class);

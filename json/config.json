@@ -1,5 +1,5 @@
 {
-  "spider": "../jar/spider.jar;md5;3622979da9670caa323b95027f4610c2",
+  "spider": "../jar/spider.jar;md5;12a44ca44d4fe0d5c43ebc1ec484c5cc",
   "sites": [
     {
       "key": "Intruduce",
@@ -166,7 +166,6 @@
       "changeable": 0,
       "ext": {}
     },
-
     {
       "key": "glod",
       "name": "金牌 | 影视",
@@ -185,8 +184,6 @@
       "changeable": 0,
       "ext": {}
     },
-
-
     {
       "key": "DaGongRen",
       "name": "打工人",
@@ -207,7 +204,6 @@
       "changeable": 0,
       "ext": {}
     },
-
     {
       "key": "玩偶",
       "name": "玩偶",
@@ -217,8 +213,6 @@
       "changeable": 1,
       "ext": {}
     },
-
-
     {
       "key": "csp_AList",
       "name": "AList┃网盘",

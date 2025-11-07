@@ -91,7 +91,7 @@ public class Cloud extends Spider {
                 if (shareLink.matches(patternUC) && uc != null) {
                     from.add(uc.detailContentVodPlayFrom(ImmutableList.of(shareLink), i));
                 } else if (shareLink.matches(patternQuark) && quark != null) {
-                    from.add(quark.detailContentVodPlayFrom(ImmutableList.of(shareLink)));
+                    from.add(quark.detailContentVodPlayFrom(ImmutableList.of(shareLink),i));
                 } else if (shareLink.matches(Ali.pattern.pattern()) && ali != null) {
                     from.add(ali.detailContentVodPlayFrom(ImmutableList.of(shareLink)));
                 }  else if (shareLink.contains(YiDongYun.URL_START)) {
