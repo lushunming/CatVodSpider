@@ -687,7 +687,7 @@ public class QuarkApi {
         System.out.println("[DEBUG] download JSON = " + down);
 
         if (down.get("data") != null) {
-            return ((List<String>) down.get("data")).get(0);
+            return ((List<Map<String, Object>>) down.get("data")).get(0).get("download_url").toString();
         }
         return null;
     }
