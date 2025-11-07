@@ -682,7 +682,7 @@ public class QuarkApi {
             if (saveFileId == null) return null;
             this.saveFileIdCaches.put(fileId, saveFileId);
         }
-        Map<String, Object> down = Json.parseSafe(api("file/download?" + this.pr + "&uc_param_str=", Collections.emptyMap(), ImmutableMap.of("fids", this.saveFileIdCaches.get(fileId)), 0, "POST"), Map.class);
+        Map<String, Object> down = Json.parseSafe(api("file/download?" + this.pr + "&uc_param_str=", Collections.emptyMap(), ImmutableMap.of("fids",  List.of(this.saveFileIdCaches.get(fileId))), 0, "POST"), Map.class);
 
         System.out.println("[DEBUG] download JSON = " + down);
 
