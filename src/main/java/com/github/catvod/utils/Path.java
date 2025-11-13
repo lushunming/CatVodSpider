@@ -1,5 +1,8 @@
 package com.github.catvod.utils;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.file.FileSystemUtil;
+
 import java.io.*;
 import java.util.Arrays;
 import java.util.Collections;
@@ -11,7 +14,8 @@ public class Path {
 
     private static final String TAG = Path.class.getSimpleName();
 
-    private static final String RUNDIR = System.getProperty("user.dir");
+    private static final String RUNDIR = FileUtil.getUserHomePath();
+
 
     private static File check(File file) {
         if (!file.exists()) file.mkdirs();
