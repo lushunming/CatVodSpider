@@ -3,7 +3,7 @@ package com.github.catvod.spider;
 import com.github.catvod.bean.Result;
 import com.github.catvod.bean.Vod;
 import com.github.catvod.net.OkHttp;
-import org.apache.http.util.TextUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -33,7 +33,7 @@ public class Qupans extends Cloud {
         try {
             JSONObject result = new JSONObject();
             JSONArray classes = new JSONArray();
-            String[][] types = {{"电影","3"}, {"电视剧","2"}, {"综艺","4"}, {"动漫","5"}, {"纪录片","6"}};
+            String[][] types = {{"电影", "3"}, {"电视剧", "2"}, {"综艺", "4"}, {"动漫", "5"}, {"纪录片", "6"}};
             for (String[] type : types) {
                 JSONObject cls = new JSONObject();
                 cls.put("type_id", type[1]);
@@ -93,7 +93,7 @@ public class Qupans extends Cloud {
                 String pwd = getPwd(doc);
                 for (int i = 0; i < links.size(); i++) {
                     String link = links.get(i);
-                    if (!link.contains("pwd=") && !TextUtils.isEmpty(pwd)) {
+                    if (!link.contains("pwd=") && !StringUtils.isEmpty(pwd)) {
                         links.set(i, link + "?pwd=" + pwd);
                     }
                 }

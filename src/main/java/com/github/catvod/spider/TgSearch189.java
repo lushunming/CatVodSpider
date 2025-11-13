@@ -9,7 +9,8 @@ import com.github.catvod.utils.Util;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import org.apache.http.util.TextUtils;
+import org.apache.commons.lang3.StringUtils;
+
 
 import java.util.*;
 
@@ -40,13 +41,13 @@ public class TgSearch189 extends Cloud {
 
         this.apiUrls.clear();
 
-        if (!TextUtils.isEmpty(extend)) {
+        if (!StringUtils.isEmpty(extend)) {
             try {
                 if (extend.contains("###")) {
                     String[] infos = extend.split("###");
                     this.extInfos = infos;
 
-                    if (infos.length > 0 && !TextUtils.isEmpty(infos[0])) {
+                    if (infos.length > 0 && !StringUtils.isEmpty(infos[0])) {
                         processExtendConfig(infos[0]);
                     }
                 } else {
@@ -113,7 +114,7 @@ public class TgSearch189 extends Cloud {
                     continue;
                 }
 
-                if (!TextUtils.isEmpty(domain) && !TextUtils.isEmpty(sourceName) && !domainMap.containsKey(domain)) {
+                if (!StringUtils.isEmpty(domain) && !StringUtils.isEmpty(sourceName) && !domainMap.containsKey(domain)) {
                     domainMap.put(domain, sourceName);
                 }
             }
@@ -130,7 +131,7 @@ public class TgSearch189 extends Cloud {
             for (JsonElement element : sourcesArray) {
                 if (element != null && element.isJsonPrimitive() && element.getAsJsonPrimitive().isString()) {
                     String source = element.getAsString();
-                    if (!TextUtils.isEmpty(source) && !sources.contains(source)) {
+                    if (!StringUtils.isEmpty(source) && !sources.contains(source)) {
                         sources.add(source);
                     }
                 }
@@ -139,7 +140,7 @@ public class TgSearch189 extends Cloud {
     }
 
     private boolean isValidUrl(String url) {
-        return !TextUtils.isEmpty(url) && (url.startsWith("http://") || url.startsWith("https://"));
+        return !StringUtils.isEmpty(url) && (url.startsWith("http://") || url.startsWith("https://"));
     }
 
 
@@ -172,7 +173,7 @@ public class TgSearch189 extends Cloud {
 
             try {
                 OkResult result = OkHttp.get(apiUrl, params, getHeader());
-                if (result.getCode() == 500 || TextUtils.isEmpty(result.getBody())) continue;
+                if (result.getCode() == 500 || StringUtils.isEmpty(result.getBody())) continue;
 
                 JsonObject jsonObject = Json.safeObject(result.getBody());
                 if (!jsonObject.has("code") || jsonObject.get("code").getAsInt() != 0 || !jsonObject.has("data"))
@@ -198,7 +199,7 @@ public class TgSearch189 extends Cloud {
                         JsonObject entry = item.getAsJsonObject();
 
                         String vodUrl = entry.has("url") && !entry.get("url").isJsonNull() ? entry.get("url").getAsString() : "";
-                        if (TextUtils.isEmpty(vodUrl)) continue;
+                        if (StringUtils.isEmpty(vodUrl)) continue;
 
                         // 获取来源信息并映射
                         String originalSource = entry.has("source") && !entry.get("source").isJsonNull() ? entry.get("source").getAsString() : "未知来源";

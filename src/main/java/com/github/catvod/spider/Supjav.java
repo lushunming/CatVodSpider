@@ -10,7 +10,7 @@ import com.github.catvod.net.OkHttp;
 import com.github.catvod.utils.Util;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.utils.URIUtils;
-import org.apache.http.util.TextUtils;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -62,7 +62,7 @@ public class Supjav extends Spider {
             String data = element.select("img").attr("data-original");
             String url = element.select("a").attr("href");
             String name = element.select("a").attr("title");
-            String pic = TextUtils.isEmpty(data) ? src : data;
+            String pic = StringUtils.isEmpty(data) ? src : data;
             String id = url.split("/")[4];
             list.add(new Vod(id, name, pic));
         }
