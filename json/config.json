@@ -1,5 +1,5 @@
 {
-  "spider": "../jar/spider.jar;md5;018281b253bf604e9bb68b2b932dad75",
+  "spider": "../jar/spider.jar;md5;d0baa9325311836eae33f07b5cd9b5e5",
   "sites": [
     {
       "key": "Intruduce",
@@ -14,6 +14,24 @@
       "name": "玩偶",
       "type": 3,
       "api": "csp_Wogg",
+      "searchable": 1,
+      "changeable": 1,
+      "ext": {}
+    },
+    {
+      "key": "Tg189Search",
+      "name": "Tg189Search",
+      "type": 3,
+      "api": "csp_Tg189Search",
+      "searchable": 1,
+      "changeable": 1,
+      "ext": {}
+    },
+    {
+      "key": "TgQuarkSearch",
+      "name": "TgQuarkSearch",
+      "type": 3,
+      "api": "csp_TgQuarkSearch",
       "searchable": 1,
       "changeable": 1,
       "ext": {}
