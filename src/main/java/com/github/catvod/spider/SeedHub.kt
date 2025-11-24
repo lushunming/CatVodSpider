@@ -91,7 +91,7 @@ class SeedHub : Cloud() {
             if (link.attr("href").startsWith("/")) {
                 val name = nav.select("a").text()
                 val url = nav.select("a").attr("href")
-                classes.add(Class(name, url))
+                classes.add(Class(url, name))
             }
         }
     }
