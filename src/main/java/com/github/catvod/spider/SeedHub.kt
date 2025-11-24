@@ -9,9 +9,11 @@ import com.github.catvod.net.OkHttp
 import com.github.catvod.utils.Util
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import kotlinx.coroutines.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.net.URLEncoder
+import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.regex.Pattern
 
 /**
@@ -136,16 +138,14 @@ class SeedHub : Cloud() {
 
     @Throws(Exception::class)
     override fun detailContent(ids: MutableList<String?>): String? {
+
         val vodId = ids.get(0)
         val doc = Jsoup.parse(
             OkHttp.string(
                 siteUrl + vodId, this.header
             )
         )
-
         val infos = doc.select("div.cover-container >ul > li").text().replace(" ", "")
-
-
         val item = Vod()
         item.setVodId(vodId)
         item.setVodName(doc.selectFirst("h1")!!.text())
@@ -158,25 +158,30 @@ class SeedHub : Cloud() {
         item.setVodRemarks(Util.getStrByRegex(Pattern.compile("豆瓣评分:(.*?)常用标签"), infos))
         item.vodContent = doc.select("div.content > p").text()
 
-        val shareLinks: MutableList<String?> = java.util.ArrayList<String?>()
+        val shareLinks: ConcurrentLinkedDeque<String?> = ConcurrentLinkedDeque<String?>()
+        val jobs = ArrayList<Job>()
 
-        doc.select("ul.pan-links > li > a").forEach { element ->
-            run {
-                var link = siteUrl + element.attr("href")
-                link = URLUtil.normalize(link, true)
-                val string = OkHttp.string(link, header)
-                val docEle = Jsoup.parse(string)
-                docEle.select("a.direct-pan").attr("href").let {
-                    if (it.isNotEmpty()) {
-                        shareLinks.add(it)
+        runBlocking {
+            doc.select("ul.pan-links > li > a").forEach { element ->
+
+                jobs += CoroutineScope(Dispatchers.IO).launch {
+                    var link = siteUrl + element.attr("href")
+                    link = URLUtil.normalize(link, true)
+                    val string = OkHttp.string(link, header)
+                    val docEle = Jsoup.parse(string)
+                    docEle.select("a.direct-pan").attr("href").let {
+                        if (it.isNotEmpty()) {
+                            shareLinks.add(it)
+                        }
                     }
                 }
-
             }
-        }
-        item.vodPlayUrl = super.detailContentVodPlayUrl(shareLinks)
-        item.setVodPlayFrom(super.detailContentVodPlayFrom(shareLinks))
+            jobs.joinAll()
+            item.vodPlayUrl = super.detailContentVodPlayUrl(java.util.ArrayList(shareLinks))
+            item.setVodPlayFrom(super.detailContentVodPlayFrom(java.util.ArrayList(shareLinks)))
 
+
+        }
         return Result.string(item)
     }
 
@@ -191,8 +196,7 @@ class SeedHub : Cloud() {
     }
 
     private fun searchContent(key: String?, pg: String?): String? {
-        val searchURL =
-            siteUrl + String.format("/s/%s/?page=%s", URLEncoder.encode(key), pg)
+        val searchURL = siteUrl + String.format("/s/%s/?page=%s", URLEncoder.encode(key), pg)
         val html = OkHttp.string(searchURL, this.header)
         val doc = Jsoup.parse(html)
 
