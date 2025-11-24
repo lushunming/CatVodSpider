@@ -101,8 +101,6 @@ public class Cloud extends Spider {
                     from.add(baiDuPan.detailContentVodPlayFrom(List.of(shareLink), i));
                 } else if (shareLink.matches(Pan123Api.regex)) {
                     from.add(pan123.detailContentVodPlayFrom(List.of(shareLink), i));
-                }else {
-                    from.add("网盘未配置");
                 }
             } catch (Exception e) {
                 from.add("解析失败");
@@ -127,8 +125,6 @@ public class Cloud extends Spider {
                     urls.add(baiDuPan.detailContentVodPlayUrl(List.of(shareLink)));
                 } else if (shareLink.matches(Pan123Api.regex)) {
                     urls.add(pan123.detailContentVodPlayUrl(List.of(shareLink)));
-                }else {
-                    urls.add("http://error.com/网盘未配置");
                 }
 //            } catch (Exception e) {
 //                urls.add("http://error.com/解析失败: " + e.getMessage());
