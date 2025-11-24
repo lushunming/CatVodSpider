@@ -205,16 +205,7 @@
       "changeable": 0,
       "ext": {}
     },
-    {
-      "key": "Mtyy",
-      "name": "麦田影院",
-      "type": 3,
-      "api": "csp_Mtyy",
-      "searchable": "1",
-      "filterable": "0",
-      "changeable": 0,
-      "ext": {}
-    },
+
     {
       "key": "Ikanbot",
       "name": "爱看机器人",
@@ -225,54 +216,7 @@
       "changeable": 0,
       "ext": {}
     },
-    {
-      "key": "glod",
-      "name": "金牌 | 影视",
-      "type": 3,
-      "api": "csp_Glod",
-      "searchable": 0,
-      "changeable": 0,
-      "ext": {}
-    },
-    {
-      "key": "DUB",
-      "name": "DUB",
-      "type": 3,
-      "api": "csp_DUB",
-      "searchable": 0,
-      "changeable": 0,
-      "ext": {}
-    },
-    {
-      "key": "DaGongRen",
-      "name": "打工人",
-      "type": 3,
-      "api": "csp_DaGongRen",
-      "searchable": "1",
-      "filterable": "0",
-      "changeable": 0,
-      "ext": {}
-    },
-    {
-      "key": "Liangzi",
-      "name": "量子影视",
-      "type": 3,
-      "api": "csp_Liangzi",
-      "searchable": "1",
-      "filterable": "0",
-      "changeable": 0,
-      "ext": {}
-    },
-    {
-      "key": "csp_AList",
-      "name": "AList┃网盘",
-      "type": "3",
-      "api": "csp_AList",
-      "searchable": "0",
-      "filterable": "1",
-      "changeable": 0,
-      "ext": "./alist.json"
-    },
+
     {
       "key": "PanSou",
       "name": "盘搜┃搜索",
