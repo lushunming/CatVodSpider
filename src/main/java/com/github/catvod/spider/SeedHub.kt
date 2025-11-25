@@ -1,5 +1,6 @@
 package com.github.catvod.spider
 
+import cn.hutool.core.net.URLEncodeUtil
 import cn.hutool.core.util.URLUtil
 import com.github.catvod.bean.Class
 import com.github.catvod.bean.Filter
@@ -10,6 +11,7 @@ import com.github.catvod.utils.Util
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.coroutines.*
+import org.apache.http.client.utils.URLEncodedUtils
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.net.URLEncoder
@@ -166,7 +168,7 @@ class SeedHub : Cloud() {
 
                 jobs += CoroutineScope(Dispatchers.IO).launch {
                     var link = siteUrl + element.attr("href")
-                    link = URLUtil.normalize(link, true)
+                    link= URLUtil.encodeQuery( link)
                     val string = OkHttp.string(link, header)
                     val docEle = Jsoup.parse(string)
                     docEle.select("a.direct-pan").attr("href").let {
