@@ -1,5 +1,5 @@
 {
-  "spider": "../jar/spider.jar;md5;421e963d5f2294b3af107459b39df8f0",
+  "spider": "../jar/spider.jar;md5;ebe31ad0301e7bc850e180f30aa5c48e",
   "sites": [
     {
       "key": "Intruduce",
@@ -88,6 +88,25 @@
         ],
         "sources": [
           "夸克"
+        ]
+      }
+    },
+    {
+      "key": "TgSearchUC",
+      "name": "☁TgSearchUC┃网盘",
+      "type": 3,
+      "api": "csp_TgSearchUC",
+      "searchable": 1,
+      "filterable": 0,
+      "ext": {
+        "api_urls": [
+          "https://api.jkai.de/api/search",
+          "https://psweb.banye.tech:7777/api/search",
+          "https://so.566987.xyz/api/search",
+          "http://152.69.222.142:8088/api/search"
+        ],
+        "sources": [
+          "UC"
         ]
       }
     },
