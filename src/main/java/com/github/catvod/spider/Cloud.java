@@ -32,11 +32,11 @@ public class Cloud extends Spider {
         JsonObject ext = StringUtils.isAllBlank(extend) ? new JsonObject() : Json.safeObject(extend);
         quark = new Quark();
        /* ali = new Ali();*/
-       /* uc = new UC();*/
+       uc = new UC();
         yiDongYun = new YiDongYun();
         baiDuPan = new BaiDuPan();
         pan123 = new Pan123();
-      //  uc.init(ext.has("uccookie") ? ext.get("uccookie").getAsString() : "");
+       uc.init(ext.has("uccookie") ? ext.get("uccookie").getAsString() : "");
         quark.init(ext.has("cookie") ? ext.get("cookie").getAsString() : "");
        // ali.init(ext.has("token") ? ext.get("token").getAsString() : "");
         yiDongYun.init("");
@@ -50,9 +50,9 @@ public class Cloud extends Spider {
             return ali.detailContent(shareUrl);
         } else*/ if (shareUrl.get(0).matches(patternQuark)) {
             return quark.detailContent(shareUrl);
-        } /*else if (shareUrl.get(0).matches(patternUC)) {
+        } else if (shareUrl.get(0).matches(patternUC)) {
             return uc.detailContent(shareUrl);
-        }*/else if (shareUrl.get(0).contains(YiDongYun.URL_START)) {
+        }else if (shareUrl.get(0).contains(YiDongYun.URL_START)) {
             return yiDongYun.detailContent(shareUrl);
         } else if (shareUrl.get(0).contains(BaiDuPan.URL_START)) {
             return baiDuPan.detailContent(shareUrl);
@@ -67,9 +67,9 @@ public class Cloud extends Spider {
     public String playerContent(String flag, String id, List<String> vipFlags) throws Exception {
         if (flag.contains("quark")) {
             return quark.playerContent(flag, id, vipFlags);
-        } /*else if (flag.contains("uc")) {
+        } else if (flag.contains("uc")) {
             return uc.playerContent(flag, id, vipFlags);
-        } */else if (flag.contains("移动")) {
+        } else if (flag.contains("移动")) {
             return yiDongYun.playerContent(flag, id, vipFlags);
         }/* else {
             return ali.playerContent(flag, id, vipFlags);
@@ -89,9 +89,9 @@ public class Cloud extends Spider {
         for (String shareLink : shareLinks) {
             i++;
             try {
-               /* if (shareLink.matches(patternUC) && uc != null) {
+                if (shareLink.matches(patternUC) && uc != null) {
                     from.add(uc.detailContentVodPlayFrom(ImmutableList.of(shareLink), i));
-                } else*/ if (shareLink.matches(patternQuark) && quark != null) {
+                } else if (shareLink.matches(patternQuark) && quark != null) {
                     from.add(quark.detailContentVodPlayFrom(ImmutableList.of(shareLink),i));
                 } /*else if (shareLink.matches(Ali.pattern.pattern()) && ali != null) {
                     from.add(ali.detailContentVodPlayFrom(ImmutableList.of(shareLink)));
@@ -117,9 +117,9 @@ public class Cloud extends Spider {
                     urls.add(ali.detailContentVodPlayUrl(ImmutableList.of(shareLink)));
                 } else*/ if (shareLink.matches(patternQuark) && quark != null) {
                     urls.add(quark.detailContentVodPlayUrl(ImmutableList.of(shareLink)));
-                } /*else if (shareLink.matches(patternUC) && uc != null) {
+                } else if (shareLink.matches(patternUC) && uc != null) {
                     urls.add(uc.detailContentVodPlayUrl(ImmutableList.of(shareLink)));
-                } */else if (shareLink.contains(YiDongYun.URL_START)) {
+                } else if (shareLink.contains(YiDongYun.URL_START)) {
                     urls.add(yiDongYun.detailContentVodPlayUrl(List.of(shareLink)));
                 } else if (shareLink.contains(BaiDuPan.URL_START)) {
                     urls.add(baiDuPan.detailContentVodPlayUrl(List.of(shareLink)));
