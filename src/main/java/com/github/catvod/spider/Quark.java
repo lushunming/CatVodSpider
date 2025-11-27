@@ -3,6 +3,7 @@ package com.github.catvod.spider;
 
 import com.github.catvod.api.QuarkApi;
 import com.github.catvod.bean.Result;
+import com.github.catvod.bean.Vod;
 import com.github.catvod.bean.quark.ShareData;
 import com.github.catvod.crawler.Spider;
 import org.apache.commons.lang3.StringUtils;
@@ -44,7 +45,7 @@ public class Quark extends Spider {
      * @param ids share_link 集合
      * @return 詳情內容視頻播放來源
      */
-    public String detailContentVodPlayFrom(List<String> ids,int index) {
+    public String detailContentVodPlayFrom(List<String> ids, int index) {
         List<String> playFrom = new ArrayList<>();
        /* if (ids.size() < 2){
             return TextUtils.join("$$$",  QuarkApi.get().getPlayFormatList());
@@ -70,7 +71,8 @@ public class Quark extends Spider {
         List<String> playUrl = new ArrayList<>();
         for (String id : ids) {
             ShareData shareData = QuarkApi.get().getShareData(id);
-            playUrl.add(QuarkApi.get().getVod(shareData).getVodPlayUrl());
+            Vod vod = QuarkApi.get().getVod(shareData);
+            playUrl.add(vod == null ? "" : vod.getVodPlayUrl());
         }
         return StringUtils.join(playUrl, "$$$");
     }
