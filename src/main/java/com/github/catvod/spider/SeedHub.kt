@@ -166,7 +166,7 @@ class SeedHub : Cloud() {
         runBlocking {
             doc.select("ul.pan-links > li > a")
                 .filter {a-> a.attr("data-link").contains("quark") || a.attr("data-link").contains("baidu")|| a.attr("data-link").contains("uc") }
-                .slice(IntRange(0, 10)).forEach { element ->
+                .slice(IntRange(0, 5)).forEach { element ->
 
                 jobs += CoroutineScope(Dispatchers.IO).launch {
                     var link = siteUrl + element.attr("href")
