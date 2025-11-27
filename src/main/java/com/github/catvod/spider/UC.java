@@ -57,10 +57,10 @@ public class UC extends Spider {
 
         for (int i = 1; i <= ids.size(); i++) {
 
-            for (String s : UCApi.get().getPlayFormatList()) {
+           /* for (String s : UCApi.get().getPlayFormatList()) {
                 playFrom.add(String.format(Locale.getDefault(), "uc" + s + "#%02d%02d", i, index));
 
-            }
+            }*/
             playFrom.add("uc原画" + i + index);
         }
         return StringUtils.join(playFrom, "$$$");
