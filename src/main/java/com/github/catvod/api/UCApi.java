@@ -258,7 +258,7 @@ public class UCApi {
         if (Util.getExt(url).contains("m3u8")) {
             return getM3u8(url, header);
         }
-        return new Object[]{ProxyVideo.proxyResponse(url, header)};
+        return ProxyVideo.proxy(url, header);
     }
 
     /**
