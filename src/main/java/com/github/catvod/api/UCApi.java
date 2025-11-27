@@ -220,12 +220,12 @@ public class UCApi {
         header.remove("Host");
         header.remove("Content-Type");
 
-        //UCTV 可以直接播放，不需要代理
+       /* //UCTV 可以直接播放，不需要代理
         if (testVideo(playUrl)) {
             SpiderDebug.log("UCTV 可以直接播放，不需要代理" );
 
             return Result.get().url(playUrl).string();
-        }
+        }*/
         return Result.get().url(ProxyServer.INSTANCE.buildProxyUrl(playUrl, header)).octet().header(header).string();
     }
 
