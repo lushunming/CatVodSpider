@@ -226,7 +226,7 @@ public class UCApi {
 
             return Result.get().url(playUrl).string();
         }*/
-        return Result.get().url(ProxyServer.INSTANCE.buildProxyUrl(playUrl, new HashMap<>())).octet().header(header).string();
+        return Result.get().url(ProxyServer.INSTANCE.buildProxyUrl(playUrl, new HashMap<>())).string();
     }
 
     private boolean testVideo(String url) {
