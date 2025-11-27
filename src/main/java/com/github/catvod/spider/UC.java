@@ -3,6 +3,7 @@ package com.github.catvod.spider;
 
 import com.github.catvod.api.UCApi;
 import com.github.catvod.bean.Result;
+import com.github.catvod.bean.Vod;
 import com.github.catvod.bean.uc.ShareData;
 import com.github.catvod.crawler.Spider;
 import com.github.catvod.crawler.SpiderDebug;
@@ -76,7 +77,8 @@ public class UC extends Spider {
         List<String> playUrl = new ArrayList<>();
         for (String id : ids) {
             ShareData shareData = UCApi.get().getShareData(id);
-            playUrl.add(UCApi.get().getVod(shareData).getVodPlayUrl());
+            Vod vod=UCApi.get().getVod(shareData);
+            playUrl.add(vod==null?"":vod.getVodPlayUrl());
         }
         return StringUtils.join(playUrl, "$$$");
     }
