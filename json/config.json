@@ -101,9 +101,9 @@
       "ext": {
         "api_urls": [
           "https://api.jkai.de/api/search",
-          "https://psweb.banye.tech:7777/api/search",
-          "https://so.566987.xyz/api/search",
-          "http://152.69.222.142:8088/api/search"
+
+          "https://so.566987.xyz/api/search"
+
         ],
         "sources": [
           "UC"
@@ -120,9 +120,9 @@
       "ext": {
         "api_urls": [
           "https://api.jkai.de/api/search",
-          "https://psweb.banye.tech:7777/api/search",
-          "https://so.566987.xyz/api/search",
-          "http://152.69.222.142:8088/api/search"
+
+          "https://so.566987.xyz/api/search"
+
         ],
         "sources": [
           "百度"
@@ -139,9 +139,8 @@
       "ext": {
         "api_urls": [
           "https://api.jkai.de/api/search",
-          "https://psweb.banye.tech:7777/api/search",
-          "https://so.566987.xyz/api/search",
-          "http://152.69.222.142:8088/api/search"
+
+          "https://so.566987.xyz/api/search"
         ],
         "sources": [
           "123盘"
@@ -158,9 +157,8 @@
       "ext": {
         "api_urls": [
           "https://api.jkai.de/api/search",
-          "https://psweb.banye.tech:7777/api/search",
-          "https://so.566987.xyz/api/search",
-          "http://152.69.222.142:8088/api/search"
+
+          "https://so.566987.xyz/api/search"
         ],
         "sources": [
           "天翼"
