@@ -1,5 +1,5 @@
 {
-  "spider": "../jar/spider.jar;md5;7b8115e8d47faaeed5f1c775e56cdc24",
+  "spider": "../jar/spider.jar;md5;fbbb2672ffeb2d15c3045a67be3d83e3",
   "sites": [
     {
       "key": "Intruduce",
@@ -101,9 +101,7 @@
       "ext": {
         "api_urls": [
           "https://api.jkai.de/api/search",
-
           "https://so.566987.xyz/api/search"
-
         ],
         "sources": [
           "UC"
@@ -120,9 +118,7 @@
       "ext": {
         "api_urls": [
           "https://api.jkai.de/api/search",
-
           "https://so.566987.xyz/api/search"
-
         ],
         "sources": [
           "百度"
@@ -139,7 +135,6 @@
       "ext": {
         "api_urls": [
           "https://api.jkai.de/api/search",
-
           "https://so.566987.xyz/api/search"
         ],
         "sources": [
@@ -157,7 +152,6 @@
       "ext": {
         "api_urls": [
           "https://api.jkai.de/api/search",
-
           "https://so.566987.xyz/api/search"
         ],
         "sources": [

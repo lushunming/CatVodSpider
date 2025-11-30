@@ -51,9 +51,9 @@ class SeedHub : Cloud() {
         val doc = Jsoup.parse(html)
 
         parseClassFromDoc(doc, classes)
-        if (filter) {
+        //if (filter) {
             parseFilterFromDoc(doc, filters)
-        }
+     //   }
 
         return Result.string(classes, parseVodListFromDoc(doc), filters)
     }
