@@ -210,23 +210,23 @@ public class UCApi {
         SpiderDebug.log("flag:" + flag);
         String fileId = split[0], fileToken = split[1], shareId = split[2], stoken = split[3];
         String playUrl = "";
-        if (flag.contains("uc原画")) {
-            playUrl = this.getDownload(shareId, stoken, fileId, fileToken, true);
-        } else {
-            playUrl = this.getLiveTranscoding(shareId, stoken, fileId, fileToken, flag);
-        }
-        SpiderDebug.log("origin playUrl:" + playUrl);
+
         Map<String, String> header = getHeaders();
         header.remove("Host");
         header.remove("Content-Type");
+        if (flag.contains("uc原画")) {
 
-       /* //UCTV 可以直接播放，不需要代理
-        if (testVideo(playUrl)) {
-            SpiderDebug.log("UCTV 可以直接播放，不需要代理" );
+            playUrl = this.getDownload(shareId, stoken, fileId, fileToken, true);
+            SpiderDebug.log("origin playUrl:" + playUrl);
+            return Result.get().url(ProxyServer.INSTANCE.buildProxyUrl(playUrl, new HashMap<>())).string();
+        } else {
 
-            return Result.get().url(playUrl).string();
-        }*/
-        return Result.get().url(ProxyServer.INSTANCE.buildProxyUrl(playUrl, new HashMap<>())).string();
+            playUrl = this.getLiveTranscoding(shareId, stoken, fileId, fileToken, flag);
+            SpiderDebug.log("origin playUrl:" + playUrl);
+            return Result.get().url(proxyVideoUrl(playUrl, new HashMap<>())).string();
+        }
+
+
     }
 
     private boolean testVideo(String url) {

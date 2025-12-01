@@ -199,15 +199,13 @@ public class QuarkApi {
         header.remove("Content-Type");
         if (flag.contains("quark原画")) {
             playUrl = this.getDownload(shareId, stoken, fileId, fileToken, true);
+            return Result.get().url(ProxyServer.INSTANCE.buildProxyUrl(playUrl, header)).octet().header(header).string();
         } else {
             playUrl = this.getLiveTranscoding(shareId, stoken, fileId, fileToken, flag);
             return Result.get().url(proxyVideoUrl(playUrl, header)).octet().header(header).string();
         }
-        if (StringUtils.isBlank(playUrl)) {
-            SpiderDebug.log("获取播放地址失败!");
-            return "";
-        }
-        return Result.get().url(ProxyServer.INSTANCE.buildProxyUrl(playUrl, header)).octet().header(header).string();
+
+
 
 
     }
