@@ -107,6 +107,7 @@ object ProxyServer {
 
 
                 response.setHeader("Connection", "keep-alive")
+                response.setHeader("Access-Control-Allow-Origin","*")
                 response.setHeader(
                     "Content-Length", (finalEndPoint - startPoint + 1).toString()
                 )
