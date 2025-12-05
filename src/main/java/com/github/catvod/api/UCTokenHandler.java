@@ -10,6 +10,8 @@ import com.github.catvod.spider.Init;
 import com.github.catvod.utils.*;
 import com.google.gson.JsonObject;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,6 +32,7 @@ public class UCTokenHandler {
     private static final String SIGN_KEY = "l3srvtd7p42l0d0x1u8d7yc8ye9kki4d";
     private static final String API_URL = "https://open-api-drive.uc.cn";
     private static final String CODE_API_URL = "http://api.extscreen.com/ucdrive";
+    private static final Logger log = LoggerFactory.getLogger(UCTokenHandler.class);
 
 
     private Map<String, Object> platformStates = new HashMap<>();
@@ -260,6 +263,11 @@ public class UCTokenHandler {
 
         OkResult okResult1 = OkHttp.get(API_URL + pathname, params, headers);
         JsonObject obj = Json.safeObject(okResult1.getBody());
+        if (okResult1.getCode() != 200) {
+            Util.notify(obj.get("error_info").getAsString());
+            SpiderDebug.log("uc TV 错误信息：" + obj.get("error_info").getAsString());
+            return null;
+        }
         String downloadUrl = obj.get("data").getAsJsonObject().get("video_info").getAsJsonArray().get(0).getAsJsonObject().get("url").getAsString();
         SpiderDebug.log("uc TV 下载文件内容：" + downloadUrl);
         return downloadUrl;
