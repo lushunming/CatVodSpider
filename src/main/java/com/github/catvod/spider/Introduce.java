@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Introduce extends Spider {
+public class Introduce extends Cloud {
 
 
     @Override
@@ -27,6 +27,7 @@ public class Introduce extends Spider {
         String pic = "";
         String name = "UCToken";
         list.add(new Vod("UCToken", name, pic));
+
         return Result.string(classes,list);
     }
 
@@ -39,6 +40,7 @@ public class Introduce extends Spider {
             String pic = "https://androidcatvodspider.netlify.app/wechat.png";
             String name = "点击设置Token";
             vodList.add(new Vod("UCToken", name, pic));
+
         }
         return Result.get().vod(vodList).string();
     }
@@ -52,8 +54,8 @@ public class Introduce extends Spider {
             UCTokenHandler qrCodeHandler = new UCTokenHandler();
             qrCodeHandler.startUC_TOKENScan();
         }
-        Vod item = new Vod();
-        return Result.string(item);
+
+        return super.detailContent(List.of("https://pan.quark.cn/s/cb0e3473c3cb"));
     }
 
 }

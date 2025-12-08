@@ -2,16 +2,13 @@ package com.github.catvod.utils
 
 import com.github.catvod.crawler.SpiderDebug
 import com.github.catvod.net.OkHttp
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import java.io.ByteArrayInputStream
 
 
 object ProxyServer {
-    private  val THREAD_NUM = Runtime.getRuntime().availableProcessors()
+    private val THREAD_NUM = Runtime.getRuntime().availableProcessors()
     private val partSize = 1024 * 1024
     private var port = 12345
     private var httpServer: AdvancedHttpServer? = null
@@ -107,7 +104,7 @@ object ProxyServer {
 
 
                 response.setHeader("Connection", "keep-alive")
-                response.setHeader("Access-Control-Allow-Origin","*")
+                response.setHeader("Access-Control-Allow-Origin", "*")
                 response.setHeader(
                     "Content-Length", (finalEndPoint - startPoint + 1).toString()
                 )
@@ -139,8 +136,13 @@ object ProxyServer {
                         producerJob += CoroutineScope(Dispatchers.IO).launch {
                             // 异步下载数据块
                             val data = getVideoStream(chunkStart, chunkEnd, url, headers)
-                            channels[i].send(data)
-
+                            //如果是0开始，且检测到恶意头，那么就把数据截断
+                            if (chunkStart == 0L) {
+                                val offset = detectMaliciousPrefix(data)
+                                channels[i].send(data.copyOfRange(offset, data.size))
+                            } else {
+                                channels[i].send(data)
+                            }
                         }
                         currentStart = chunkEnd + 1
                     }
@@ -163,6 +165,66 @@ object ProxyServer {
 
             }
         }
+    }
+
+
+    fun detectMaliciousPrefix(data: ByteArray): Int {
+
+
+        val buffer = ByteArray(64) // 读取前64字节足够
+        ByteArrayInputStream(data).use { fis ->
+            fis.read(buffer)
+        }
+
+        // 检查是否以合法魔数开头
+        if (isValidVideoHeader(buffer)) {
+            return 0 // 正常，无恶意前缀
+        }
+
+        // 在后续位置查找合法魔数（比如最多跳过前256字节）
+        val searchLimit = minOf(256, data.size)
+        val searchBuffer = ByteArray(searchLimit)
+        ByteArrayInputStream(data).use { fis ->
+            fis.read(searchBuffer)
+        }
+
+        // 尝试从偏移1开始查找合法视频头
+        for (offset in 1 until searchLimit - 16) {
+            if (isValidVideoHeader(searchBuffer, offset)) {
+                SpiderDebug.log("发现合法视频头位于偏移 $offset，疑似被插入恶意前缀！")
+                return offset
+            }
+        }
+
+        return 0 // 未找到合法头，可能是损坏或非视频文件
+    }
+
+    // 判断从指定偏移开始是否是合法视频头
+    fun isValidVideoHeader(data: ByteArray, offset: Int = 0): Boolean {
+        if (data.size - offset < 8) return false
+
+        // MP4 / MOV: ... ftyp
+        if (offset + 8 <= data.size && data[offset + 4].toInt() == 0x66 && // 'f'
+            data[offset + 5].toInt() == 0x74 && // 't'
+            data[offset + 6].toInt() == 0x79 && // 'y'
+            data[offset + 7].toInt() == 0x70     // 'p'
+        ) {
+            // 还可进一步校验前4字节是否为合法 size（>=8 且合理）
+            val size =
+                (data[offset].toLong() and 0xFF shl 24) or (data[offset + 1].toLong() and 0xFF shl 16) or (data[offset + 2].toLong() and 0xFF shl 8) or (data[offset + 3].toLong() and 0xFF)
+            if (size >= 8 && size <= 0x100000) return true
+        }
+
+        // AVI: RIFF
+        if (offset + 4 <= data.size && data[offset] == 0x52.toByte() && data[offset + 1] == 0x49.toByte() && data[offset + 2] == 0x46.toByte() && data[offset + 3] == 0x46.toByte()) return true
+
+        // MKV
+        if (offset + 4 <= data.size && data[offset] == 0x1A.toByte() && data[offset + 1] == 0x45.toByte() && data[offset + 2] == 0xDF.toByte() && data[offset + 3] == 0xA3.toByte()) return true
+
+        // FLV
+        if (offset + 4 <= data.size && data[offset] == 0x46.toByte() && data[offset + 1] == 0x4C.toByte() && data[offset + 2] == 0x56.toByte() && data[offset + 3] == 0x01.toByte()) return true
+
+        return false
     }
 
 
