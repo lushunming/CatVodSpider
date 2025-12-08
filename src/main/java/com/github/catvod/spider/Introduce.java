@@ -15,8 +15,8 @@ public class Introduce extends Cloud {
 
     @Override
     public void init(String extend) throws Exception {
-        super.init(extend);
 
+        super.init("");
     }
 
     @Override
@@ -49,17 +49,21 @@ public class Introduce extends Cloud {
     @Override
     public String detailContent(List<String> ids) throws Exception {
         String vodId = ids.get(0);
-
+        Vod item = new Vod();
         //UC Token 扫码
         if (vodId.equals("UCToken")) {
             UCTokenHandler qrCodeHandler = new UCTokenHandler();
             qrCodeHandler.startUC_TOKENScan();
+            return Result.string(item);
         }else{
-            return super.detailContent(ids);
+            item.setVodId(vodId);
+            item.setVodName("测试");
+            item.setVodPlayUrl(super.detailContentVodPlayUrl(List.of(vodId)));
+            item.setVodPlayFrom(super.detailContentVodPlayFrom(List.of(vodId)));
+            return Result.string(item);
         }
 
-         Vod item = new Vod();
-        return Result.string(item);
+
     }
 
 }
