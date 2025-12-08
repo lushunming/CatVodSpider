@@ -27,6 +27,7 @@ public class Introduce extends Cloud {
         String pic = "";
         String name = "UCToken";
         list.add(new Vod("UCToken", name, pic));
+        list.add(new Vod("https://pan.quark.cn/s/cb0e3473c3cb", "测试", pic));
 
         return Result.string(classes,list);
     }
@@ -53,9 +54,12 @@ public class Introduce extends Cloud {
         if (vodId.equals("UCToken")) {
             UCTokenHandler qrCodeHandler = new UCTokenHandler();
             qrCodeHandler.startUC_TOKENScan();
+        }else{
+            return super.detailContent(ids);
         }
 
-        return super.detailContent(List.of("https://pan.quark.cn/s/cb0e3473c3cb"));
+         Vod item = new Vod();
+        return Result.string(item);
     }
 
 }
