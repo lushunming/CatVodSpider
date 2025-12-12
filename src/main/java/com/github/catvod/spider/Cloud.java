@@ -154,6 +154,7 @@ public class Cloud extends Spider {
         for (CompletableFuture<String> future : futures) {
             urls.add(future.get());
         }
+        SpiderDebug.log("---urls：" + Json.toJson(urls));
         return StringUtils.join(urls, "$$$");
     }
 }
