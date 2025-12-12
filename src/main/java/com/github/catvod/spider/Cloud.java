@@ -123,37 +123,37 @@ public class Cloud extends Spider {
         return StringUtils.join(from, "$$$");
     }
 
-    protected String detailContentVodPlayUrl(List<String> shareLinks) throws Exception {
+    protected String detailContentVodPlayUrl(List<String> shareLinks) throws ExecutionException, InterruptedException {
         Collections.sort(shareLinks, Collections.reverseOrder());
         List<String> urls = new CopyOnWriteArrayList<>();
         ExecutorService service = Executors.newFixedThreadPool(4);
-        List<CompletableFuture> futures = new ArrayList<CompletableFuture>();
+        List<CompletableFuture<String>> futures = new ArrayList<>();
         for (String shareLink : shareLinks) {
-            futures.add(CompletableFuture.runAsync(() -> {
-                try {
-                    if (shareLink.matches(Util.patternUC)) {
-                        urls.add(uc.detailContentVodPlayUrl(List.of(shareLink)));
-                    } else if (shareLink.matches(Util.patternQuark)) {
-                        urls.add(quark.detailContentVodPlayUrl(List.of(shareLink)));
-                    }/* else if (shareLink.matches(Util.patternAli)) {
+            futures.add(CompletableFuture.supplyAsync(() -> {
+
+                String url = "";
+                if (shareLink.matches(Util.patternUC)) {
+                    url = uc.detailContentVodPlayUrl(List.of(shareLink));
+                } else if (shareLink.matches(Util.patternQuark)) {
+                    url = quark.detailContentVodPlayUrl(List.of(shareLink));
+                }/* else if (shareLink.matches(Util.patternAli)) {
                 urls.add(ali.detailContentVodPlayUrl(List.of(shareLink)));
             } */ else if (shareLink.contains(URL_CONTAIN)) {
-                        urls.add(tianYi.detailContentVodPlayUrl(List.of(shareLink)));
-                    } else if (shareLink.contains(YiDongYun.URL_START)) {
-                        urls.add(yiDongYun.detailContentVodPlayUrl(List.of(shareLink)));
-                    } else if (shareLink.contains(BaiDuPan.URL_START)) {
-                        urls.add(baiDuPan.detailContentVodPlayUrl(List.of(shareLink)));
-                    } else if (shareLink.matches(Pan123Api.regex)) {
-                        urls.add(pan123.detailContentVodPlayUrl(List.of(shareLink)));
-                    }
-                } catch (Exception e) {
-                    SpiderDebug.log(e);
+                    url = tianYi.detailContentVodPlayUrl(List.of(shareLink));
+                } else if (shareLink.contains(YiDongYun.URL_START)) {
+                    url = yiDongYun.detailContentVodPlayUrl(List.of(shareLink));
+                } else if (shareLink.contains(BaiDuPan.URL_START)) {
+                    url = baiDuPan.detailContentVodPlayUrl(List.of(shareLink));
+                } else if (shareLink.matches(Pan123Api.regex)) {
+                    url = pan123.detailContentVodPlayUrl(List.of(shareLink));
                 }
-
+                return url;
             }, service));
 
         }
-        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        for (CompletableFuture<String> future : futures) {
+            urls.add(future.get());
+        }
         return StringUtils.join(urls, "$$$");
     }
 }

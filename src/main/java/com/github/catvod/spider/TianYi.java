@@ -67,7 +67,7 @@ public class TianYi extends Spider {
      * @param ids share_link 集合
      * @return 詳情內容視頻播放地址
      */
-    public String detailContentVodPlayUrl(List<String> ids) throws Exception {
+    public String detailContentVodPlayUrl(List<String> ids) {
         List<String> playUrl = new ArrayList<>();
         for (String id : ids) {
             ShareData shareData = TianyiApi.get().getShareData(id, "");
@@ -75,6 +75,7 @@ public class TianYi extends Spider {
                 playUrl.add(TianyiApi.get().getVod(shareData).getVodPlayUrl());
             } catch (Exception e) {
                 SpiderDebug.log("获取播放地址出错:" + e.getMessage());
+                playUrl.add("");
             }
         }
         return StringUtils.join(playUrl, "$$$");

@@ -6,6 +6,7 @@ import com.github.catvod.bean.Result;
 import com.github.catvod.bean.Vod;
 import com.github.catvod.bean.quark.ShareData;
 import com.github.catvod.crawler.Spider;
+import com.github.catvod.crawler.SpiderDebug;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -67,12 +68,18 @@ public class Quark extends Spider {
      * @param ids share_link 集合
      * @return 詳情內容視頻播放地址
      */
-    public String detailContentVodPlayUrl(List<String> ids) throws Exception {
+    public String detailContentVodPlayUrl(List<String> ids) {
         List<String> playUrl = new ArrayList<>();
         for (String id : ids) {
-            ShareData shareData = QuarkApi.get().getShareData(id);
-            Vod vod = QuarkApi.get().getVod(shareData);
-            playUrl.add(vod == null ? "" : vod.getVodPlayUrl());
+            try {
+                ShareData shareData = QuarkApi.get().getShareData(id);
+                Vod vod = QuarkApi.get().getVod(shareData);
+                playUrl.add(vod == null ? "" : vod.getVodPlayUrl());
+            } catch (Exception e) {
+                playUrl.add("");
+                SpiderDebug.log("获取播放地址出错:" + e.getMessage());
+            }
+
         }
         return StringUtils.join(playUrl, "$$$");
     }

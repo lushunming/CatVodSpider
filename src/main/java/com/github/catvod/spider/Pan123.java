@@ -71,7 +71,7 @@ public class Pan123 extends Spider {
      * @param ids share_link 集合
      * @return 詳情內容視頻播放地址
      */
-    public String detailContentVodPlayUrl(List<String> ids) throws Exception {
+    public String detailContentVodPlayUrl(List<String> ids) {
         List<String> playUrl = new ArrayList<>();
         for (String id : ids) {
             @NotNull Map<@NotNull String, @NotNull String> shareData = Pan123Api.INSTANCE.getShareData(id);
@@ -79,6 +79,7 @@ public class Pan123 extends Spider {
                 playUrl.add(Pan123Api.INSTANCE.getVod(shareData.get("key"), shareData.get("sharePwd")).getVodPlayUrl());
             } catch (Exception e) {
                 SpiderDebug.log("获取播放地址出错:" + e.getMessage());
+                playUrl.add("");
             }
         }
         return Util.stringJoin("$$$", playUrl);

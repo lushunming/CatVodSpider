@@ -11,7 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -73,12 +72,17 @@ public class UC extends Spider {
      * @param ids share_link 集合
      * @return 詳情內容視頻播放地址
      */
-    public String detailContentVodPlayUrl(List<String> ids) throws Exception {
+    public String detailContentVodPlayUrl(List<String> ids) {
         List<String> playUrl = new ArrayList<>();
         for (String id : ids) {
-            ShareData shareData = UCApi.get().getShareData(id);
-            Vod vod=UCApi.get().getVod(shareData);
-            playUrl.add(vod==null?"":vod.getVodPlayUrl());
+            try {
+                ShareData shareData = UCApi.get().getShareData(id);
+                Vod vod = UCApi.get().getVod(shareData);
+                playUrl.add(vod == null ? "" : vod.getVodPlayUrl());
+            } catch (Exception e) {
+                SpiderDebug.log("获取播放地址出错:" + e.getMessage());
+                playUrl.add("");
+            }
         }
         return StringUtils.join(playUrl, "$$$");
     }
