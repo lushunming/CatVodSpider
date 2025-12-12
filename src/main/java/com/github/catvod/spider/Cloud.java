@@ -124,7 +124,7 @@ public class Cloud extends Spider {
     }
 
     protected String detailContentVodPlayUrl(List<String> shareLinks) throws ExecutionException, InterruptedException {
-        Collections.sort(shareLinks, Collections.reverseOrder());
+
         List<String> urls = new CopyOnWriteArrayList<>();
         ExecutorService service = Executors.newFixedThreadPool(4);
         List<CompletableFuture<String>> futures = new ArrayList<>();
