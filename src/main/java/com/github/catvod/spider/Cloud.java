@@ -36,18 +36,18 @@ public class Cloud extends Spider {
     public void init(String extend) throws Exception {
         JsonObject ext = StringUtils.isAllBlank(extend) ? new JsonObject() : Json.safeObject(extend);
         quark = new Quark();
-       /* ali = new Ali();*/
-       uc = new UC();
+        /* ali = new Ali();*/
+        uc = new UC();
         tianYi = new TianYi();
         yiDongYun = new YiDongYun();
         baiDuPan = new BaiDuPan();
         pan123 = new Pan123();
-       uc.init(ext.has("uccookie") ? ext.get("uccookie").getAsString() : "");
+        uc.init(ext.has("uccookie") ? ext.get("uccookie").getAsString() : "");
         quark.init(ext.has("cookie") ? ext.get("cookie").getAsString() : "");
-       // ali.init(ext.has("token") ? ext.get("token").getAsString() : "");
+        // ali.init(ext.has("token") ? ext.get("token").getAsString() : "");
         yiDongYun.init("");
-        baiDuPan.init( "");
-        pan123.init( "");
+        baiDuPan.init("");
+        pan123.init("");
         tianYi.init(ext.has("tianyicookie") ? ext.get("tianyicookie").getAsString() : "");
     }
 
@@ -55,11 +55,12 @@ public class Cloud extends Spider {
     public String detailContent(List<String> shareUrl) throws Exception {
        /* if (shareUrl.get(0).matches(Ali.pattern.pattern())) {
             return ali.detailContent(shareUrl);
-        } else*/ if (shareUrl.get(0).matches(patternQuark)) {
+        } else*/
+        if (shareUrl.get(0).matches(patternQuark)) {
             return quark.detailContent(shareUrl);
         } else if (shareUrl.get(0).matches(patternUC)) {
             return uc.detailContent(shareUrl);
-        }else if (shareUrl.get(0).contains(URL_CONTAIN)) {
+        } else if (shareUrl.get(0).contains(URL_CONTAIN)) {
             return tianYi.detailContent(shareUrl);
         } else if (shareUrl.get(0).contains(YiDongYun.URL_START)) {
             return yiDongYun.detailContent(shareUrl);
@@ -103,13 +104,12 @@ public class Cloud extends Spider {
                 if (shareLink.matches(patternUC) && uc != null) {
                     from.add(uc.detailContentVodPlayFrom(ImmutableList.of(shareLink), i));
                 } else if (shareLink.matches(patternQuark) && quark != null) {
-                    from.add(quark.detailContentVodPlayFrom(ImmutableList.of(shareLink),i));
+                    from.add(quark.detailContentVodPlayFrom(ImmutableList.of(shareLink), i));
                 } /*else if (shareLink.matches(Ali.pattern.pattern()) && ali != null) {
                     from.add(ali.detailContentVodPlayFrom(ImmutableList.of(shareLink)));
-                }  */
-                else if (shareLink.contains(URL_CONTAIN)) {
+                }  */ else if (shareLink.contains(URL_CONTAIN)) {
                     from.add(tianYi.detailContentVodPlayFrom(List.of(shareLink), i));
-                }else if (shareLink.contains(YiDongYun.URL_START)) {
+                } else if (shareLink.contains(YiDongYun.URL_START)) {
                     from.add(yiDongYun.detailContentVodPlayFrom(List.of(shareLink), i));
                 } else if (shareLink.contains(BaiDuPan.URL_START)) {
                     from.add(baiDuPan.detailContentVodPlayFrom(List.of(shareLink), i));
@@ -127,7 +127,7 @@ public class Cloud extends Spider {
         Collections.sort(shareLinks, Collections.reverseOrder());
         List<String> urls = new CopyOnWriteArrayList<>();
         ExecutorService service = Executors.newFixedThreadPool(4);
-        List<Future> futures = new ArrayList<>();
+        List<CompletableFuture> futures = new ArrayList<CompletableFuture>();
         for (String shareLink : shareLinks) {
             futures.add(CompletableFuture.runAsync(() -> {
                 try {
@@ -153,7 +153,7 @@ public class Cloud extends Spider {
             }, service));
 
         }
-        futures.wait();
-        return StringUtils.join( urls,"$$$");
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        return StringUtils.join(urls, "$$$");
     }
 }
