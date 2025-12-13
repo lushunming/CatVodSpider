@@ -166,7 +166,7 @@ class SeedHub : Cloud() {
         runBlocking {
             doc.select("ul.pan-links > li > a")
                 .filter {a-> a.attr("data-link").contains("quark")  }
-                .take(2).forEach { element ->
+                .take(4).forEach { element ->
 
                 jobs += CoroutineScope(Dispatchers.IO).launch {
                     var link = siteUrl + element.attr("href")
@@ -182,7 +182,7 @@ class SeedHub : Cloud() {
             }
             doc.select("ul.pan-links > li > a")
                 .filter {a-> a.attr("data-link").contains("baidu") }
-                .take(2).forEach { element ->
+                .take(4).forEach { element ->
 
                     jobs += CoroutineScope(Dispatchers.IO).launch {
                         var link = siteUrl + element.attr("href")
@@ -197,7 +197,7 @@ class SeedHub : Cloud() {
                     }
                 }
             doc.select("ul.pan-links > li > a")
-                .filter {a->  a.attr("data-link").contains("uc") }.take(2)
+                .filter {a->  a.attr("data-link").contains("uc") }.take(4)
                 .forEach { element ->
 
                     jobs += CoroutineScope(Dispatchers.IO).launch {

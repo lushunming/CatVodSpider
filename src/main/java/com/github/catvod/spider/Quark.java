@@ -74,9 +74,9 @@ public class Quark extends Spider {
             try {
                 ShareData shareData = QuarkApi.get().getShareData(id);
                 Vod vod = QuarkApi.get().getVod(shareData);
-                playUrl.add(vod == null ? " $$$ " : vod.getVodPlayUrl());
+                playUrl.add(vod == null ? "" : vod.getVodPlayUrl());
             } catch (Exception e) {
-                playUrl.add(" $$$ ");
+                playUrl.add("");
                 SpiderDebug.log("获取播放地址出错:" + e.getMessage());
             }
 
