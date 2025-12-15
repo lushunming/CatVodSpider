@@ -190,7 +190,7 @@ public class UCTokenHandler {
                 SpiderDebug.log("uc Token获取成功：" + tokenResData.get("data").getAsJsonObject().get("access_token").getAsString());
 
                 //保存到本地
-                cache.setTokenUser(User.objectFrom(tokenResData.get("data").getAsJsonObject().get("access_token").getAsString()));
+                cache.setTokenUser(User.objectFrom(Json.toJson(tokenResData.get("data").getAsJsonObject())));
 
                 //停止检验线程，关闭弹窗
                 stopService();
@@ -214,7 +214,7 @@ public class UCTokenHandler {
      * @return
      * @throws UnsupportedEncodingException
      */
-    private OkResult getAccessToken(String code, boolean refresh) throws UnsupportedEncodingException {
+    public OkResult getAccessToken(String code, boolean refresh) {
 
         String timestamp = String.valueOf(new Date().getTime() / 1000 + 1) + "000";
         String deviceID = StringUtils.isAllBlank((String) addition.get("DeviceID")) ? (String) addition.get("DeviceID") : generateDeviceID(timestamp);
@@ -236,12 +236,21 @@ public class UCTokenHandler {
         postData.put("build_device", "M2004J7AC");
         postData.put("build_product", "M2004J7AC");
         postData.put("device_gpu", "Adreno (TM) 550");
-        postData.put("activity_rect", URLEncoder.encode("{}", "UTF-8"));
-        postData.put("channel", (String) conf.get("channel"));
+        try {
+            postData.put("activity_rect", URLEncoder.encode("{}", "UTF-8"));
+        } catch (Exception e) {
+
+            SpiderDebug.log("encode出错" + e.getMessage());
+            return null;
+        }
+
+        postData.put("channel", conf.get("channel"));
         if (refresh) {
             postData.put("refresh_token", code);
+            SpiderDebug.log("开始刷新uc accesstoken");
         } else {
             postData.put("code", code);
+            SpiderDebug.log("开始获取uc accesstoken");
         }
 
 

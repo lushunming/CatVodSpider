@@ -35,7 +35,7 @@ public class UCApi {
     private String cookieToken = "";
     private String ckey = "";
     private Map<String, Map<String, Object>> shareTokenCache = new HashMap<>();
-    private String pr = "pr=UCBrowser&fr=pc&sys=darwin&ve=1.8.6&ut="+URLEncoder.encode("OWx0yJcb9kA5lz2ebwokWQjT8HKm9nE6dxxtFxSibJu9Tw==");
+    private String pr = "pr=UCBrowser&fr=pc&sys=darwin&ve=1.8.6&ut=" + URLEncoder.encode("OWx0yJcb9kA5lz2ebwokWQjT8HKm9nE6dxxtFxSibJu9Tw==");
     private List<String> subtitleExts = Arrays.asList(".srt", ".ass", ".scc", ".stl", ".ttml");
     private Map<String, String> saveFileIdCaches = new HashMap<>();
     private String saveDirId = null;
@@ -76,8 +76,13 @@ public class UCApi {
         qrCodeHandler = new UCTokenHandler();
         cache = Cache.objectFrom(Path.read(getCache()));
         tokenCache = Cache.objectFrom(Path.read(qrCodeHandler.getCache()));
-
-        this.cookieToken = tokenCache.getUser().getCookie();
+        String tokenCacheJson = tokenCache.getUser().getCookie();
+        if (StringUtils.isNoneBlank(tokenCacheJson)) {
+            this.cookieToken = Json.safeObject(tokenCacheJson).getAsJsonObject("access_token").getAsString();
+            
+            //刷新token
+            qrCodeHandler.getAccessToken(Json.safeObject(tokenCacheJson).getAsJsonObject("refresh_token").getAsString(), true);
+        }
         SpiderDebug.log("UC初始化获取到的cookieToken: " + cookieToken);
     }
 
