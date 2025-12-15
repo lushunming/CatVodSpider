@@ -78,13 +78,15 @@ public class UCApi {
         tokenCache = Cache.objectFrom(Path.read(qrCodeHandler.getCache()));
         String tokenCacheJson = tokenCache.getUser().getCookie();
         if (StringUtils.isNoneBlank(tokenCacheJson)) {
-            this.cookieToken = Json.safeObject(tokenCacheJson).getAsJsonObject("access_token").getAsString();
-            
+            this.cookieToken = Json.safeObject(tokenCacheJson).getAsJsonObject().get("access_token").getAsString();
+
             //刷新token
-            qrCodeHandler.getAccessToken(Json.safeObject(tokenCacheJson).getAsJsonObject("refresh_token").getAsString(), true);
+            qrCodeHandler.refreshToken(Json.safeObject(tokenCacheJson).getAsJsonObject().get("refresh_token").getAsString());
+
+            SpiderDebug.log("UC初始化获取到的cookieToken: " + cookieToken);
         }
-        SpiderDebug.log("UC初始化获取到的cookieToken: " + cookieToken);
     }
+
 
     private static class Loader {
         static volatile UCApi INSTANCE = new UCApi();
