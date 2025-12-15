@@ -178,25 +178,7 @@ public class UCTokenHandler {
             JsonObject resData = Json.safeObject(okResult.getBody());
             String code = resData.get("code").getAsString();
 
-            pathname = "/token";
-            reqId = generateReqId(deviceID, timestamp);
-
-            Map<String, String> postData = new HashMap<>();
-            postData.put("req_id", reqId);
-            postData.put("app_ver", (String) conf.get("appVer"));
-            postData.put("device_id", deviceID);
-            postData.put("device_brand", "Xiaomi");
-            postData.put("platform", "tv");
-            postData.put("device_name", "M2004J7AC");
-            postData.put("device_model", "M2004J7AC");
-            postData.put("build_device", "M2004J7AC");
-            postData.put("build_product", "M2004J7AC");
-            postData.put("device_gpu", "Adreno (TM) 550");
-            postData.put("activity_rect", URLEncoder.encode("{}", "UTF-8"));
-            postData.put("channel", (String) conf.get("channel"));
-            postData.put("code", code);
-
-            OkResult okResult1 = OkHttp.post(conf.get("codeApi") + pathname, Json.toJson(postData), headers);
+            OkResult okResult1 = getAccessToken(code, false);
 
 
             if (okResult1.getCode() == 200) {
@@ -222,6 +204,48 @@ public class UCTokenHandler {
 
         platformStates.remove("UC_TOKEN");
         return Map.of("status", "EXPIRED");
+    }
+
+    /**
+     * 获取访问令牌或者刷新令牌
+     *
+     * @param code
+     * @param refresh 是否刷新，如果是，code为refresh_token
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    private OkResult getAccessToken(String code, boolean refresh) throws UnsupportedEncodingException {
+
+        String timestamp = String.valueOf(new Date().getTime() / 1000 + 1) + "000";
+        String deviceID = StringUtils.isAllBlank((String) addition.get("DeviceID")) ? (String) addition.get("DeviceID") : generateDeviceID(timestamp);
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Accept", "application/json, text/plain, */*");
+        headers.put("User-Agent", "Mozilla/5.0 (Linux; U; Android 13; zh-cn; M2004J7AC Build/UKQ1.231108.001) AppleWebKit/533.1 (KHTML, like Gecko) Mobile Safari/533.1");
+
+        String pathname = "/token";
+        String reqId = generateReqId(deviceID, timestamp);
+
+        Map<String, String> postData = new HashMap<>();
+        postData.put("req_id", reqId);
+        postData.put("app_ver", (String) conf.get("appVer"));
+        postData.put("device_id", deviceID);
+        postData.put("device_brand", "Xiaomi");
+        postData.put("platform", "tv");
+        postData.put("device_name", "M2004J7AC");
+        postData.put("device_model", "M2004J7AC");
+        postData.put("build_device", "M2004J7AC");
+        postData.put("build_product", "M2004J7AC");
+        postData.put("device_gpu", "Adreno (TM) 550");
+        postData.put("activity_rect", URLEncoder.encode("{}", "UTF-8"));
+        postData.put("channel", (String) conf.get("channel"));
+        if (refresh) {
+            postData.put("refresh_token", code);
+        } else {
+            postData.put("code", code);
+        }
+
+
+        return OkHttp.post(conf.get("codeApi") + pathname, Json.toJson(postData), headers);
     }
 
     public String download(String token, String saveFileId) throws Exception {
