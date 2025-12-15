@@ -1,6 +1,7 @@
 package com.github.catvod.api;
 
 
+import cn.hutool.core.codec.Base64Decoder;
 import com.github.catvod.bean.tianyi.Cache;
 import com.github.catvod.bean.tianyi.User;
 import com.github.catvod.crawler.SpiderDebug;
@@ -325,7 +326,7 @@ public class TianYiHandler {
 
     private PublicKey parsePublicKey(String pubKey) throws Exception {
 
-        byte[] decoded = Util.base64Decode(pubKey).getBytes(StandardCharsets.UTF_8);
+        byte[] decoded = Base64Decoder.decode(pubKey);
         X509EncodedKeySpec spec = new X509EncodedKeySpec(decoded);
         return KeyFactory.getInstance("RSA").generatePublic(spec);
 
