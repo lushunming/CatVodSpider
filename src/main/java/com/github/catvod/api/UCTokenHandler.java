@@ -413,8 +413,9 @@ public class UCTokenHandler {
      * 刷新refresh token
      *
      * @param refreshToken 刷新token
+     * @return 返回accessToken
      */
-    public void refreshToken(String refreshToken) {
+    public String refreshToken(String refreshToken) {
         OkResult okResult1 = this.getAccessToken(refreshToken, true);
 
         if (okResult1.getCode() == 200) {
@@ -422,6 +423,8 @@ public class UCTokenHandler {
             SpiderDebug.log("uc Token刷新成功：" + tokenResData.get("data").getAsJsonObject().get("access_token").getAsString());
             //保存到本地
             cache.setTokenUser(User.objectFrom(Json.toJson(tokenResData.get("data").getAsJsonObject())));
+            return tokenResData.get("data").getAsJsonObject().get("access_token").getAsString();
         }
+        return "";
     }
 }
