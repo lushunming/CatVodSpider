@@ -534,7 +534,7 @@ public class QuarkApi {
             for (Map<String, Object> stringStringMap : ((List<Map<String, Object>>) ((Map<String, Object>) listData.get("data")).get("list"))) {
                 list.add((String) stringStringMap.get("fid"));
             }
-            api("file/delete?" + this.pr, Collections.emptyMap(), ImmutableMap.of("action_type", "2", "filelist", Json.toJson(list), "exclude_fids", ""), 0, "POST");
+            api("file/delete?" + this.pr + "&uc_param_str=", Collections.emptyMap(), Map.of("action_type", 2, "filelist", list, "exclude_fids", Collections.emptyList()), 0, "POST");
         }
     }
 
