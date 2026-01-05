@@ -188,7 +188,10 @@ public class UCApi {
         List<String> playUrl = new ArrayList<>();
 
         if (files.isEmpty()) {
-            return null;
+            SpiderDebug.log("Files list is empty!");
+            Notify.show("该分享已被取消，无法访问");
+            throw new RuntimeException("该分享已被取消，无法访问");
+
         }
         for (int i = 0; i < files.get(files.size() - 1).getShareIndex(); i++) {
             for (int index = 0; index < playFromtmp.size(); index++) {

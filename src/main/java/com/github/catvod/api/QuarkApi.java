@@ -164,7 +164,8 @@ public class QuarkApi {
 
         if (files.isEmpty()) {
             SpiderDebug.log("Files list is empty!");
-            return null;
+            Notify.show("该分享已被取消，无法访问");
+            throw new RuntimeException("该分享已被取消，无法访问");
         }
         for (int i = 0; i < files.get(files.size() - 1).getShareIndex(); i++) {
             for (int index = 0; index < playFromtmp.size(); index++) {
@@ -204,8 +205,6 @@ public class QuarkApi {
             playUrl = this.getLiveTranscoding(shareId, stoken, fileId, fileToken, flag);
             return Result.get().url(proxyVideoUrl(playUrl, header)).octet().header(header).string();
         }
-
-
 
 
     }
@@ -680,7 +679,7 @@ public class QuarkApi {
             if (saveFileId == null) return null;
             this.saveFileIdCaches.put(fileId, saveFileId);
         }
-        Map<String, Object> down = Json.parseSafe(api("file/download?" + this.pr + "&uc_param_str=", Collections.emptyMap(), ImmutableMap.of("fids",  List.of(this.saveFileIdCaches.get(fileId))), 0, "POST"), Map.class);
+        Map<String, Object> down = Json.parseSafe(api("file/download?" + this.pr + "&uc_param_str=", Collections.emptyMap(), ImmutableMap.of("fids", List.of(this.saveFileIdCaches.get(fileId))), 0, "POST"), Map.class);
 
         System.out.println("[DEBUG] download JSON = " + down);
 

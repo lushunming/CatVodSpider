@@ -127,9 +127,9 @@ public class TianyiApi {
             JsonArray listData = listFile(1, shareData, files, subs, shareData.getShareId(), shareData.getFolderId(), 1);
 
         } catch (Exception e) {
-            SpiderDebug.log("资源已取消:" + e.getMessage());
-            Notify.show("资源已取消");
-            throw new RuntimeException(e);
+            SpiderDebug.log("Files list is empty!");
+            Notify.show("该分享已被取消，无法访问");
+            throw new RuntimeException("该分享已被取消，无法访问");
         }
 
 
@@ -140,7 +140,10 @@ public class TianyiApi {
         List<String> playUrl = new ArrayList<>();
 
         if (files.isEmpty()) {
-            return null;
+            SpiderDebug.log("Files list is empty!");
+            Notify.show("该分享已被取消，无法访问");
+            throw new RuntimeException("该分享已被取消，无法访问");
+
         }
 
         for (int index = 0; index < playFromtmp.size(); index++) {
