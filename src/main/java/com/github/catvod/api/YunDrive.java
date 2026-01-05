@@ -66,7 +66,7 @@ public class YunDrive {
         byte[] combined = cn.hutool.core.codec.Base64.decode(data);
         byte[] ivBytes = Arrays.copyOfRange(combined, 0, 16);
         byte[] encrypted = Arrays.copyOfRange(combined, 16, combined.length);
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(ivBytes));
         return new String(cipher.doFinal(encrypted), Charset.defaultCharset());
     }
