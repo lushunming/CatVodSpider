@@ -3,8 +3,10 @@ package com.github.catvod.api
 import com.github.catvod.bean.Result
 import com.github.catvod.bean.Vod
 import com.github.catvod.bean.Vod.VodPlayBuilder
+import com.github.catvod.crawler.SpiderDebug
 import com.github.catvod.net.OkHttp
 import com.github.catvod.utils.Json
+import com.github.catvod.utils.Notify
 import com.github.catvod.utils.ProxyServer.buildProxyUrl
 import com.github.catvod.utils.Util
 import com.github.catvod.utils.Util.MEDIA
@@ -75,7 +77,11 @@ object BaiduDrive {
             if (urlInfo.containsKey("error")) return null
 
             val tokenInfo = getShareToken(urlInfo)
-            if (tokenInfo?.containsKey("error") == true) return null
+            if (tokenInfo?.containsKey("error") == true) {
+                SpiderDebug.log("该分享已被取消，无法访问")
+                Notify.show("该分享已被取消，无法访问")
+                throw RuntimeException("该分享已被取消，无法访问")
+            }
 
             getAllVideos(tokenInfo!!)
         } catch (e: Exception) {
@@ -116,6 +122,9 @@ object BaiduDrive {
 
         // if ("error" in response) return response
         val json = Json.safeObject(response.body)
+        if(json.get("errno").asInt !=0){
+            return mapOf("error" to "获取randsk失败")
+        }
 
 
         val randsk = json.asJsonObject.get("randsk").asString ?: return mapOf("error" to "获取randsk失败")

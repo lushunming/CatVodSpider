@@ -8,7 +8,6 @@ import com.github.catvod.bean.tianyi.ShareData;
 import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.net.OkHttp;
 import com.github.catvod.net.OkResult;
-import com.github.catvod.spider.Init;
 import com.github.catvod.utils.*;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -58,7 +57,7 @@ public class TianyiApi {
         }
         if (!isCookieValid()) {
             SpiderDebug.log("CookieJar不合法，请重新登录");
-           // tianYiHandler.startScan();
+            // tianYiHandler.startScan();
         }
         getUserSizeInfo();
         this.sessionKey = getUserBriefInfo();
@@ -110,7 +109,7 @@ public class TianyiApi {
     private TianyiApi() {
 
 
-        tianYiHandler =  TianYiHandler.get();
+        tianYiHandler = TianYiHandler.get();
         tianYiHandler.init();
         cookieJar = tianYiHandler.getCookieJar();
     }
@@ -302,14 +301,22 @@ public class TianyiApi {
              *   "shareType" : 1.0
              * }
              */
-            if (Objects.nonNull(shareToken.get("res_code")) && shareToken.get("res_code").getAsInt() == 0) {
-                shareData.setShareId(shareToken.get("shareId").getAsString());
-                shareData.setShareMode(shareToken.get("shareMode").getAsInt());
-                shareData.setFolder(shareToken.get("isFolder").getAsBoolean());
-                shareData.setFileId(shareToken.get("fileId").getAsString());
-                shareData.setFolderId(shareToken.get("fileId").getAsString());
 
-                this.shareTokenCache.put(shareData.getShareId(), shareToken);
+
+            try {
+                if (Objects.nonNull(shareToken.get("res_code")) && shareToken.get("res_code").getAsInt() == 0) {
+                    shareData.setShareId(shareToken.get("shareId").getAsString());
+                    shareData.setShareMode(shareToken.get("shareMode").getAsInt());
+                    shareData.setFolder(shareToken.get("isFolder").getAsBoolean());
+                    shareData.setFileId(shareToken.get("fileId").getAsString());
+                    shareData.setFolderId(shareToken.get("fileId").getAsString());
+
+                    this.shareTokenCache.put(shareData.getShareId(), shareToken);
+                }
+            } catch (Exception e) {
+                SpiderDebug.log("该分享已被取消，无法访问");
+                Notify.show("该分享已被取消，无法访问");
+                throw new RuntimeException("该分享已被取消，无法访问");
             }
         }
     }

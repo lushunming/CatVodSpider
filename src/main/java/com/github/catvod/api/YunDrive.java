@@ -51,7 +51,7 @@ public class YunDrive {
     }
 
     private String encrypt(String data) throws GeneralSecurityException {
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         byte[] ivBytes = new byte[16];
         new SecureRandom().nextBytes(ivBytes);
         cipher.init(Cipher.ENCRYPT_MODE, secretKey, new IvParameterSpec(ivBytes));
