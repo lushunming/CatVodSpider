@@ -10,7 +10,6 @@ import com.github.catvod.utils.ProxyServer;
 import com.github.catvod.utils.Util;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.crypto.Cipher;
@@ -59,12 +58,12 @@ public class YunDrive {
         byte[] combined = new byte[ivBytes.length + encrypted.length];
         System.arraycopy(ivBytes, 0, combined, 0, ivBytes.length);
         System.arraycopy(encrypted, 0, combined, ivBytes.length, encrypted.length);
-        return Base64.encodeBase64String(combined);
+        return cn.hutool.core.codec.Base64.encode(combined);
 
     }
 
     private String decrypt(String data) throws GeneralSecurityException {
-        byte[] combined = Base64.decodeBase64(data);
+        byte[] combined = cn.hutool.core.codec.Base64.decode(data);
         byte[] ivBytes = Arrays.copyOfRange(combined, 0, 16);
         byte[] encrypted = Arrays.copyOfRange(combined, 16, combined.length);
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
