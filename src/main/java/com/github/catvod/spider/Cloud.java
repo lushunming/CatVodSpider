@@ -133,6 +133,7 @@ public class Cloud extends Spider {
             resultMap.clear();
             List<String> urls = new ArrayList<>();
             List<String> froms = new ArrayList<>();
+            Map<String, String> map = new ConcurrentHashMap<>(shareLinks.size());
 
 
             CountDownLatch latch = new CountDownLatch(shareLinks.size());
@@ -167,16 +168,21 @@ public class Cloud extends Spider {
                     }
                     //只有连接不为空才放入进去
                     if (StringUtils.isNoneBlank(url)) {
-                        urls.add(url);
-                        froms.add(from);
+
+                        map.put(url, from);
                     }
                     latch.countDown();
 
                 });
 
+
             }
 
             latch.await();
+            map.forEach((k, v) -> {
+                urls.add(k);
+                froms.add(v);
+            });
 
             resultMap.put(Util.MD5(Json.toJson(shareLinks)), new ImmutablePair<>(urls, froms));
 
