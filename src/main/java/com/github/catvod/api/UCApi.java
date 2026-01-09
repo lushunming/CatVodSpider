@@ -182,9 +182,9 @@ public class UCApi {
         List<String> playFrom = UCApi.get().getPlayFormatList();
         List<String> playFromtmp = new ArrayList<>();
         playFromtmp.add("uc原画");
-        for (String s : playFrom) {
+       /* for (String s : playFrom) {
             playFromtmp.add("uc" + s);
-        }
+        }*/
         List<String> playUrl = new ArrayList<>();
 
         if (files.isEmpty()) {
