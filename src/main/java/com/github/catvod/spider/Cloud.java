@@ -14,10 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 import static com.github.catvod.api.TianyiApi.URL_CONTAIN;
 import static com.github.catvod.spider.Quark.patternQuark;
@@ -137,12 +134,13 @@ public class Cloud extends Spider {
             List<String> urls = new ArrayList<>();
             List<String> froms = new ArrayList<>();
 
-            List<Future<ImmutablePair<String, String>>> futures = new ArrayList<>();
+
+            CountDownLatch latch = new CountDownLatch(shareLinks.size());
             int i = 0;
             for (String shareLink : shareLinks) {
 
                 int finalI = ++i;
-                futures.add(service.submit(() -> {
+                service.submit(() -> {
 
                     String url = "";
                     String from = "";
@@ -167,19 +165,19 @@ public class Cloud extends Spider {
                         url = pan123.detailContentVodPlayUrl(List.of(shareLink));
                         from = pan123.detailContentVodPlayFrom(List.of(shareLink), finalI);
                     }
-                    return new ImmutablePair<>(url, from);
-                }));
+                    //只有连接不为空才放入进去
+                    if (StringUtils.isNoneBlank(url)) {
+                        urls.add(url);
+                        froms.add(from);
+                    }
+                    latch.countDown();
+
+                });
 
             }
 
-            for (Future<ImmutablePair<String, String>> future : futures) {
-                //只有连接不为空才放入进去
-                if (StringUtils.isNoneBlank(future.get().left)) {
-                    urls.add(future.get().left);
-                    froms.add(future.get().right);
-                }
+            latch.await();
 
-            }
             resultMap.put(Util.MD5(Json.toJson(shareLinks)), new ImmutablePair<>(urls, froms));
 
             SpiderDebug.log("---urls：" + Json.toJson(urls));
