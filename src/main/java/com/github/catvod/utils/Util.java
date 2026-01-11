@@ -436,7 +436,7 @@ public class Util {
 
     public static String base64Encode(String str) {
         if (str == null) return "";
-        return new String(Base64.getEncoder().encode(str.getBytes()));
+        return new String(Base64.getEncoder().encode(str.getBytes(Charset.defaultCharset())));
     }
 
 
