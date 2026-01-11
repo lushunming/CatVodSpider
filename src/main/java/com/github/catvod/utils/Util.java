@@ -436,7 +436,7 @@ public class Util {
 
     public static String base64Encode(String str) {
         if (str == null) return "";
-        return new String(Base64.getEncoder().encode(str.getBytes(Charset.defaultCharset())));
+        return new String(Base64.getEncoder().encode(str.getBytes(StandardCharsets.UTF_8)));
     }
 
 
@@ -446,7 +446,7 @@ public class Util {
 
     public static String base64Decode(String str) {
         if (StringUtils.isBlank(str)) return "";
-        return new String(Base64.getDecoder().decode(str.getBytes(Charset.defaultCharset())));
+        return new String(Base64.getDecoder().decode(str.getBytes(StandardCharsets.UTF_8)));
     }
 
     public static String stringJoin(String separate, Collection<String> list) {
