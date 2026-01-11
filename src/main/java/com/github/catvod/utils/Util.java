@@ -446,7 +446,7 @@ public class Util {
 
     public static String base64Decode(String str) {
         if (StringUtils.isBlank(str)) return "";
-        return new String(Base64.getDecoder().decode(str));
+        return new String(Base64.getDecoder().decode(str.getBytes(Charset.defaultCharset())));
     }
 
     public static String stringJoin(String separate, Collection<String> list) {
