@@ -59,7 +59,7 @@ public class QuarkApi {
             }
 
         }
-        if (Util.getExt(url).contains("m3u8")) {
+        if (StringUtils.isNotBlank( url)&&Util.getExt(url).contains("m3u8")) {
             return getM3u8(url, header);
         }
         return ProxyVideo.proxy(url, header);
