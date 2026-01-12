@@ -119,6 +119,6 @@ public class Proxy extends Spider {
         urlMap.put(key, url);
         headerMap.put(key, header);
 
-        return getProxyUrl() + "?do=" + name + "&key=" + key;
+        return getProxyUrl() + "?do=" + name + "&key=" + key+"&type="+type;
     }
 }
