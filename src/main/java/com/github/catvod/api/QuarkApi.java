@@ -84,7 +84,8 @@ public class QuarkApi {
         for (String oneLine : m3u8Arr) {
             String thisOne = oneLine;
             if (oneLine.contains(".ts")) {
-                thisOne = proxyVideoUrl(site + thisOne, header);
+              //  thisOne = proxyVideoUrl(site + thisOne, header);
+                thisOne = Proxy.buildProxyUrl("quark", site + thisOne, header, "video");
                 mediaId++;
             }
             listM3u8.add(thisOne);
