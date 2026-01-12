@@ -12,6 +12,7 @@ import com.github.catvod.spider.Proxy;
 import com.github.catvod.utils.*;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
@@ -45,10 +46,8 @@ public class QuarkApi {
     private String serviceTicket;
 
     public Object[] proxyVideo(Map<String, String> params) throws Exception {
-        String id = params.get("key");
-
-        String url = Proxy.urlMap.get(id);
-        Map header = Proxy.headerMap.get(id);
+        String url = Util.base64Decode(params.get("url"));
+        Map header = new Gson().fromJson(Util.base64Decode(params.get("header")), Map.class);
         if (header == null) header = new HashMap<>();
         List<String> arr = ImmutableList.of("Range", "Accept", "Accept-Encoding", "Accept-Language", "Cookie", "Origin", "Referer", "Sec-Ch-Ua", "Sec-Ch-Ua-Mobile", "Sec-Ch-Ua-Platform", "Sec-Fetch-Dest", "Sec-Fetch-Mode", "Sec-Fetch-Site", "User-Agent");
         for (String key : params.keySet()) {
@@ -59,7 +58,7 @@ public class QuarkApi {
             }
 
         }
-        if (StringUtils.isNotBlank( url)&&Util.getExt(url).contains("m3u8")) {
+        if (Util.getExt(url).contains("m3u8")) {
             return getM3u8(url, header);
         }
         return ProxyVideo.proxy(url, header);
@@ -84,8 +83,7 @@ public class QuarkApi {
         for (String oneLine : m3u8Arr) {
             String thisOne = oneLine;
             if (oneLine.contains(".ts")) {
-              //  thisOne = proxyVideoUrl(site + thisOne, header);
-                thisOne = Proxy.buildProxyUrl("quark", site + thisOne, header, "video");
+                thisOne = proxyVideoUrl(site + thisOne, header);
                 mediaId++;
             }
             listM3u8.add(thisOne);
@@ -205,10 +203,7 @@ public class QuarkApi {
             return Result.get().url(ProxyServer.INSTANCE.buildProxyUrl(playUrl, header)).octet().header(header).string();
         } else {
             playUrl = this.getLiveTranscoding(shareId, stoken, fileId, fileToken, flag);
-            if (playUrl != null && Util.getExt(playUrl).contains("m3u8")) {
-                return Result.get().url(Proxy.buildProxyUrl("quark", playUrl, header, "video")).octet().header(header).string();
-            }
-            return Result.get().url(ProxyServer.INSTANCE.buildProxyUrl(playUrl, header)).octet().header(header).string();
+            return Result.get().url(proxyVideoUrl(playUrl, header)).octet().header(header).string();
         }
 
 
