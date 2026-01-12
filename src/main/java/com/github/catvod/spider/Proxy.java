@@ -109,9 +109,10 @@ public class Proxy extends Spider {
      * @param name   代理do参数
      * @param url    链接
      * @param header header
+     * @param type   video or sub  视频还是字幕
      * @return
      */
-    public static String buildProxyUrl(String name, String url, Map<String, String> header) {
+    public static String buildProxyUrl(String name, String url, Map<String, String> header, String type) {
         urlMap.clear();
         headerMap.clear();
         String key = Util.MD5(url);
