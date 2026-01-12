@@ -3,7 +3,10 @@ package com.github.catvod.spider;
 import com.github.catvod.crawler.Spider;
 import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.net.OkHttp;
-import com.github.catvod.utils.*;
+import com.github.catvod.utils.Json;
+import com.github.catvod.utils.MultiThread;
+import com.github.catvod.utils.ProxyVideo;
+import com.github.catvod.utils.Util;
 import org.apache.http.HttpHeaders;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,6 +19,8 @@ import java.util.Map;
 public class Proxy extends Spider {
 
     private static int port = -1;
+    public static Map<String, String> urlMap = new HashMap<String, String>();
+    public static Map<String, Map<String, String>> headerMap = new HashMap<String, Map<String, String>>();
 
     public static Object[] proxy(Map<String, String> params) throws Exception {
         switch (params.get("do")) {
@@ -34,7 +39,7 @@ public class Proxy extends Spider {
             case "webdav":
 //                return WebDAV.vod(params);
             case "bd":
-                 return BD.Companion.proxyLocal(params);
+                return BD.Companion.proxyLocal(params);
             case "proxy":
                 return commonProxy(params);
             case "advanceProxy":
@@ -45,26 +50,27 @@ public class Proxy extends Spider {
     }
 
     private static final List<String> keys = Arrays.asList("url", "header", "do", HttpHeaders.USER_AGENT, HttpHeaders.CONTENT_TYPE, HttpHeaders.HOST);
+
     private static Object[] commonProxy(Map<String, String> params) throws Exception {
         String url = Util.base64Decode(params.get("url"));
-        Map<String,String> header = Json.parseSafe(Util.base64Decode(params.get("header")), Map.class);
+        Map<String, String> header = Json.parseSafe(Util.base64Decode(params.get("header")), Map.class);
         header = getHeader(params, header);
         return new Object[]{ProxyVideo.proxyResponse(url, header)};
     }
 
     private static Object[] advanceProxy(Map<String, String> params) throws Exception {
         String url = Util.base64Decode(params.get("url"));
-        Map<String,String> header = Json.parseSafe(Util.base64Decode(params.get("header")), Map.class);
-        Map<String,String> respHeader = Json.parseSafe(Util.base64Decode(params.get("respHeader")), Map.class);
+        Map<String, String> header = Json.parseSafe(Util.base64Decode(params.get("header")), Map.class);
+        Map<String, String> respHeader = Json.parseSafe(Util.base64Decode(params.get("respHeader")), Map.class);
         header = getHeader(params, header);
         respHeader = getHeader(params, respHeader);
         return ProxyVideo.proxy(url, header, respHeader);
     }
 
     private static @NotNull Map<String, String> getHeader(Map<String, String> params, Map<String, String> header) {
-        if(header == null) header = new HashMap<>();
+        if (header == null) header = new HashMap<>();
         for (Map.Entry<String, String> entry : params.entrySet()) {
-            if(!keys.contains(entry.getKey())) header.put(entry.getKey(), entry.getValue());
+            if (!keys.contains(entry.getKey())) header.put(entry.getKey(), entry.getValue());
         }
         return header;
     }
@@ -95,5 +101,23 @@ public class Proxy extends Spider {
 
     public static String getProxyUrl() {
         return getHostPort() + "/proxy";
+    }
+
+    /**
+     * 构建代理链接
+     *
+     * @param name   代理do参数
+     * @param url    链接
+     * @param header header
+     * @return
+     */
+    public static String buildProxyUrl(String name, String url, Map<String, String> header) {
+        urlMap.clear();
+        headerMap.clear();
+        String key = Util.MD5(url);
+        urlMap.put(key, url);
+        headerMap.put(key, header);
+
+        return getProxyUrl() + "?do=" + name + "&key=" + key;
     }
 }
