@@ -204,7 +204,10 @@ public class QuarkApi {
             return Result.get().url(ProxyServer.INSTANCE.buildProxyUrl(playUrl, header)).octet().header(header).string();
         } else {
             playUrl = this.getLiveTranscoding(shareId, stoken, fileId, fileToken, flag);
-            return Result.get().url(Proxy.buildProxyUrl("quark", playUrl, header,"video")).octet().header(header).string();
+            if (playUrl != null && Util.getExt(playUrl).contains("m3u8")) {
+                return Result.get().url(Proxy.buildProxyUrl("quark", playUrl, header, "video")).octet().header(header).string();
+            }
+            return Result.get().url(ProxyServer.INSTANCE.buildProxyUrl(playUrl, header)).octet().header(header).string();
         }
 
 
