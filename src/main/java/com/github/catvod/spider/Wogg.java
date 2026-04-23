@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
  */
 public class Wogg extends Cloud {
 
-    private final String siteUrl = "http://wogg.xxooo.cf/";
+    private final String siteUrl = "http://woggpan.333232.xyz/";
     private final Pattern regexCategory = Pattern.compile("/vodtype/(\\w+).html");
     private final Pattern regexPageTotal = Pattern.compile("\\$\\(\"\\.mac_total\"\\)\\.text\\('(\\d+)'\\);");
 
