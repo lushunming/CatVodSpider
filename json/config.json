@@ -1,5 +1,5 @@
 {
-  "spider": "../jar/spider.jar;md5;4542f4c7c638d024b8258c9aab2d0c3a",
+  "spider": "../jar/spider.jar;md5;9d5c12bfed7c5f47de88c4732d0deecb",
   "sites": [
     {
       "key": "Intruduce",
@@ -100,8 +100,9 @@
       "filterable": 0,
       "ext": {
         "api_urls": [
-          "https://api.jkai.de/api/search",
-          "https://so.566987.xyz/api/search"
+          "https://so.252035.xyz/api/search",
+          "https://s.panhunt.com/api/search",
+          "https://www.pansd.icu/api/search"
         ],
         "sources": [
           "UC"
