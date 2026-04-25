@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
  */
 public class DuoDuo extends Cloud {
 
-    private String siteUrl = "https://tv.yydsys.top/";
+    private String siteUrl = "http://xsayang.fun:12512/";
 
     private final Pattern regexCategory = Pattern.compile("index.php/vod/type/id/(\\w+).html");
     private final Pattern regexPageTotal = Pattern.compile("\\$\\(\"\\.mac_total\"\\)\\.text\\('(\\d+)'\\);");
