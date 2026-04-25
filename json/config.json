@@ -1,5 +1,5 @@
 {
-  "spider": "../jar/spider.jar;md5;3fe1a7d3127de432bdd2bae615966d8a",
+  "spider": "../jar/spider.jar;md5;b76fc7399732f293dc95486ae82ed3a6",
   "sites": [
     {
       "key": "Intruduce",
@@ -10,13 +10,13 @@
       "changeable": 0
     },
     {
-      "key": "多多",
-      "name": "多多",
+      "key": "DuoDuo",
+      "name": "多多视频",
       "type": 3,
       "api": "csp_DuoDuo",
       "searchable": 1,
       "changeable": 1,
-      "ext": {}
+      "ext": "{\"site\": [\"http://xsayang.fun:12512/\",\"https://tv.yydsys.top/\"]}"
     },
     {
       "key": "SeedHub",
