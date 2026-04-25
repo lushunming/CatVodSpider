@@ -1,5 +1,5 @@
 {
-  "spider": "../jar/spider.jar;md5;9d5c12bfed7c5f47de88c4732d0deecb",
+  "spider": "../jar/spider.jar;md5;fb56e9cc34dbc7dfe00bbe5496de0136",
   "sites": [
     {
       "key": "Intruduce",
@@ -10,10 +10,10 @@
       "changeable": 0
     },
     {
-      "key": "玩偶",
-      "name": "玩偶",
+      "key": "多多",
+      "name": "多多",
       "type": 3,
-      "api": "csp_Wogg",
+      "api": "csp_DuoDuo",
       "searchable": 1,
       "changeable": 1,
       "ext": {}
