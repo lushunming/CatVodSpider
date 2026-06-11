@@ -2,6 +2,7 @@ package com.github.catvod.spider;
 
 import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.utils.ProxyServer;
+import com.github.catvod.utils.ProxyServerIns;
 import com.github.catvod.utils.Util;
 
 import javax.swing.*;
@@ -35,8 +36,8 @@ public class Init {
         SpiderDebug.log("自定義爬蟲代碼載入成功！");
         Util.notify("配置加载成功");
         execute(() -> {
-            ProxyServer.INSTANCE.stop();
-            ProxyServer.INSTANCE.start();
+            ProxyServerIns.INSTANCE.stop();
+            ProxyServerIns.INSTANCE.start();
         });
     }
 
