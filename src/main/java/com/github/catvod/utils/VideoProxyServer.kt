@@ -2,7 +2,7 @@ package com.github.catvod.utils
 
 import com.github.catvod.crawler.SpiderDebug
 import com.github.catvod.net.OkHttp
-import fi.iki.elonen.NanoHTTPD
+
 import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
 import java.io.InputStream
