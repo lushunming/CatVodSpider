@@ -9,7 +9,7 @@ import com.github.catvod.crawler.SpiderDebug
 
 object ProxyServerIns {
 
-    private var port = 8082
+    private var port = 12345
     private var httpServer: VideoProxyServer? = null
     private var isRunning = false // 新增：运行状态标识
 

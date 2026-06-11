@@ -229,7 +229,7 @@ public class UCApi {
 
             playUrl = this.getDownload(shareId, stoken, fileId, fileToken, true);
             SpiderDebug.log("origin playUrl:" + playUrl);
-            return Result.get().url(ProxyServer.INSTANCE.buildProxyUrl(playUrl, new HashMap<>())).string();
+            return Result.get().url(ProxyServerIns.INSTANCE.buildProxyUrl(playUrl, new HashMap<>())).string();
         } else {
 
             playUrl = this.getLiveTranscoding(shareId, stoken, fileId, fileToken, flag);

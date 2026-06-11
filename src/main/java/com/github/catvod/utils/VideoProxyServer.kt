@@ -18,6 +18,7 @@ class VideoProxyServer(port: Int) : NanoHTTPD(port) {
     private val headerMap = mutableMapOf<String, Map<String, String>>();
 
     override fun serve(session: IHTTPSession): Response {
+        session.uri
 
         val key = session.parameters["key"]?.firstOrNull() ?: return newFixedLengthResponse(
             Response.Status.BAD_REQUEST, "text/plain", "Missing 'key' parameter"

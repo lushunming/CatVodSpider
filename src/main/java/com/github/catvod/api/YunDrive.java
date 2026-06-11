@@ -5,10 +5,7 @@ import com.github.catvod.bean.Result;
 import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.net.OkHttp;
 import com.github.catvod.net.OkResult;
-import com.github.catvod.utils.Json;
-import com.github.catvod.utils.Notify;
-import com.github.catvod.utils.ProxyServer;
-import com.github.catvod.utils.Util;
+import com.github.catvod.utils.*;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.apache.commons.lang3.StringUtils;
@@ -297,7 +294,7 @@ public class YunDrive {
             String contentId = split[0];
             String linkID = split[1];
             playUrl = YunDrive.get().get4kVideoInfo(contentId, linkID);
-            playUrl = ProxyServer.INSTANCE.buildProxyUrl(playUrl, new HashMap<>());
+            playUrl = ProxyServerIns.INSTANCE.buildProxyUrl(playUrl, new HashMap<>());
 
         } else {
             String contentId = split[0];
