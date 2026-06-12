@@ -1,5 +1,5 @@
 {
-  "spider": "../jar/spider.jar;md5;64aa0a97181dbd36cec25e6ef86849b3",
+  "spider": "../jar/spider.jar;md5;950fee77958f29a0235a8cabcc66373c",
   "sites": [
     {
       "key": "Intruduce",
@@ -10,55 +10,19 @@
       "changeable": 0
     },
     {
-      "key": "DuoDuo",
+      "key": "Wogg",
       "name": "多多视频",
       "type": 3,
-      "api": "csp_DuoDuo",
+      "api": "csp_Wogg",
       "searchable": 1,
       "changeable": 1,
-      "ext": "{\"site\": [\"http://xsayang.fun:12512/\",\"https://tv.yydsys.top/\"]}"
+      "ext": "{\"site\": [\"https://wogg.xxooo.cf/\",\"https://wogg.xxooo.cf/\"]}"
     },
     {
       "key": "SeedHub",
       "name": "SeedHub",
       "type": 3,
       "api": "csp_SeedHub",
-      "searchable": 1,
-      "changeable": 1,
-      "ext": {}
-    },
-    {
-      "key": "Tg123Search",
-      "name": "Tg123Search",
-      "type": 3,
-      "api": "csp_Tg123Search",
-      "searchable": 1,
-      "changeable": 1,
-      "ext": {}
-    },
-    {
-      "key": "TgbaiduSearch",
-      "name": "TgbaiduSearch",
-      "type": 3,
-      "api": "csp_TgbaiduSearch",
-      "searchable": 1,
-      "changeable": 1,
-      "ext": {}
-    },
-    {
-      "key": "Tg189Search",
-      "name": "Tg189Search",
-      "type": 3,
-      "api": "csp_Tg189Search",
-      "searchable": 1,
-      "changeable": 1,
-      "ext": {}
-    },
-    {
-      "key": "TgQuarkSearch",
-      "name": "TgQuarkSearch",
-      "type": 3,
-      "api": "csp_TgQuarkSearch",
       "searchable": 1,
       "changeable": 1,
       "ext": {}
@@ -161,7 +125,9 @@
       "filterable": 0,
       "ext": {
         "api_urls": [
-          "https://so.252035.xyz/api/search"
+          "https://so.252035.xyz/api/search",
+          "https://s.panhunt.com/api/search",
+          "https://pansou.app/api/search"
         ],
         "sources": [
           "移动"
