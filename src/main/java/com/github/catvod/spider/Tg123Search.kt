@@ -12,7 +12,7 @@ import java.nio.charset.Charset
  * @author zhixc
  */
 class Tg123Search : Cloud() {
-    private val URL = "https://tgsou.252035.xyz/"
+    private val URL = "https://so.252035.xyz/api/search/"
 
     private val header: Map<String, String>
         get() {
