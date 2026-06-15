@@ -18,6 +18,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class Supjav extends Spider {
@@ -126,7 +127,7 @@ public class Supjav extends Spider {
     @Override
     public String searchContent(String key, boolean quick) {
         List<Vod> list = new ArrayList<>();
-        Document doc = Jsoup.parse(OkHttp.string(siteUrl.concat("?s=").concat(URLEncoder.encode(key)), getHeaders()));
+        Document doc = Jsoup.parse(OkHttp.string(siteUrl.concat("?s=").concat(URLEncoder.encode(key, StandardCharsets.UTF_8)), getHeaders()));
         for (Element element : doc.select("div.post")) {
             String pic = element.select("img").attr("data-original");
             String url = element.select("a").attr("href");

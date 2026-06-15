@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class Douban extends Spider {
@@ -48,7 +49,7 @@ public class Douban extends Spider {
     @Override
     public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception {
         String sort = extend.get("sort") == null ? "T" : extend.get("sort");
-        String tags = URLEncoder.encode(getTags(extend));
+        String tags = URLEncoder.encode(getTags(extend), StandardCharsets.UTF_8);
         int start = (Integer.parseInt(pg) - 1) * 20;
         String cateUrl;
         String itemKey = "items";
@@ -56,7 +57,7 @@ public class Douban extends Spider {
             case "hot_gaia":
                 sort = extend.get("sort") == null ? "recommend" : extend.get("sort");
                 String area = extend.get("area") == null ? "全部" : extend.get("area");
-                sort = sort + "&area=" + URLEncoder.encode(area);
+                sort = sort + "&area=" + URLEncoder.encode(area, StandardCharsets.UTF_8);
                 cateUrl = siteUrl + "/movie/hot_gaia" + apikey + "&sort=" + sort + "&start=" + start + "&count=50";
                 break;
             case "tv_hot":

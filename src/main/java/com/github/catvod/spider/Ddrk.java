@@ -18,6 +18,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -422,7 +423,7 @@ public class Ddrk extends Cloud {
     @Override
     public String searchContent(String key, boolean quick) {
 
-        String url = siteUrl + "?s=" + URLEncoder.encode(key) + "&post_type=post";
+        String url = siteUrl + "?s=" + URLEncoder.encode(key, StandardCharsets.UTF_8) + "&post_type=post";
         Document doc = Jsoup.parse(OkHttp.string(url, getHeaders(url)));
         List<Vod> vods = new ArrayList<>();
         Elements elements = doc.select("h2.post-title > a");

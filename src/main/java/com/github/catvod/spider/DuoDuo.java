@@ -15,6 +15,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -148,7 +149,7 @@ public class DuoDuo extends Cloud {
 
 
     private String searchContent(String key, String pg) {
-        String searchURL = siteUrl + String.format("/index.php/vod/search/page/%s/wd/%s.html", pg, URLEncoder.encode(key));
+        String searchURL = siteUrl + String.format("/index.php/vod/search/page/%s/wd/%s.html", pg, URLEncoder.encode(key, StandardCharsets.UTF_8));
         String html = OkHttp.string(searchURL, getHeader());
         Elements items = Jsoup.parse(html).select(".module-search-item");
         List<Vod> list = new ArrayList<>();

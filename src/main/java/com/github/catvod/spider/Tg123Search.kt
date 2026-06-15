@@ -7,6 +7,7 @@ import com.github.catvod.utils.Json
 import com.github.catvod.utils.Util
 import java.net.URLEncoder
 import java.nio.charset.Charset
+import java.nio.charset.StandardCharsets
 
 /**
  * @author zhixc
@@ -26,7 +27,7 @@ class Tg123Search : Cloud() {
     override fun searchContent(key: String, quick: Boolean): String {
         val url =
             URL + "?channelUsername=wp123zy,xx123pan,yp123pan,zyfb123&pic=true&keyword=" + URLEncoder.encode(
-                key, Charset.defaultCharset().name()
+                key,  StandardCharsets.UTF_8
             )
         val list: MutableList<Vod> = ArrayList()
         val html = OkHttp.string(url, header)

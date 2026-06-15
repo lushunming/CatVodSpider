@@ -10,6 +10,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -55,7 +56,7 @@ public class PanSou extends Ali {
     }
 
     private String searchContent(String key, String pg) {
-        String url = siteUrl + "/search?k=" + URLEncoder.encode(key) + "&page=" + pg + "&s=0&t=-1";
+        String url = siteUrl + "/search?k=" + URLEncoder.encode(key, StandardCharsets.UTF_8) + "&page=" + pg + "&s=0&t=-1";
         Elements items = Jsoup.parse(OkHttp.string(url, getHeader())).select("van-row > a");
         List<Vod> list = new ArrayList<>();
         for (Element item : items) {

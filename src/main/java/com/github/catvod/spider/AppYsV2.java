@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -264,7 +265,7 @@ public class AppYsV2 extends Spider {
     @Override
     public String searchContent(String key, boolean quick) throws Exception {
         String apiUrl = getApiUrl();
-        String url = getSearchUrl(apiUrl, URLEncoder.encode(key));
+        String url = getSearchUrl(apiUrl, URLEncoder.encode(key, StandardCharsets.UTF_8));
         String json = OkHttp.string(url, getHeaders(url));
         JSONObject obj = new JSONObject(json);
         JSONArray jsonArray = null;

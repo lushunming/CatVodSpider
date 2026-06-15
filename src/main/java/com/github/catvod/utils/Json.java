@@ -22,7 +22,7 @@ public class Json {
             return JsonParser.parseReader(reader);
 //            return JsonParser.parseString(json);
         } catch (Throwable e) {
-            return new JsonParser().parse(json);
+            return  JsonParser.parseString(json);
         }
     }
 

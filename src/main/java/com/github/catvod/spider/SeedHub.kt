@@ -15,6 +15,7 @@ import org.apache.http.client.utils.URLEncodedUtils
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.regex.Pattern
 
@@ -232,7 +233,7 @@ class SeedHub : Cloud() {
     }
 
     private fun searchContent(key: String?, pg: String?): String? {
-        val searchURL = siteUrl + String.format("/s/%s/?page=%s", URLEncoder.encode(key), pg)
+        val searchURL = siteUrl + String.format("/s/%s/?page=%s", URLEncoder.encode(key, StandardCharsets.UTF_8), pg)
         val html = OkHttp.string(searchURL, this.header)
         val doc = Jsoup.parse(html)
 

@@ -6,12 +6,13 @@ import com.github.catvod.net.OkHttp;
 import com.github.catvod.spider.Ali;
 
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 public class Dovx extends Ali {
 
     @Override
     public String searchContent(String key, boolean quick) {
-        Result result = Result.objectFrom(OkHttp.string("https://api.dovx.tk/ali/search?wd=" + URLEncoder.encode(key)));
+        Result result = Result.objectFrom(OkHttp.string("https://api.dovx.tk/ali/search?wd=" + URLEncoder.encode(key, StandardCharsets.UTF_8)));
         for (Vod vod : result.getList()) vod.setVodId(vod.getVodContent());
         return result.string();
     }

@@ -9,6 +9,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -58,7 +59,7 @@ public class Zhaozy extends Ali {
 
     @Override
     public String searchContent(String key, boolean quick) throws Exception {
-        String url = siteUrl + "so?filename=" + URLEncoder.encode(key);
+        String url = siteUrl + "so?filename=" + URLEncoder.encode(key, StandardCharsets.UTF_8);
         Document doc = Jsoup.parse(OkHttp.string(url, getHeader()));
         List<Vod> list = new ArrayList<>();
         for (Element element : doc.select("div.li_con div.news_text")) {

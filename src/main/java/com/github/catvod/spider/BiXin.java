@@ -15,6 +15,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -140,7 +141,7 @@ public class BiXin extends Cloud {
 
     private String searchContent(String key, String pg) {
         int pageSize = 20;
-        String temp = siteUrl + "api/discussions?include=user%2ClastPostedUser%2CmostRelevantPost%2CmostRelevantPost.user%2Ctags%2Ctags.parent%2CfirstPost&filter%5Bq%5D=" + URLEncoder.encode(key) + "&sort&page%5Boffset%5D=" + (Integer.parseInt(pg) - 1) * pageSize;
+        String temp = siteUrl + "api/discussions?include=user%2ClastPostedUser%2CmostRelevantPost%2CmostRelevantPost.user%2Ctags%2Ctags.parent%2CfirstPost&filter%5Bq%5D=" + URLEncoder.encode(key, StandardCharsets.UTF_8) + "&sort&page%5Boffset%5D=" + (Integer.parseInt(pg) - 1) * pageSize;
 
         String resultStr = OkHttp.string(temp, getHeader());
 

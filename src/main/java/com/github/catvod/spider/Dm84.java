@@ -323,7 +323,7 @@ public class Dm84 extends Spider {
         extend.putIfAbsent("year", "");
         extend.putIfAbsent("by", "time");
 
-        String type = URLEncoder.encode(extend.get("type"));
+        String type = URLEncoder.encode(extend.get("type"), StandardCharsets.UTF_8);
         String target = siteUrl + String.format("/show-%s--%s-%s--%s-%s.html",
                 tid,
                 extend.get("by"),

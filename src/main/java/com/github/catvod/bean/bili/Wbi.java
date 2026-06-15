@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.net.URI;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 
 public class Wbi {
@@ -39,7 +40,7 @@ public class Wbi {
         StringBuilder sb = new StringBuilder();
         params.put("wts", System.currentTimeMillis() / 1000);
         for (String key : params.keySet())
-            sb.append(key).append("=").append(URLEncoder.encode(params.get(key).toString())).append("&");
+            sb.append(key).append("=").append(URLEncoder.encode(params.get(key).toString(), StandardCharsets.UTF_8)).append("&");
         String param = Util.substring(sb.toString());
         String wbiSign = Util.MD5(param + mixinKey);
         return param + "&w_rid=" + wbiSign;

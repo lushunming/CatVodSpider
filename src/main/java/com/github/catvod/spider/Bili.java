@@ -19,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -112,7 +113,7 @@ public class Bili extends Spider {
             String order = extend.containsKey("order") ? extend.get("order") : "totalrank";
             String duration = extend.containsKey("duration") ? extend.get("duration") : "0";
             if (extend.containsKey("tid")) tid = tid + " " + extend.get("tid");
-            String api = "https://api.bilibili.com/x/web-interface/search/type?search_type=video&keyword=" + URLEncoder.encode(tid) + "&order=" + order + "&duration=" + duration + "&page=" + pg;
+            String api = "https://api.bilibili.com/x/web-interface/search/type?search_type=video&keyword=" + URLEncoder.encode(tid, StandardCharsets.UTF_8) + "&order=" + order + "&duration=" + duration + "&page=" + pg;
             String json = OkHttp.string(api, getHeader());
             Resp resp = Resp.objectFrom(json);
             List<Vod> list = new ArrayList<>();

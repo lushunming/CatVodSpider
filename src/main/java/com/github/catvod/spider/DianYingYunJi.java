@@ -12,6 +12,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -179,7 +180,7 @@ public class DianYingYunJi extends Cloud {
     }
 
     private String searchContent(String key, String pg) throws IOException {
-        String searchURL = siteUrl + String.format("?cat=&s=%s", URLEncoder.encode(key));
+        String searchURL = siteUrl + String.format("?cat=&s=%s", URLEncoder.encode(key, StandardCharsets.UTF_8));
         String html = HttpFetcher.fetchAndDecompress(searchURL, getHeaderWithCookie());
         Document doc = Jsoup.parse(html);
 

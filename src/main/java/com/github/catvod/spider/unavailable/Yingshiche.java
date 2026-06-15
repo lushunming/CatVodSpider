@@ -14,6 +14,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -128,7 +129,7 @@ public class Yingshiche extends Ali {
     }
 
     private String searchContent(String key, String pg) {
-        String searchURL = siteUrl + String.format("/vodsearch/%s----------%s---.html", URLEncoder.encode(key), pg);
+        String searchURL = siteUrl + String.format("/vodsearch/%s----------%s---.html", URLEncoder.encode(key, StandardCharsets.UTF_8), pg);
         String html = OkHttp.string(searchURL, getHeader());
         Elements items = Jsoup.parse(html).select(".module-search-item");
         List<Vod> list = new ArrayList<>();

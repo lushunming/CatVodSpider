@@ -22,6 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -35,7 +36,7 @@ public class UCApi {
     private String cookieToken = "";
     private String ckey = "";
     private Map<String, Map<String, Object>> shareTokenCache = new HashMap<>();
-    private String pr = "pr=UCBrowser&fr=pc&sys=darwin&ve=1.8.6&ut=" + URLEncoder.encode("OWx0yJcb9kA5lz2ebwokWQjT8HKm9nE6dxxtFxSibJu9Tw==");
+    private String pr = "pr=UCBrowser&fr=pc&sys=darwin&ve=1.8.6&ut=" + URLEncoder.encode("OWx0yJcb9kA5lz2ebwokWQjT8HKm9nE6dxxtFxSibJu9Tw==", StandardCharsets.UTF_8);
     private List<String> subtitleExts = Arrays.asList(".srt", ".ass", ".scc", ".stl", ".ttml");
     private Map<String, String> saveFileIdCaches = new HashMap<>();
     private String saveDirId = null;

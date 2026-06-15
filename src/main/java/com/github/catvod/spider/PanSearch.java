@@ -10,6 +10,7 @@ import org.jsoup.Jsoup;
 
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +41,7 @@ public class PanSearch extends Ali {
         String html = OkHttp.string(URL, getHeader());
         String data = Jsoup.parse(html).select("script[id=__NEXT_DATA__]").get(0).data();
         String buildId = new JSONObject(data).getString("buildId");
-        String url = URL + "_next/data/" + buildId + "/search.json?keyword=" + URLEncoder.encode(key, Charset.defaultCharset().name()) + "&pan=aliyundrive";
+        String url = URL + "_next/data/" + buildId + "/search.json?keyword=" + URLEncoder.encode(key,  StandardCharsets.UTF_8) + "&pan=aliyundrive";
         String result = OkHttp.string(url, getSearchHeader());
         JSONArray array = new JSONObject(result).getJSONObject("pageProps").getJSONObject("data").getJSONArray("data");
         List<Vod> list = new ArrayList<>();

@@ -14,6 +14,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -144,7 +145,7 @@ public class KuaKeS extends Cloud {
     }
 
     private String searchContent(String key, String pg) {
-        String searchURL = siteUrl + String.format("/?s=%s", URLEncoder.encode(key));
+        String searchURL = siteUrl + String.format("/?s=%s", URLEncoder.encode(key, StandardCharsets.UTF_8));
         String html = OkHttp.string(searchURL, getHeaderWithCookie());
         Document doc = Jsoup.parse(html);
 

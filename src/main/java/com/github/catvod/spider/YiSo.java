@@ -34,7 +34,7 @@ public class YiSo extends Ali {
 
     @Override
     public String searchContent(String key, boolean quick) throws Exception {
-        String json = OkHttp.string("https://yiso.fun/api/search?name=" + URLEncoder.encode(key) + "&pageNo=1&from=ali", getHeaders());
+        String json = OkHttp.string("https://yiso.fun/api/search?name=" + URLEncoder.encode(key, StandardCharsets.UTF_8) + "&pageNo=1&from=ali", getHeaders());
         JSONObject jsonObject = new JSONObject(json);
         if (jsonObject.getInt("code") == 205) {
             if (time_205 > 2) {

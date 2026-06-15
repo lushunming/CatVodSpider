@@ -4,13 +4,14 @@ import com.github.catvod.spider.Proxy;
 import fi.iki.elonen.NanoHTTPD;
 
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class MultiThread {
 
     public static String url(String url, int thread) {
-        return String.format(Proxy.getHostPort() + "?do=multi&url=%s&thread=%d", URLEncoder.encode(url), thread);
+        return String.format(Proxy.getHostPort() + "?do=multi&url=%s&thread=%d", URLEncoder.encode(url, StandardCharsets.UTF_8), thread);
     }
 
     public static Object[] proxy(Map<String, String> params) throws Exception {

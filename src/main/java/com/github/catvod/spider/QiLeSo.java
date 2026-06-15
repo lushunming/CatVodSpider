@@ -15,6 +15,7 @@ import org.jsoup.select.Elements;
 
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +51,7 @@ public class QiLeSo extends Cloud {
 
     @Override
     public String searchContent(String key, boolean quick) throws Exception {
-        String url = URL + "?s=" + URLEncoder.encode(key, Charset.defaultCharset().name());
+        String url = URL + "?s=" + URLEncoder.encode(key,  StandardCharsets.UTF_8);
 
         String html = OkHttp.string(url, getHeader());
         Document doc = Jsoup.parse(html);
