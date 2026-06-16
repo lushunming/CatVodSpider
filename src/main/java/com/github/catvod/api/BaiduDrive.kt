@@ -13,6 +13,7 @@ import com.github.catvod.utils.Util.MEDIA
 import com.google.gson.JsonObject
 import io.ktor.utils.io.charsets.Charset
 import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import java.util.*
 
 object BaiduDrive {
@@ -310,7 +311,7 @@ object BaiduDrive {
                 "shareid" to folderInfo["shareid"]!!.toString(),
                 "page" to folderInfo["page"].toString(),
                 "num" to "9999",
-                "dir" to URLEncoder.encode(folderInfo["dir"]!!.toString(),Charset.defaultCharset()),
+                "dir" to URLEncoder.encode(folderInfo["dir"]!!.toString(), StandardCharsets.UTF_8),
                 "desc" to "0",
                 "order" to "name",
             )
