@@ -9,6 +9,7 @@ import com.github.catvod.crawler.SpiderDebug
 import com.github.catvod.net.OkHttp
 import com.github.catvod.utils.Json
 import com.github.catvod.utils.Notify
+import com.github.catvod.utils.ProxyServer
 import com.github.catvod.utils.ProxyServerIns
 import com.github.catvod.utils.Util
 import com.google.gson.JsonObject
@@ -396,7 +397,7 @@ object Pan123Api {
             "User-Agent" to "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
         )
 
-        return Result.get().url(ProxyServerIns.buildProxyUrl(url, header)).octet().header(header).string();
+        return Result.get().url(ProxyServer.buildProxyUrl(url, header)).octet().header(header).string();
 
 
     }

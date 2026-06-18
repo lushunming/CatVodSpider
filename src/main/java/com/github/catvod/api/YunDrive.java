@@ -294,7 +294,7 @@ public class YunDrive {
             String contentId = split[0];
             String linkID = split[1];
             playUrl = YunDrive.get().get4kVideoInfo(contentId, linkID);
-            playUrl = ProxyServerIns.INSTANCE.buildProxyUrl(playUrl, new HashMap<>());
+            playUrl = ProxyServer.INSTANCE.buildProxyUrl(playUrl, new HashMap<>());
 
         } else {
             String contentId = split[0];

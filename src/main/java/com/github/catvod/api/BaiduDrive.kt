@@ -7,6 +7,7 @@ import com.github.catvod.crawler.SpiderDebug
 import com.github.catvod.net.OkHttp
 import com.github.catvod.utils.Json
 import com.github.catvod.utils.Notify
+import com.github.catvod.utils.ProxyServer
 import com.github.catvod.utils.ProxyServerIns
 import com.github.catvod.utils.Util
 import com.github.catvod.utils.Util.MEDIA
@@ -789,7 +790,7 @@ object BaiduDrive {
     fun playerContent(json: JsonObject, flag: String): String {
         val play = getVideoUrl(json, flag);
         val header = play["header"] as Map<String, String>
-        return Result.get().url(ProxyServerIns.buildProxyUrl(play["url"] as String, header)).octet().header(header)
+        return Result.get().url(ProxyServer.buildProxyUrl(play["url"] as String, header)).octet().header(header)
             .string();
     }
 
