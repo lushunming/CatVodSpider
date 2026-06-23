@@ -147,9 +147,16 @@ public class Launcher {
      *
      */
     public static String buildProxyUrl(String url, Map<String, String> headers, int threads) {
+        String key = Util.MD5(url);
+        Map<String, Object> params = new HashMap<>();
+        params.put("url", url);
+        params.put("headers", headers);
+        params.put("key", key);
+
+        OkHttp.post( getHostPort()+ "/buildUrl", Json.toJson(params), new HashMap<>());
 
 
-        return getProxyUrl() + "?url=" + Util.base64Encode(url) + "&headers=" + Util.base64Encode(Json.toJson(headers)) + "&threads=" + threads;
+        return getProxyUrl() + "?key=" + key + "&threads=" + threads;
     }
 
     public static String buildProxyUrl(String url, Map<String, String> headers) {
