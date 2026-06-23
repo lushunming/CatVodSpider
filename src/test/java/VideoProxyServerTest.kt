@@ -15,8 +15,8 @@ class VideoProxyServerTest {
             ProxyServer.start()
       //  }
 
-        //val url = ProxyServer.buildProxyUrl("http://172.16.1.217:18089/ng-grid/video.mp4", mapOf())
-        val url = ProxyServer.buildProxyUrl("https://storage.googleapis.com/exoplayer-test-media-1/mkv/android-screens-lavf-56.36.100-aac-avc-main-1280x720.mkv", mapOf())
+        //val url = Launcher.buildProxyUrl("http://172.16.1.217:18089/ng-grid/video.mp4", mapOf())
+        val url = Launcher.buildProxyUrl("https://storage.googleapis.com/exoplayer-test-media-1/mkv/android-screens-lavf-56.36.100-aac-avc-main-1280x720.mkv", mapOf())
         System.out.println(url)
         while (true) {
 
