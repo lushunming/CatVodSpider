@@ -75,6 +75,8 @@ public class Launcher {
             SpiderDebug.log("服务未启动,正在启动代理服务...");
             try {
                 launch();
+                // 关键修正：给底层服务 500ms 的启动初始化时间，避免立即扫描端口导致失败
+                Thread.sleep(500);
             } catch (Exception e) {
                 SpiderDebug.log("启动代理服务失败");
             }
