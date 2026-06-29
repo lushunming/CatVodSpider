@@ -1,121 +1,158 @@
 package com.github.catvod.utils;
 
+
 import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.net.OkHttp;
+import com.github.catvod.spider.Init;
+import com.github.catvod.spider.LuProxyNative;
 import okhttp3.Response;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.attribute.PosixFilePermission;
-import java.nio.file.attribute.PosixFilePermissions;
-import java.util.*;
+import java.io.*;
+import java.nio.channels.FileLock;
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class Launcher {
 
+    public static final String Server_URL = "http://pc.lushunming.qzz.io/json";
     private static int port = -1;
-
-    /**
-     * 通过进程名判断进程是否存在
-     */
-    public static boolean isProcessRunning(String processName) {
-        return ProcessHandle.allProcesses().anyMatch(ph -> ph.info().command().map(cmd -> cmd.contains(processName)).orElse(false));
-    }
+    private static boolean sLibLoaded = false;
+    private static LuProxyNative sServer;
+    private static final String LOCK_FILE = "server.lock";
 
     private static String getServerName() {
-        String osKey = detectOs();
-        switch (osKey) {
-            case "mac":
-                return "lu-proxy-server-darwin-amd64";
-            case "linux":
-                return "lu-proxy-server-linux-amd64";
-            default:
-                return "lu-proxy-server-windows-amd64.exe";
+        //判断系统
+        String os = System.getProperty("os.name");
+        if (os.toLowerCase().contains("windows")) {
+            return "libluserver.dll";
         }
+        return "libluserver.so";
     }
 
     private static String getServerPath() {
+        // 使用 Android 的 App 私有内部存储路径 (/data/user/0/包名/files/)
         return Path.tv() + File.separator + getServerName();
     }
 
-
-    public static Process launch(String... args) throws Exception {
-        String osKey = detectOs();
-        String binaryPath = getServerPath();
-
-        if (!osKey.contains("win")) {
-            java.nio.file.Path binary = Paths.get(getServerPath());
-
-            // 检查是否有执行权限
-            if (!Files.isExecutable(binary)) {
-                System.out.println("正在添加执行权限...");
-                Set<PosixFilePermission> perms = PosixFilePermissions.fromString("rwxr-xr-x");
-                Files.setPosixFilePermissions(binary, perms);
-                System.out.println("权限设置完成");
-            }
+    public static void deleteServerFiles() {
+        File soFile = new File(getServerPath());
+        if (soFile.exists()) {
+            soFile.delete();
         }
-
-        // 构建命令列表
-        List<String> command = new ArrayList<>();
-        command.add(binaryPath);
-        Collections.addAll(command, args);
-
-        ProcessBuilder pb = new ProcessBuilder(command);
-        pb.redirectErrorStream(true);
-        return pb.start();
     }
 
-    public static void startServer() {
-        //1.检测本地文件是否存在，没有就下载文件
-        loadServerFiles();
 
-        //2.检测服务是否启动,服务没有启动就启动服务
-        if (!isProcessRunning(getServerName())) {
+    public static void launch() {
+        try {
+            File soFile = new File(getServerPath());
+            if (!sLibLoaded) {
+                System.load(soFile.getAbsolutePath()); // 全路径加载
+                sLibLoaded = true;
+            }
+            if (sServer == null) {
+                sServer = new LuProxyNative();
+                sServer.StartServer();
+            }
+        } catch (Exception e) {
+            SpiderDebug.log("启动代理服务失败: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+    /**
+     * 启动服务（注意：Android 端必须在子线程/异步任务中调用此方法！）
+     */
+    public static void startServer() {
+        RandomAccessFile raf = null;
+        FileLock lock = null;
+        try {
+            // ---- 关键修正 1：先检查本地服务是否已经在运行 ----
+            adjustPort();
+            if (port > 0) {
+                SpiderDebug.log("监测到本地代理服务已在后台运行中 (Port: " + port + ")，跳过启动流程。");
+                Notify.show("代理服务已在运行");
+                return;
+            }
+
+            File lockFile = new File(Path.tv(), LOCK_FILE);
+            raf = new RandomAccessFile(lockFile, "rw");
+            lock = raf.getChannel().tryLock();
+
+            if (lock == null) {
+                SpiderDebug.log("服务已在其他ClassLoader或线程中启动，跳过");
+                return;
+            }
+
+            // 1. 检测本地文件是否存在，没有就下载文件
+            loadServerFiles();
+
+            // 2. 检测服务是否启动，没有启动就启动服务
             SpiderDebug.log("服务未启动,正在启动代理服务...");
             try {
                 launch();
-                // 关键修正：给底层服务 500ms 的启动初始化时间，避免立即扫描端口导致失败
+                // 给底层服务 500ms 的启动初始化时间
                 Thread.sleep(500);
+            } catch (UnsatisfiedLinkError e) {
+                // ---- 关键修正 2：捕获因 ClassLoader 冲突导致的链接错误 ----
+                SpiderDebug.log("SO库已被其他ClassLoader加载，尝试直接检测端口... " + e.getMessage());
             } catch (Exception e) {
-                SpiderDebug.log("启动代理服务失败");
+                SpiderDebug.log("启动代理服务失败: " + e.getMessage());
             }
 
+            SpiderDebug.log("服务启动命令已发送，正在验证端口...");
+            // 3. 检测服务端口
+            adjustPort();
+            if (port > 0) {
+                SpiderDebug.log("服务已成功启动");
+                Notify.show("启动代理服务成功");
+            } else {
+                SpiderDebug.log("服务启动失败，未能探测到有效端口");
+            }
+        } catch (Exception e) {
+            SpiderDebug.log("启动失败: " + e);
+        } finally {
+            // 记得释放文件锁资源
+            try {
+                if (lock != null) lock.release();
+                if (raf != null) raf.close();
+            } catch (Exception ignored) {
+            }
         }
-        SpiderDebug.log("服务已启动");
-        //3.检测服务端口
-        adjustPort();
-
     }
 
     private static void loadServerFiles() {
-        //1.检测本地文件是否存在，没有就下载文件
-        String os = detectOs();
         String binaryPath = getServerPath();
-        if (!new File(binaryPath).exists()) {
+        File file = new File(binaryPath);
+        if (!file.exists()) {
             try {
-                Response result = null;
-                if (os.contains("win")) {
-                    result = OkHttp.newCall("https://pc.lushunming.qzz.io/json/server-windows-amd64.exe");
+                SpiderDebug.log("正在下载 Android 代理二进制文件...");
+                String downloadUrl = Server_URL + "/"+getServerName();
+                SpiderDebug.log("下载地址：" + downloadUrl);
+
+                Response result = OkHttp.newCall(downloadUrl, new HashMap<>());
+                if (result != null && result.body() != null) {
 
 
-                } else if (os.contains("mac")) {
-                    result = OkHttp.newCall("https://pc.lushunming.qzz.io/json/server-darwin-amd64", new HashMap<>());
+                    // 兼容老版本 Android
+                    try (InputStream is = result.body().byteStream(); OutputStream os = new FileOutputStream(file)) {
+                        byte[] buffer = new byte[4096];
+                        int length;
+                        while ((length = is.read(buffer)) > 0) {
+                            os.write(buffer, 0, length);
+                        }
+                    }
 
-                } else if (os.contains("linux")) {
-                    result = OkHttp.newCall("https://pc.lushunming.qzz.io/json/server-linux-amd64", new HashMap<>());
+                    SpiderDebug.log("下载server完成");
                 }
-
-                Files.write(new File(binaryPath).toPath(), result.body().bytes());
-
             } catch (IOException e) {
                 SpiderDebug.log("下载代理服务失败");
                 throw new RuntimeException(e);
-
             }
         }
     }
-
 
     static void adjustPort() {
         if (port > 0) return;
@@ -123,14 +160,21 @@ public class Launcher {
         while (pt < 12360) {
             try {
                 String resp = OkHttp.string("http://127.0.0.1:" + pt, null);
-                if (resp.equals("ser200")) {
+                if (resp != null && resp.equals("ser200")) {
                     SpiderDebug.log("Found local server port " + pt);
+                    Notify.show("发现服务端口：" + pt);
                     port = pt;
                     break;
                 }
                 pt++;
             } catch (Exception e) {
-                SpiderDebug.log("请求端口 异常：" + e.getMessage());
+                SpiderDebug.log("请求端口 异常，正在重试下一个... " + e.getMessage());
+                // 每次请求失败稍微等待，防止 CPU 轮询空转
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException ignored) {
+                }
+                pt++;
             }
         }
     }
@@ -144,10 +188,6 @@ public class Launcher {
         return getHostPort() + "/proxy";
     }
 
-    /**
-     * 构建代理链接
-     *
-     */
     public static String buildProxyUrl(String url, Map<String, String> headers, int threads) {
         String key = Util.MD5(url);
         Map<String, Object> params = new HashMap<>();
@@ -155,23 +195,11 @@ public class Launcher {
         params.put("headers", headers);
         params.put("key", key);
 
-        OkHttp.post( getHostPort()+ "/buildUrl", Json.toJson(params), new HashMap<>());
-
-
+        OkHttp.post(getHostPort() + "/buildUrl", Json.toJson(params), new HashMap<>());
         return getProxyUrl() + "?key=" + key + "&threads=" + threads;
     }
 
     public static String buildProxyUrl(String url, Map<String, String> headers) {
-
-
         return buildProxyUrl(url, headers, Runtime.getRuntime().availableProcessors() * 2);
-    }
-
-    private static String detectOs() {
-        String os = System.getProperty("os.name").toLowerCase();
-        if (os.contains("win")) return "windows";
-        if (os.contains("mac")) return "mac";
-        if (os.contains("nux") || os.contains("nix")) return "linux";
-        return "unknown";
     }
 }
