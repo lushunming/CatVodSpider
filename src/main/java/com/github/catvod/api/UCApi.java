@@ -397,7 +397,7 @@ public class UCApi {
         return token;
     }
 
-    private void startFlow() {
+    public void startFlow() {
         Init.execute(this::showInput);
     }
 

@@ -49,32 +49,50 @@ public class Introduce extends Cloud {
             String pic = "https://androidcatvodspider.netlify.app/wechat.png";
             String name = "点击设置Token";
             vodList.add(new Vod("UCToken", name, pic));
+            String pic3 = "https://androidcatvodspider.netlify.app/wechat.png";
+            String name3 = "点击删除";
+            vodList.add(new Vod("UCClean", name3, pic3));
 
         }
         if (tid.equals("2")) {
             String pic = "https://androidcatvodspider.netlify.app/wechat.png";
             String name = "点击设置Cookie";
             vodList.add(new Vod("QuarkCookie", name, pic));
+            String pic3 = "https://androidcatvodspider.netlify.app/wechat.png";
+            String name3 = "点击删除";
+            vodList.add(new Vod("QuarkClean", name3, pic3));
         }
         if (tid.equals("3")) {
             String pic = "https://androidcatvodspider.netlify.app/wechat.png";
             String name = "点击设置账号";
             vodList.add(new Vod("TianYi", name, pic));
+            String pic3 = "https://androidcatvodspider.netlify.app/wechat.png";
+            String name3 = "点击删除";
+            vodList.add(new Vod("TianYiClean", name3, pic3));
         }
         if (tid.equals("4")) {
             String pic = "https://androidcatvodspider.netlify.app/wechat.png";
             String name = "点击设置Cookie";
             vodList.add(new Vod("YiDongCookie", name, pic));
+            String pic3 = "https://androidcatvodspider.netlify.app/wechat.png";
+            String name3 = "点击删除";
+            vodList.add(new Vod("YiDongClean", name3, pic3));
         }
         if (tid.equals("5")) {
             String pic = "https://androidcatvodspider.netlify.app/wechat.png";
             String name = "点击设置百度";
             vodList.add(new Vod("BDCookie", name, pic));
+            String pic3 = "https://androidcatvodspider.netlify.app/wechat.png";
+            String name3 = "点击删除";
+            vodList.add(new Vod("BDClean", name3, pic3));
         }
         if (tid.equals("6")) {
             String pic = "https://androidcatvodspider.netlify.app/wechat.png";
             String name = "点击设置pan123";
             vodList.add(new Vod("Pan123Cookie", name, pic));
+            String pic3 = "https://androidcatvodspider.netlify.app/wechat.png";
+            String name3 = "点击删除";
+            vodList.add(new Vod("Pan123Clean", name3, pic3));
         }
         return Result.get().vod(vodList).string();
     }
@@ -89,25 +107,47 @@ public class Introduce extends Cloud {
             qrCodeHandler.startUC_TOKENScan();
             return Result.string(item);
         } else if (vodId.equals("UCCookie")) {
-            UCApi.get().initUserInfo();
+            UCApi.get().startFlow();
+            return Result.string(item);
+        } else if (vodId.equals("UCClean")) {
+            UCApi.get().getCache().deleteOnExit();
+            new UCTokenHandler().getCache().deleteOnExit();
             return Result.string(item);
         } else if (vodId.equals("QuarkCookie")) {
             QuarkApi.get().initUserInfo();
+            return Result.string(item);
+        } else if (vodId.equals("QuarkClean")) {
+            QuarkApi.get().getCache().deleteOnExit();
             return Result.string(item);
         } else if (vodId.equals("TianYi")) {
             TianYiHandler tianYiHandler = TianYiHandler.get();
             tianYiHandler.startFlow();
             return Result.string(item);
+        } else if (vodId.equals("TianYiClean")) {
+            TianYiHandler tianYiHandler = TianYiHandler.get();
+            tianYiHandler.getCache().deleteOnExit();
+            return Result.string(item);
         } else if (vodId.equals("YiDongCookie")) {
            /* YunTokenHandler yunTokenHandler=YunTokenHandler.get();
             yunTokenHandler.startFlow();*/
+            return Result.string(item);
+        } else if (vodId.equals("YiDongClean")) {
+            YunTokenHandler yunTokenHandler = YunTokenHandler.get();
+            yunTokenHandler.getCache().deleteOnExit();
             return Result.string(item);
         } else if (vodId.equals("BDCookie")) {
             BaiDuYunHandler baiDuYunHandler = BaiDuYunHandler.get();
             baiDuYunHandler.startScan();
             return Result.string(item);
+        } else if (vodId.equals("BDClean")) {
+            BaiDuYunHandler baiDuYunHandler = BaiDuYunHandler.get();
+            baiDuYunHandler.getCache().deleteOnExit();
+            return Result.string(item);
         } else if (vodId.equals("Pan123Cookie")) {
             Pan123Handler.INSTANCE.startFlow();
+            return Result.string(item);
+        } else if (vodId.equals("Pan123Clean")) {
+            Pan123Handler.INSTANCE.getCache().deleteOnExit();
             return Result.string(item);
         } else {
             item.setVodId(vodId);
