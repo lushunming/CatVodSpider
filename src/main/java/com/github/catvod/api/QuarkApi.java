@@ -259,7 +259,7 @@ public class QuarkApi {
         return okResult.getBody();
     }
 
-    private void initUserInfo() {
+    public void initUserInfo() {
         try {
             SpiderDebug.log("initUserInfo...");
 

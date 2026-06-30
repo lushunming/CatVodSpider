@@ -1,10 +1,9 @@
 package com.github.catvod.spider;
 
-import com.github.catvod.api.UCTokenHandler;
+import com.github.catvod.api.*;
 import com.github.catvod.bean.Class;
 import com.github.catvod.bean.Result;
 import com.github.catvod.bean.Vod;
-import com.github.catvod.crawler.Spider;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,13 +22,18 @@ public class Introduce extends Cloud {
     public String homeContent(boolean filter) throws Exception {
         List<Class> classes = new ArrayList<>();
         classes.add(new Class("1", "UC"));
+        classes.add(new Class("2", "quark"));
+        classes.add(new Class("3", "天翼"));
+        classes.add(new Class("4", "移动"));
+        classes.add(new Class("5", "百度"));
+        classes.add(new Class("6", "pan123"));
         List<Vod> list = new ArrayList<>();
         String pic = "";
         String name = "UCToken";
         list.add(new Vod("UCToken", name, pic));
         list.add(new Vod("https://pan.quark.cn/s/cb0e3473c3cb", "测试", pic));
 
-        return Result.string(classes,list);
+        return Result.string(classes, list);
     }
 
 
@@ -38,10 +42,39 @@ public class Introduce extends Cloud {
         List<Vod> vodList = new ArrayList<>();
         //UC
         if (tid.equals("1")) {
+            String pic1 = "https://androidcatvodspider.netlify.app/wechat.png";
+            String name1 = "点击设置cookie";
+            vodList.add(new Vod("UCCookie", name1, pic1));
+
             String pic = "https://androidcatvodspider.netlify.app/wechat.png";
             String name = "点击设置Token";
             vodList.add(new Vod("UCToken", name, pic));
 
+        }
+        if (tid.equals("2")) {
+            String pic = "https://androidcatvodspider.netlify.app/wechat.png";
+            String name = "点击设置Cookie";
+            vodList.add(new Vod("QuarkCookie", name, pic));
+        }
+        if (tid.equals("3")) {
+            String pic = "https://androidcatvodspider.netlify.app/wechat.png";
+            String name = "点击设置账号";
+            vodList.add(new Vod("TianYi", name, pic));
+        }
+        if (tid.equals("4")) {
+            String pic = "https://androidcatvodspider.netlify.app/wechat.png";
+            String name = "点击设置Cookie";
+            vodList.add(new Vod("YiDongCookie", name, pic));
+        }
+        if (tid.equals("5")) {
+            String pic = "https://androidcatvodspider.netlify.app/wechat.png";
+            String name = "点击设置百度";
+            vodList.add(new Vod("BDCookie", name, pic));
+        }
+        if (tid.equals("6")) {
+            String pic = "https://androidcatvodspider.netlify.app/wechat.png";
+            String name = "点击设置pan123";
+            vodList.add(new Vod("Pan123Cookie", name, pic));
         }
         return Result.get().vod(vodList).string();
     }
@@ -55,7 +88,28 @@ public class Introduce extends Cloud {
             UCTokenHandler qrCodeHandler = new UCTokenHandler();
             qrCodeHandler.startUC_TOKENScan();
             return Result.string(item);
-        }else{
+        } else if (vodId.equals("UCCookie")) {
+            UCApi.get().initUserInfo();
+            return Result.string(item);
+        } else if (vodId.equals("QuarkCookie")) {
+            QuarkApi.get().initUserInfo();
+            return Result.string(item);
+        } else if (vodId.equals("TianYi")) {
+            TianYiHandler tianYiHandler = TianYiHandler.get();
+            tianYiHandler.startFlow();
+            return Result.string(item);
+        } else if (vodId.equals("YiDongCookie")) {
+           /* YunTokenHandler yunTokenHandler=YunTokenHandler.get();
+            yunTokenHandler.startFlow();*/
+            return Result.string(item);
+        } else if (vodId.equals("BDCookie")) {
+            BaiDuYunHandler baiDuYunHandler = BaiDuYunHandler.get();
+            baiDuYunHandler.startScan();
+            return Result.string(item);
+        } else if (vodId.equals("Pan123Cookie")) {
+            Pan123Handler.INSTANCE.startFlow();
+            return Result.string(item);
+        } else {
             item.setVodId(vodId);
             item.setVodName("测试");
             item.setVodPlayUrl(super.detailContentVodPlayUrl(List.of(vodId)));

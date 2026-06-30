@@ -108,7 +108,7 @@ public class UCApi {
     /**
      * 初始化UC信息
      */
-    private void initUserInfo() {
+    public void initUserInfo() {
         try {
             SpiderDebug.log("uc initUserInfo...");
 

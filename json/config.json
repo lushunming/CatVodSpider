@@ -1,9 +1,9 @@
 {
-  "spider": "../jar/spider.jar;md5;fd92062b5629c65b63989047f1669c25",
+  "spider": "../jar/spider.jar;md5;a832b19307d45a0a71669e0c02f9afb1",
   "sites": [
     {
       "key": "Intruduce",
-      "name": "验证设置",
+      "name": "网盘设置",
       "type": 3,
       "api": "csp_Introduce",
       "searchable": 0,
