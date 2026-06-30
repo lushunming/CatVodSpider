@@ -4,6 +4,7 @@ import com.github.catvod.api.*;
 import com.github.catvod.bean.Class;
 import com.github.catvod.bean.Result;
 import com.github.catvod.bean.Vod;
+import com.github.catvod.utils.Notify;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -112,12 +113,14 @@ public class Introduce extends Cloud {
         } else if (vodId.equals("UCClean")) {
             UCApi.get().getCache().deleteOnExit();
             new UCTokenHandler().getCache().deleteOnExit();
+            Notify.show("删除成功");
             return Result.string(item);
         } else if (vodId.equals("QuarkCookie")) {
             QuarkApi.get().initUserInfo();
             return Result.string(item);
         } else if (vodId.equals("QuarkClean")) {
             QuarkApi.get().getCache().deleteOnExit();
+            Notify.show("删除成功");
             return Result.string(item);
         } else if (vodId.equals("TianYi")) {
             TianYiHandler tianYiHandler = TianYiHandler.get();
@@ -126,6 +129,7 @@ public class Introduce extends Cloud {
         } else if (vodId.equals("TianYiClean")) {
             TianYiHandler tianYiHandler = TianYiHandler.get();
             tianYiHandler.getCache().deleteOnExit();
+            Notify.show("删除成功");
             return Result.string(item);
         } else if (vodId.equals("YiDongCookie")) {
            /* YunTokenHandler yunTokenHandler=YunTokenHandler.get();
@@ -134,6 +138,7 @@ public class Introduce extends Cloud {
         } else if (vodId.equals("YiDongClean")) {
             YunTokenHandler yunTokenHandler = YunTokenHandler.get();
             yunTokenHandler.getCache().deleteOnExit();
+            Notify.show("删除成功");
             return Result.string(item);
         } else if (vodId.equals("BDCookie")) {
             BaiDuYunHandler baiDuYunHandler = BaiDuYunHandler.get();
@@ -142,12 +147,15 @@ public class Introduce extends Cloud {
         } else if (vodId.equals("BDClean")) {
             BaiDuYunHandler baiDuYunHandler = BaiDuYunHandler.get();
             baiDuYunHandler.getCache().deleteOnExit();
+            Notify.show("删除成功");
             return Result.string(item);
         } else if (vodId.equals("Pan123Cookie")) {
             Pan123Handler.INSTANCE.startFlow();
             return Result.string(item);
         } else if (vodId.equals("Pan123Clean")) {
             Pan123Handler.INSTANCE.getCache().deleteOnExit();
+            Notify.show("删除成功");
+           
             return Result.string(item);
         } else {
             item.setVodId(vodId);
