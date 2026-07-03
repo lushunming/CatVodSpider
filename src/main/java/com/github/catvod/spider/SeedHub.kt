@@ -132,6 +132,7 @@ class SeedHub : Cloud() {
             if (!vodPic.startsWith("http")) {
                 vodPic = URLUtil.completeUrl(siteUrl, vodPic)
             }
+            vodPic = Util.proxyImage(vodPic);
             val vodName = e.selectFirst("h2")!!.text()
             val vodRemarks = e.select("ul >li")!!.text()
             list.add(Vod(vodId, vodName, vodPic, vodRemarks))
@@ -152,7 +153,7 @@ class SeedHub : Cloud() {
         val item = Vod()
         item.setVodId(vodId)
         item.setVodName(doc.selectFirst("h1")!!.text())
-        item.setVodPic(doc.selectFirst("div.cover-container img")!!.attr("src"))
+        item.setVodPic(Util.proxyImage(doc.selectFirst("div.cover-container img")!!.attr("src")))
         item.setVodArea(Util.getStrByRegex(Pattern.compile("制片国家/地区:(.*?)语言:"), infos))
         item.setTypeName(Util.getStrByRegex(Pattern.compile("类型:(.*?)制片"), infos))
         item.setVodDirector(Util.getStrByRegex(Pattern.compile("导演:(.*?)制片"), infos))
@@ -167,7 +168,7 @@ class SeedHub : Cloud() {
         runBlocking {
             doc.select("ul.pan-links > li > a")
                 .filter {a-> a.attr("data-link").contains("quark")  }
-                .take(4).forEach { element ->
+                .take(6).forEach { element ->
 
                 jobs += CoroutineScope(Dispatchers.IO).launch {
                     var link = siteUrl + element.attr("href")
@@ -183,7 +184,7 @@ class SeedHub : Cloud() {
             }
             doc.select("ul.pan-links > li > a")
                 .filter {a-> a.attr("data-link").contains("baidu") }
-                .take(4).forEach { element ->
+                .take(6).forEach { element ->
 
                     jobs += CoroutineScope(Dispatchers.IO).launch {
                         var link = siteUrl + element.attr("href")
@@ -198,7 +199,7 @@ class SeedHub : Cloud() {
                     }
                 }
             doc.select("ul.pan-links > li > a")
-                .filter {a->  a.attr("data-link").contains("uc") }.take(4)
+                .filter {a->  a.attr("data-link").contains("uc") }.take(6)
                 .forEach { element ->
 
                     jobs += CoroutineScope(Dispatchers.IO).launch {

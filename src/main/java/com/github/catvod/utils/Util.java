@@ -10,8 +10,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.utils.DateUtils;
 
-import javax.swing.Timer;
 import javax.swing.*;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.io.IOException;
@@ -21,8 +21,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -174,8 +174,7 @@ public class Util {
     }
 
     public static byte[] decompressGzip(byte[] compressed) throws IOException {
-        try (java.io.ByteArrayInputStream bis = new java.io.ByteArrayInputStream(compressed);
-             java.util.zip.GZIPInputStream gis = new java.util.zip.GZIPInputStream(bis)) {
+        try (java.io.ByteArrayInputStream bis = new java.io.ByteArrayInputStream(compressed); java.util.zip.GZIPInputStream gis = new java.util.zip.GZIPInputStream(bis)) {
             return gis.readAllBytes();
         }
     }
@@ -526,6 +525,7 @@ public class Util {
         }
         return 0;
     }
+
     public static String sha1Hex(String input) throws NoSuchAlgorithmException {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
@@ -547,4 +547,10 @@ public class Util {
         }
         return hexString.toString();
     }
+
+    public static String proxyImage(String url) {
+        return "https://image.baidu.com/search/down?url=" + java.net.URLEncoder.encode(url, StandardCharsets.UTF_8);
+    }
+
+
 }
