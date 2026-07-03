@@ -549,7 +549,7 @@ public class Util {
     }
 
     public static String proxyImage(String url) {
-        return "https://image.baidu.com/search/down?url=" + java.net.URLEncoder.encode(url, StandardCharsets.UTF_8);
+        return "https://icdn.dev/" + java.net.URLEncoder.encode(url, StandardCharsets.UTF_8)+"?format=png";
     }
 
 
