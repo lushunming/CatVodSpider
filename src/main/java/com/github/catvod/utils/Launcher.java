@@ -3,7 +3,6 @@ package com.github.catvod.utils;
 
 import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.net.OkHttp;
-import com.github.catvod.spider.Init;
 import com.github.catvod.spider.LuProxyNative;
 import okhttp3.Response;
 
@@ -22,13 +21,30 @@ public class Launcher {
     private static final String LOCK_FILE = "server.lock";
 
     private static String getServerName() {
-        //判断系统
-        String os = System.getProperty("os.name");
-        if (os.toLowerCase().contains("windows")) {
-            return "libluserver.dll";
+        // 判断系统
+        String os = System.getProperty("os.name").toLowerCase();
+        String arch = System.getProperty("os.arch").toLowerCase();
+
+        if (os.contains("windows")) {
+            return "server-windows-amd64.dll";
+        } else if (os.contains("mac")) {
+            if (arch.contains("x86_64")) {
+                return "server-darwin-amd64.dylib";
+            } else if (arch.contains("aarch64")) {
+                return "server-darwin-arm64.dylib";
+            }
+        } else if (os.contains("linux")) {
+            if (arch.contains("x86_64")) {
+                return "server-linux-amd64.so";
+            } else if (arch.contains("aarch64")) {
+                Notify.show("linux aarch64代理暂时不支持");
+                return "";
+            }
         }
-        return "libluserver.so";
+        // 默认返回Linux x86_64的库文件名
+        return "server-windows-amd64.dll";
     }
+
 
     private static String getServerPath() {
         // 使用 Android 的 App 私有内部存储路径 (/data/user/0/包名/files/)
@@ -128,8 +144,8 @@ public class Launcher {
         File file = new File(binaryPath);
         if (!file.exists()) {
             try {
-                SpiderDebug.log("正在下载 Android 代理二进制文件...");
-                String downloadUrl = Server_URL + "/"+getServerName();
+                SpiderDebug.log("正在下载  代理二进制文件...");
+                String downloadUrl = Server_URL + "/" + getServerName();
                 SpiderDebug.log("下载地址：" + downloadUrl);
 
                 Response result = OkHttp.newCall(downloadUrl, new HashMap<>());
