@@ -48,7 +48,8 @@
           "https://so.252035.xyz/api/search",
           "https://s.panhunt.com/api/search",
           "https://pansou.app/api/search",
-          "https://panhub.shenzjd.com/api/search"
+          "https://panhub.shenzjd.com/api/search",
+          "http://pan.ooil.cn/api/search"
         ],
         "sources": [
           "夸克"
@@ -67,7 +68,8 @@
           "https://so.252035.xyz/api/search",
           "https://s.panhunt.com/api/search",
           "https://pansou.app/api/search",
-          "https://panhub.shenzjd.com/api/search"
+          "https://panhub.shenzjd.com/api/search",
+          "http://pan.ooil.cn/api/search"
         ],
         "sources": [
           "UC"
@@ -86,7 +88,8 @@
           "https://so.252035.xyz/api/search",
           "https://s.panhunt.com/api/search",
           "https://pansou.app/api/search",
-          "https://panhub.shenzjd.com/api/search"
+          "https://panhub.shenzjd.com/api/search",
+          "http://pan.ooil.cn/api/search"
         ],
         "sources": [
           "百度"
@@ -105,7 +108,8 @@
           "https://so.252035.xyz/api/search",
           "https://s.panhunt.com/api/search",
           "https://pansou.app/api/search",
-          "https://panhub.shenzjd.com/api/search"
+          "https://panhub.shenzjd.com/api/search",
+          "http://pan.ooil.cn/api/search"
         ],
         "sources": [
           "123盘"
@@ -124,7 +128,8 @@
           "https://so.252035.xyz/api/search",
           "https://s.panhunt.com/api/search",
           "https://pansou.app/api/search",
-          "https://panhub.shenzjd.com/api/search"
+          "https://panhub.shenzjd.com/api/search",
+          "http://pan.ooil.cn/api/search"
         ],
         "sources": [
           "天翼"
@@ -142,9 +147,9 @@
         "api_urls": [
           "https://so.252035.xyz/api/search",
           "https://s.panhunt.com/api/search",
-          "https://pansou.app/api/search"
-        ,
-          "https://panhub.shenzjd.com/api/search"
+          "https://pansou.app/api/search",
+          "https://panhub.shenzjd.com/api/search",
+          "http://pan.ooil.cn/api/search"
         ],
         "sources": [
           "移动"
