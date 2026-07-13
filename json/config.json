@@ -47,7 +47,8 @@
         "api_urls": [
           "https://so.252035.xyz/api/search",
           "https://s.panhunt.com/api/search",
-          "https://pansou.app/api/search"
+          "https://pansou.app/api/search",
+          "https://panhub.shenzjd.com/api/search"
         ],
         "sources": [
           "夸克"
@@ -65,7 +66,8 @@
         "api_urls": [
           "https://so.252035.xyz/api/search",
           "https://s.panhunt.com/api/search",
-          "https://pansou.app/api/search"
+          "https://pansou.app/api/search",
+          "https://panhub.shenzjd.com/api/search"
         ],
         "sources": [
           "UC"
@@ -83,7 +85,8 @@
         "api_urls": [
           "https://so.252035.xyz/api/search",
           "https://s.panhunt.com/api/search",
-          "https://pansou.app/api/search"
+          "https://pansou.app/api/search",
+          "https://panhub.shenzjd.com/api/search"
         ],
         "sources": [
           "百度"
@@ -101,7 +104,8 @@
         "api_urls": [
           "https://so.252035.xyz/api/search",
           "https://s.panhunt.com/api/search",
-          "https://pansou.app/api/search"
+          "https://pansou.app/api/search",
+          "https://panhub.shenzjd.com/api/search"
         ],
         "sources": [
           "123盘"
@@ -119,7 +123,8 @@
         "api_urls": [
           "https://so.252035.xyz/api/search",
           "https://s.panhunt.com/api/search",
-          "https://pansou.app/api/search"
+          "https://pansou.app/api/search",
+          "https://panhub.shenzjd.com/api/search"
         ],
         "sources": [
           "天翼"
@@ -138,6 +143,8 @@
           "https://so.252035.xyz/api/search",
           "https://s.panhunt.com/api/search",
           "https://pansou.app/api/search"
+        ,
+          "https://panhub.shenzjd.com/api/search"
         ],
         "sources": [
           "移动"
