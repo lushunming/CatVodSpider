@@ -16,7 +16,7 @@
       "api": "csp_Wogg",
       "searchable": 1,
       "changeable": 1,
-      "ext": "{\"site\": [\"https://wogg.xxooo.cf/\",\"https://wogg.xxooo.cf/\"]}"
+      "ext": {"site":["https://wogg.xxooo.cf/","https://wogg.xxooo.cf/"]}
     },
     {
       "key": "SeedHub",
