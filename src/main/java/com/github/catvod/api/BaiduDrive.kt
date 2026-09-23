@@ -339,9 +339,9 @@ object BaiduDrive {
             "?"
         ).substringBefore('#')
         return query.split('&').mapNotNull {
-    val kv = it.split('=', limit = 2)
-    if (kv.size == 2) kv[0] to listOf(kv[1]) else null   // 无 '=' 的片段安全跳过
-}.toMap()
+            val kv = it.split('=', limit = 2)
+            if (kv.size == 2) kv[0] to listOf(kv[1]) else null   // 无 '=' 的片段安全跳过
+        }.toMap()
     }
 
     private fun formatSize(bytes: Long): String {
