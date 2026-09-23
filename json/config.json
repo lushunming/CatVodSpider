@@ -1,5 +1,5 @@
 {
-  "spider": "../jar/spider.jar;md5;c2ffa27a32db683a596e144b0d21561a",
+  "spider": "../jar/spider.jar;md5;48f076f23a575777291af5f045c6f766",
   "sites": [
     {
       "key": "Intruduce",
@@ -16,7 +16,12 @@
       "api": "csp_Wogg",
       "searchable": 1,
       "changeable": 1,
-      "ext": {"site":["https://wogg.xxooo.cf/","https://wogg.xxooo.cf/"]}
+      "ext": {
+        "site": [
+          "https://wogg.xxooo.cf/",
+          "https://wogg.xxooo.cf/"
+        ]
+      }
     },
     {
       "key": "SeedHub",
