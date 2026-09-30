@@ -1,5 +1,5 @@
 {
-  "spider": "../jar/spider.jar;md5;48f076f23a575777291af5f045c6f766",
+  "spider": "../jar/spider.jar;md5;02a7fab404634be4a753c18c50a60400",
   "sites": [
     {
       "key": "Intruduce",
@@ -18,8 +18,22 @@
       "changeable": 1,
       "ext": {
         "site": [
-          "https://wogg.xxooo.cf/",
+          "https://www.wogg.live/",
+          "https://www.wogg.net/",
           "https://wogg.xxooo.cf/"
+        ]
+      }
+    },
+    {
+      "key": "Mogg",
+      "name": "木偶哥哥",
+      "type": 3,
+      "api": "csp_Mogg",
+      "searchable": 1,
+      "changeable": 1,
+      "ext": {
+        "site": [
+          "https://woog.nxog.eu.org/"
         ]
       }
     },

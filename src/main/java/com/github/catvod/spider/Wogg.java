@@ -5,7 +5,10 @@ import com.github.catvod.bean.Class;
 import com.github.catvod.bean.Result;
 import com.github.catvod.bean.Vod;
 import com.github.catvod.net.OkHttp;
+import com.github.catvod.utils.Json;
 import com.github.catvod.utils.Util;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.jsoup.Jsoup;
@@ -28,7 +31,7 @@ import java.util.regex.Pattern;
  */
 public class Wogg extends Cloud {
 
-    private final String siteUrl = "https://wogg.xxooo.cf/";
+    private String siteUrl = "https://wogg.xxooo.cf/";
     private final Pattern regexCategory = Pattern.compile("/vodtype/(\\w+).html");
     private final Pattern regexPageTotal = Pattern.compile("\\$\\(\"\\.mac_total\"\\)\\.text\\('(\\d+)'\\);");
 
@@ -43,7 +46,17 @@ public class Wogg extends Cloud {
 
     @Override
     public void init(String extend) throws Exception {
-        this.extend = JsonParser.parseString(extend).getAsJsonObject();
+        JsonObject ext = Json.safeObject(extend);
+        JsonArray siteList = ext.get("site").getAsJsonArray();
+        if (!siteList.isEmpty()) {
+            for (JsonElement jsonElement : siteList) {
+                String html = OkHttp.string(jsonElement.getAsString());
+                if (html.contains("电影")) {
+                    siteUrl = jsonElement.getAsString();
+                    break;
+                }
+            }
+        }
         super.init("");
     }
 
