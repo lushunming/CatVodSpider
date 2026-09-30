@@ -53,6 +53,7 @@ public class Mogg extends Cloud {
                 }
             }
         }
+        super.init("");
     }
 
     @Override

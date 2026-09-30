@@ -18,8 +18,7 @@ public class MoggTest {
         //spider.init("{\"cookie\":\"ctoken=rldVUeNBAbGyhJdbpC4wEUE-;__pus=75e54cf66f9ea5ed1497838782a90a78AATTBUV9c9w7KXUiHDEl6VdV8Wxki4L9R5kIIjSKQnX1wedJe3s8weva95YKUkRqI1aBY/MA+YBNvaTO0JkXvLp+;__kp=be6b9e10-74f8-11ef-aa08-7d8956cd7603;__kps=AATcZArVgS76EPn0FMaV4HEj;__ktd=sii/iz4ePzEaoVirXul7QQ==;__uid=AATcZArVgS76EPn0FMaV4HEj\"}");
         spider.init("{\n" +
                 "        \"site\": [\n" +
-                "          \"https://www.muou.site\", \"https://www.muou.asia\", \"https://666.666291.xyz\",\n" +
-                "          \"https://123.666291.xyz\", \"https://www.muoua.top\", \"https://333.333291.xyz\"\n" +
+                "          \"https://woog.nxog.eu.org\" " +
                 "        ]\n" +
                 "      }");
     }
@@ -57,7 +56,7 @@ public class MoggTest {
     @Test
     public void detailContent() throws Exception {
 
-        String content = spider.detailContent(Arrays.asList("/index.php/vod/detail/id/8539.html"));
+        String content = spider.detailContent(Arrays.asList("/index.php/vod/detail/id/33523.html"));
         System.out.println("detailContent--" + content);
 
         JsonObject map = Json.safeObject(content);

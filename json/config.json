@@ -1,5 +1,5 @@
 {
-  "spider": "../jar/spider.jar;md5;02a7fab404634be4a753c18c50a60400",
+  "spider": "../jar/spider.jar;md5;6baa11467ec785cf2cf23f5b01f1a06e",
   "sites": [
     {
       "key": "Intruduce",
@@ -18,8 +18,11 @@
       "changeable": 1,
       "ext": {
         "site": [
-          "https://woggpan.xxooo.cf", "https://wogg.xxooo.cf", "https://woggpan.888484.xyz",
-          "https://www.wogg.net", "https://www.wogg.live"
+          "https://woggpan.888484.xyz",
+          "https://www.wogg.net",
+          "https://www.wogg.live",
+          "https://woggpan.xxooo.cf",
+          "https://wogg.xxooo.cf"
         ]
       }
     },
@@ -32,7 +35,8 @@
       "changeable": 1,
       "ext": {
         "site": [
-          "https://woog.nxog.eu.org/", "https://ogkk.nxog.eu.org/"
+          "https://woog.nxog.eu.org/",
+          "https://ogkk.nxog.eu.org/"
         ]
       }
     },
