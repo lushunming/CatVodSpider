@@ -34,7 +34,7 @@ public class Launcher {
                 return "server-darwin-arm64.dylib";
             }
         } else if (os.contains("linux")) {
-            if (arch.contains("x86_64")) {
+            if (arch.contains("x86_64")||arch.contains("amd64")) {
                 return "server-linux-amd64.so";
             } else if (arch.contains("aarch64")) {
                 Notify.show("linux aarch64代理暂时不支持");
