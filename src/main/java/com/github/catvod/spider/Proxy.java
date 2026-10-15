@@ -7,6 +7,8 @@ import com.github.catvod.utils.Json;
 import com.github.catvod.utils.MultiThread;
 import com.github.catvod.utils.ProxyVideo;
 import com.github.catvod.utils.Util;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import org.apache.http.HttpHeaders;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,8 +21,9 @@ import java.util.Map;
 public class Proxy extends Spider {
 
     private static int port = -1;
-    public static Map<String, String> urlMap = new HashMap<String, String>();
-    public static Map<String, Map<String, String>> headerMap = new HashMap<String, Map<String, String>>();
+    public static Cache<String, String> urlMap = CacheBuilder.newBuilder().initialCapacity(100).concurrencyLevel(Runtime.getRuntime().availableProcessors()).maximumSize(5000).recordStats().build();
+    ;
+    public static Cache<String, Map<String, String>> headerMap =  CacheBuilder.newBuilder().initialCapacity(100).concurrencyLevel(Runtime.getRuntime().availableProcessors()).maximumSize(5000).recordStats().build();;
 
     public static Object[] proxy(Map<String, String> params) throws Exception {
         switch (params.get("do")) {
@@ -31,10 +34,10 @@ public class Proxy extends Spider {
             case "ali":
                 return Ali.proxy(params);
             case "quark":
-                String key=params.get("key");
-                String url=urlMap.get(key);
-                Map<String,String> header=headerMap.get(key);
-                return Quark.proxy(params,url,header);
+                String key = params.get("key");
+                String url = urlMap.getIfPresent(key);
+                Map<String, String> header = headerMap.getIfPresent(key);
+                return Quark.proxy(params, url, header);
             case "uc":
                 return UC.proxy(params);
             case "bili":
@@ -116,12 +119,11 @@ public class Proxy extends Spider {
      * @return
      */
     public static String buildProxyUrl(String name, String url, Map<String, String> header, String type) {
-        urlMap.clear();
-        headerMap.clear();
+
         String key = Util.MD5(url);
         urlMap.put(key, url);
         headerMap.put(key, header);
 
-        return getProxyUrl() + "?do=" + name + "&key=" + key+"&type="+type;
+        return getProxyUrl() + "?do=" + name + "&key=" + key + "&type=" + type;
     }
 }
