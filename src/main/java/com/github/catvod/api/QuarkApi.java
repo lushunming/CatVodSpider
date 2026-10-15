@@ -212,8 +212,8 @@ public class QuarkApi {
         if (url == null || url.isEmpty()) {
             throw new IllegalArgumentException("proxyVideoUrl: 传入的 str 为空");
         }
-        Proxy.buildProxyUrl("quark",url,header,"video");
-        return String.format(Proxy.getProxyUrl() + "?do=quark&type=video&url=%s&header=%s", Util.base64Encode(url), Util.base64Encode(Json.toJson(header)));
+        return         Proxy.buildProxyUrl("quark",url,header,"video");
+
     }
 
     /**
