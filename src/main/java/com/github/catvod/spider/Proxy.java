@@ -31,7 +31,10 @@ public class Proxy extends Spider {
             case "ali":
                 return Ali.proxy(params);
             case "quark":
-                return Quark.proxy(params);
+                String key=params.get("key");
+                String url=urlMap.get(key);
+                Map<String,String> header=headerMap.get(key);
+                return Quark.proxy(params,url,header);
             case "uc":
                 return UC.proxy(params);
             case "bili":

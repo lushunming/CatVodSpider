@@ -45,9 +45,8 @@ public class QuarkApi {
     private JDialog dialog;
     private String serviceTicket;
 
-    public Object[] proxyVideo(Map<String, String> params) throws Exception {
-        String url = Util.base64Decode(params.get("url"));
-        Map header = new Gson().fromJson(Util.base64Decode(params.get("header")), Map.class);
+    public Object[] proxyVideo(Map<String, String> params,String url,Map<String,String> header) throws Exception {
+
         if (header == null) header = new HashMap<>();
         List<String> arr = ImmutableList.of("Range", "Accept", "Accept-Encoding", "Accept-Language", "Cookie", "Origin", "Referer", "Sec-Ch-Ua", "Sec-Ch-Ua-Mobile", "Sec-Ch-Ua-Platform", "Sec-Fetch-Dest", "Sec-Fetch-Mode", "Sec-Fetch-Site", "User-Agent");
         for (String key : params.keySet()) {
@@ -213,6 +212,7 @@ public class QuarkApi {
         if (url == null || url.isEmpty()) {
             throw new IllegalArgumentException("proxyVideoUrl: 传入的 str 为空");
         }
+        Proxy.buildProxyUrl("quark",url,header,"video");
         return String.format(Proxy.getProxyUrl() + "?do=quark&type=video&url=%s&header=%s", Util.base64Encode(url), Util.base64Encode(Json.toJson(header)));
     }
 
