@@ -113,6 +113,7 @@ public class OkHttp {
     public static String getLocation(Map<String, List<String>> headers) {
         if (headers == null) return null;
         if (headers.containsKey("location")) return headers.get("location").get(0);
+        if (headers.containsKey("Location")) return headers.get("Location").get(0);
         return null;
     }
 
