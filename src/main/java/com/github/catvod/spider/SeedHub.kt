@@ -144,7 +144,7 @@ class SeedHub : Cloud() {
             }
           //  vodPic = Util.proxyImage(vodPic);
             val vodName = e.selectFirst("h2")!!.text()
-            val vodRemarks = e.select("ul >li")!!.text()
+            val vodRemarks = e.select("ul >li").last()!!.text()
             list.add(Vod(vodId, vodName, vodPic, vodRemarks))
         }
         return list

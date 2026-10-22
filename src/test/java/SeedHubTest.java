@@ -18,7 +18,7 @@ public class SeedHubTest {
     public static void init() throws Exception {
         spider = new SeedHub();
         //spider.init("{\"cookie\":\"ctoken=rldVUeNBAbGyhJdbpC4wEUE-;__pus=75e54cf66f9ea5ed1497838782a90a78AATTBUV9c9w7KXUiHDEl6VdV8Wxki4L9R5kIIjSKQnX1wedJe3s8weva95YKUkRqI1aBY/MA+YBNvaTO0JkXvLp+;__kp=be6b9e10-74f8-11ef-aa08-7d8956cd7603;__kps=AATcZArVgS76EPn0FMaV4HEj;__ktd=sii/iz4ePzEaoVirXul7QQ==;__uid=AATcZArVgS76EPn0FMaV4HEj\"}");
-        spider.init("{}");
+        spider.init("{\"site\":[]}");
     }
 
     @Test
