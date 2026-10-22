@@ -1,17 +1,16 @@
 package com.github.catvod.spider
 
-import cn.hutool.core.net.URLEncodeUtil
 import cn.hutool.core.util.URLUtil
 import com.github.catvod.bean.Class
 import com.github.catvod.bean.Filter
 import com.github.catvod.bean.Result
 import com.github.catvod.bean.Vod
 import com.github.catvod.net.OkHttp
+import com.github.catvod.utils.Json
 import com.github.catvod.utils.Util
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.coroutines.*
-import org.apache.http.client.utils.URLEncodedUtils
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.net.URLEncoder
@@ -23,7 +22,7 @@ import java.util.regex.Pattern
  * @author zhixc
  */
 class SeedHub : Cloud() {
-    private val siteUrl = "https://seedhub.pro"
+    private var siteUrl = "https://seedhub.pro"
     private val regexCategory: Pattern = Pattern.compile("/vodtype/(\\w+).html")
     private val regexPageTotal: Pattern = Pattern.compile("\\$\\(\"\\.mac_total\"\\)\\.text\\('(\\d+)'\\);")
 
@@ -39,6 +38,17 @@ class SeedHub : Cloud() {
 
     @Throws(Exception::class)
     override fun init(extend: String) {
+        val ext = Json.safeObject(extend)
+        val siteList = ext.get("site").getAsJsonArray()
+        if (!siteList.isEmpty()) {
+            for (jsonElement in siteList) {
+                val html = OkHttp.string(jsonElement.getAsString())
+                if (html.contains("电影")) {
+                    siteUrl = jsonElement.getAsString()
+                    break
+                }
+            }
+        }
         this.extend = JsonParser.parseString(extend).getAsJsonObject()
         super.init("")
     }
@@ -132,7 +142,7 @@ class SeedHub : Cloud() {
             if (!vodPic.startsWith("http")) {
                 vodPic = URLUtil.completeUrl(siteUrl, vodPic)
             }
-            vodPic = Util.proxyImage(vodPic);
+          //  vodPic = Util.proxyImage(vodPic);
             val vodName = e.selectFirst("h2")!!.text()
             val vodRemarks = e.select("ul >li")!!.text()
             list.add(Vod(vodId, vodName, vodPic, vodRemarks))

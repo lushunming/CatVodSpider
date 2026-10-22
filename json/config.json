@@ -1,5 +1,5 @@
 {
-  "spider": "../jar/spider.jar;md5;93653ef20a5e274473edc1e02d6efdc3",
+  "spider": "../jar/spider.jar;md5;047136c9e0e235bb63cba41cdfc2c91b",
   "sites": [
     {
       "key": "Intruduce",
@@ -47,7 +47,16 @@
       "api": "csp_SeedHub",
       "searchable": 1,
       "changeable": 1,
-      "ext": {}
+      "ext": {
+        "site": [
+          "https://seedog.cc",
+          "https://seedhub.pro",
+          "https://sidhub.cc",
+          "https://seedog.cc",
+          "https://seeduck.cc",
+          "https://hubdog.cc"
+        ]
+      }
     },
     {
       "key": "Qupans",
