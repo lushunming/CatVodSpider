@@ -40,12 +40,6 @@ public class Dida extends Cloud {
 
     protected JSONObject filterConfig;
 
-    protected Pattern regexCategory = Pattern.compile("/category/(\\S+)/");
-    protected Pattern regexVid = Pattern.compile("https://ddys.pro/(\\S+)/");
-
-    protected Pattern regexPage = Pattern.compile("\\S+/page/(\\S+)\\S+");
-    protected Pattern m = Pattern.compile("\\S+(http\\S+g)");
-    protected Pattern mark = Pattern.compile("\\S+(.*)");
 
     //   protected Pattern t = Pattern.compile("(\\S+)");
 
@@ -199,9 +193,9 @@ public class Dida extends Cloud {
 
         Elements tabs = doc.select("div.myui-panel_hd  ul.nav-tabs li a");
 
-        Vod.VodPlayBuilder builder = new Vod.VodPlayBuilder();
+       // Vod.VodPlayBuilder builder = new Vod.VodPlayBuilder();
 //普通解析
-        for (int k = 0; k < tabs.size(); k++) {
+       /* for (int k = 0; k < tabs.size(); k++) {
             String sourceName = tabs.get(k).text();
             if (!sourceName.contains("网盘")) {
                 Elements vods = doc.select("#playlist" + k).select("ul li a");
@@ -214,7 +208,7 @@ public class Dida extends Cloud {
                     builder.append(sourceName, list);
                 }
             }
-        }
+        }*/
 //网盘
         List<String> shareLinks = new ArrayList<>();
         Elements clouds = doc.select("div.myui-panel_bd  a");
@@ -230,10 +224,10 @@ public class Dida extends Cloud {
 
         }
 
-        Vod.VodPlayBuilder.BuildResult buildResult = builder.build();
+        //Vod.VodPlayBuilder.BuildResult buildResult = builder.build();
 
-        item.setVodPlayFrom(buildResult.vodPlayFrom + "$$$" + quarkNames);
-        item.setVodPlayUrl(buildResult.vodPlayUrl + "$$$" + quarkUrls);
+        item.setVodPlayFrom( quarkNames);
+        item.setVodPlayUrl( quarkUrls);
 
 
         return Result.string(item);
@@ -280,14 +274,15 @@ public class Dida extends Cloud {
     @Override
     public String searchContent(String key, boolean quick) {
 
-        String url = siteUrl + "?s=" + URLEncoder.encode(key, StandardCharsets.UTF_8) + "&post_type=post";
+        String url = siteUrl + "?search/-------------.html?wd=" + URLEncoder.encode(key, StandardCharsets.UTF_8) + "&submit=";
         Document doc = Jsoup.parse(OkHttp.string(url, getHeaders(url)));
         List<Vod> vods = new ArrayList<>();
-        Elements elements = doc.select("h2.post-title > a");
+        Elements elements = doc.select(" a.myui-vodlist__thumb");
         for (int i = 0; i < elements.size(); i++) {
             String id = elements.get(i).attr("href");
-            String name = elements.get(i).text();
-            vods.add(new Vod(id, name, ""));
+            String name = elements.get(i).attr("title");
+            String pic =  elements.get(i).select("img").attr("src");
+            vods.add(new Vod(id, name, pic));
         }
         return Result.string(vods);
     }
