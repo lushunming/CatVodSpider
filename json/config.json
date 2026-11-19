@@ -1,5 +1,5 @@
 {
-  "spider": "../jar/spider.jar;md5;a437088bfb7e749c5b8060a4ccdf5371",
+  "spider": "../jar/spider.jar;md5;4bc0032ba1e00d23b28e8aa14197921d",
   "sites": [
     {
       "key": "Intruduce",
@@ -66,7 +66,9 @@
       "searchable": 1,
       "changeable": 1,
       "ext": {
-        "site": ["https://www.didahd.xyz/"]
+        "site": [
+          "https://www.didahd.xyz/"
+        ]
       }
     },
     {
@@ -87,11 +89,7 @@
       "filterable": 0,
       "ext": {
         "api_urls": [
-          "https://so.252035.xyz/api/search",
-          "https://s.panhunt.com/api/search",
-          "https://pansou.app/api/search",
-          "https://panhub.shenzjd.com/api/search",
-          "http://pan.ooil.cn/api/search"
+          "https://so.252035.xyz/api/search"
         ],
         "sources": [
           "夸克"
@@ -107,11 +105,7 @@
       "filterable": 0,
       "ext": {
         "api_urls": [
-          "https://so.252035.xyz/api/search",
-          "https://s.panhunt.com/api/search",
-          "https://pansou.app/api/search",
-          "https://panhub.shenzjd.com/api/search",
-          "http://pan.ooil.cn/api/search"
+          "https://so.252035.xyz/api/search"
         ],
         "sources": [
           "UC"
@@ -127,11 +121,7 @@
       "filterable": 0,
       "ext": {
         "api_urls": [
-          "https://so.252035.xyz/api/search",
-          "https://s.panhunt.com/api/search",
-          "https://pansou.app/api/search",
-          "https://panhub.shenzjd.com/api/search",
-          "http://pan.ooil.cn/api/search"
+          "https://so.252035.xyz/api/search"
         ],
         "sources": [
           "百度"
@@ -147,11 +137,7 @@
       "filterable": 0,
       "ext": {
         "api_urls": [
-          "https://so.252035.xyz/api/search",
-          "https://s.panhunt.com/api/search",
-          "https://pansou.app/api/search",
-          "https://panhub.shenzjd.com/api/search",
-          "http://pan.ooil.cn/api/search"
+          "https://so.252035.xyz/api/search"
         ],
         "sources": [
           "123盘"
@@ -167,11 +153,7 @@
       "filterable": 0,
       "ext": {
         "api_urls": [
-          "https://so.252035.xyz/api/search",
-          "https://s.panhunt.com/api/search",
-          "https://pansou.app/api/search",
-          "https://panhub.shenzjd.com/api/search",
-          "http://pan.ooil.cn/api/search"
+          "https://so.252035.xyz/api/search"
         ],
         "sources": [
           "天翼"
@@ -187,11 +169,7 @@
       "filterable": 0,
       "ext": {
         "api_urls": [
-          "https://so.252035.xyz/api/search",
-          "https://s.panhunt.com/api/search",
-          "https://pansou.app/api/search",
-          "https://panhub.shenzjd.com/api/search",
-          "http://pan.ooil.cn/api/search"
+          "https://so.252035.xyz/api/search"
         ],
         "sources": [
           "移动"

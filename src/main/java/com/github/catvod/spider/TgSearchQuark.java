@@ -9,6 +9,9 @@ import com.github.catvod.utils.Util;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
+import cn.hutool.json.JSON;
+
 import org.apache.commons.lang3.StringUtils;
 
 
@@ -172,7 +175,7 @@ public class TgSearchQuark extends Cloud {
             if (!isValidUrl(apiUrl)) continue;
 
             try {
-                OkResult result = OkHttp.get(apiUrl, params, getHeader());
+                OkResult result = OkHttp.post(apiUrl, Json.toJson(params), getHeader());
                 if (result.getCode() == 500 || StringUtils.isEmpty(result.getBody())) continue;
 
                 JsonObject jsonObject = Json.safeObject(result.getBody());

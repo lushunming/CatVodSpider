@@ -171,7 +171,7 @@ public class TgSearch123 extends Cloud {
             if (!isValidUrl(apiUrl)) continue;
 
             try {
-                OkResult result = OkHttp.get(apiUrl, params, getHeader());
+                OkResult result = OkHttp.post(apiUrl, Json.toJson(params), getHeader());
                 if (result.getCode() == 500 || StringUtils.isEmpty(result.getBody())) continue;
 
                 JsonObject jsonObject = Json.safeObject(result.getBody());
