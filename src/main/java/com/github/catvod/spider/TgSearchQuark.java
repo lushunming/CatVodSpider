@@ -6,6 +6,7 @@ import com.github.catvod.net.OkHttp;
 import com.github.catvod.net.OkResult;
 import com.github.catvod.utils.Json;
 import com.github.catvod.utils.Util;
+import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -168,14 +169,14 @@ public class TgSearchQuark extends Cloud {
 
         Map<String, String> params = new HashMap<>();
         params.put("kw", key);
-        params.put("page", String.valueOf(page));
-        params.put("size", String.valueOf(pageSize));
+
 
         for (String apiUrl : apiUrls) {
             if (!isValidUrl(apiUrl)) continue;
 
             try {
-                OkResult result = OkHttp.post(apiUrl, Json.toJson(params), getHeader());
+
+                OkResult result = OkHttp.post(apiUrl, Json.toJson(params),new HashMap<>());
                 if (result.getCode() == 500 || StringUtils.isEmpty(result.getBody())) continue;
 
                 JsonObject jsonObject = Json.safeObject(result.getBody());
