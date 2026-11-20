@@ -42,7 +42,7 @@ class DidaTest:TestInterface<Dida> {
 
     @Test
     override fun searchTest() {
-        val searchContent = t.searchContent("阿凡达", false)
+        val searchContent = t.searchContent("只是", false)
         println(searchContent)
         AssertUtil.assertResult(searchContent)
     }

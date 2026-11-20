@@ -274,14 +274,14 @@ public class Dida extends Cloud {
     @Override
     public String searchContent(String key, boolean quick) {
 
-        String url = siteUrl + "?search/-------------.html?wd=" + URLEncoder.encode(key, StandardCharsets.UTF_8) + "&submit=";
+        String url = siteUrl + "search/-------------.html?wd=" + URLEncoder.encode(key, StandardCharsets.UTF_8) + "&submit=";
         Document doc = Jsoup.parse(OkHttp.string(url, getHeaders(url)));
         List<Vod> vods = new ArrayList<>();
-        Elements elements = doc.select(" a.myui-vodlist__thumb");
+        Elements elements = doc.select("#searchList a.myui-vodlist__thumb");
         for (int i = 0; i < elements.size(); i++) {
             String id = elements.get(i).attr("href");
             String name = elements.get(i).attr("title");
-            String pic =  elements.get(i).select("img").attr("src");
+            String pic =  elements.get(i).attr("data-original");
             vods.add(new Vod(id, name, pic));
         }
         return Result.string(vods);
