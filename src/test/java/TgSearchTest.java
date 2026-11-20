@@ -28,7 +28,7 @@ public class TgSearchTest {
 
     @Test
     public void searchContent() throws Exception {
-        String content = spider.searchContent("水饺皇后", false);
+        String content = spider.searchContent("红海", false);
         JsonObject map = Json.safeObject(content);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         System.out.println("searchContent--" + gson.toJson(map));

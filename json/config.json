@@ -89,7 +89,8 @@
       "filterable": 0,
       "ext": {
         "api_urls": [
-          "https://so.252035.xyz/api/search"
+          "https://so.252035.xyz/api/search",
+          "https://pansou.app/api/search"
         ],
         "sources": [
           "夸克"
@@ -105,7 +106,8 @@
       "filterable": 0,
       "ext": {
         "api_urls": [
-          "https://so.252035.xyz/api/search"
+          "https://so.252035.xyz/api/search",
+          "https://pansou.app/api/search"
         ],
         "sources": [
           "UC"
@@ -121,7 +123,8 @@
       "filterable": 0,
       "ext": {
         "api_urls": [
-          "https://so.252035.xyz/api/search"
+          "https://so.252035.xyz/api/search",
+          "https://pansou.app/api/search"
         ],
         "sources": [
           "百度"
@@ -137,7 +140,8 @@
       "filterable": 0,
       "ext": {
         "api_urls": [
-          "https://so.252035.xyz/api/search"
+          "https://so.252035.xyz/api/search",
+          "https://pansou.app/api/search"
         ],
         "sources": [
           "123盘"
@@ -153,7 +157,8 @@
       "filterable": 0,
       "ext": {
         "api_urls": [
-          "https://so.252035.xyz/api/search"
+          "https://so.252035.xyz/api/search",
+          "https://pansou.app/api/search"
         ],
         "sources": [
           "天翼"
@@ -169,7 +174,8 @@
       "filterable": 0,
       "ext": {
         "api_urls": [
-          "https://so.252035.xyz/api/search"
+          "https://so.252035.xyz/api/search",
+          "https://pansou.app/api/search"
         ],
         "sources": [
           "移动"
