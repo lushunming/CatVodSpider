@@ -47,7 +47,7 @@ public class ZxzjTest {
     @Test
     public void detailTest() throws Exception {
 
-        String detail = douban.detailContent(Lists.newArrayList("/detail/4465.html"));
+        String detail = douban.detailContent(Lists.newArrayList("/voddetail/4593.html"));
         System.out.println(detail);
 
     }
@@ -55,7 +55,7 @@ public class ZxzjTest {
     @Test
     public void playerTest() throws Exception {
 
-        String palyer = douban.playerContent(null, "/video/4441-1-2.html", null);
+        String palyer = douban.playerContent(null, "/vodplay/4593-2-1.html", null);
         System.out.println(palyer);
 
 

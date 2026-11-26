@@ -5,19 +5,13 @@ package com.github.catvod.spider;/*
 */
 
 
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.crypto.Mode;
-import cn.hutool.crypto.Padding;
-import cn.hutool.crypto.symmetric.AES;
 import com.github.catvod.bean.Class;
 import com.github.catvod.bean.Filter;
 import com.github.catvod.bean.Result;
 import com.github.catvod.bean.Vod;
-import com.github.catvod.crawler.Spider;
 import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.net.OkHttp;
 import com.github.catvod.utils.Json;
-import com.github.catvod.utils.ProxyVideo;
 import com.github.catvod.utils.Util;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -25,15 +19,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Zxzj extends Spider {
+public class Zxzj extends Cloud {
 
-    private final String siteUrl = "https://www.zxzjhd.com";
+    private final String siteUrl = "https://www.zxzj.run/";
 
     private Map<String, String> getHeader() {
         Map<String, String> header = new HashMap<>();
@@ -116,16 +108,20 @@ public class Zxzj extends Spider {
         SpiderDebug.log("++++++++++++在线之家-detailContent--args" + Json.toJson(ids));
         Document doc = Jsoup.parse(OkHttp.string(this.siteUrl + ids.get(0), getHeader()));
 
-        Elements sources = Objects.requireNonNull(doc.select("ul.stui-content__playlist").first()).children();
-        StringBuilder vod_play_url = new StringBuilder();
-        StringBuilder vod_play_from = new StringBuilder("在线之家").append("$$$");
+        Elements sources = Objects.requireNonNull(doc.select("ul.stui-content__playlist").last()).children();
+
+        List<String> lists = new ArrayList<>();
 
         for (int i = 0; i < sources.size(); i++) {
             String href = sources.get(i).select("a").attr("href");
-            String text = sources.get(i).text();
-            vod_play_url.append(text).append("$").append(href);
-            boolean notLastEpisode = i < sources.size() - 1;
-            vod_play_url.append(notLastEpisode ? "#" : "$$$");
+            String content = OkHttp.string(this.siteUrl + href, getHeader());
+            Matcher matcher = Pattern.compile("player_aaaa=(.*?)</script>").matcher(content);
+            String json = matcher.find() ? matcher.group(1) : "";
+            org.json.JSONObject player = new JSONObject(json);
+            String cloudUrl = player.getString("url");
+
+
+            lists.add(cloudUrl);
         }
 
         String title = doc.select(" .stui-content__detail > h1").text();
@@ -151,8 +147,8 @@ public class Zxzj extends Spider {
         vod.setVodContent(brief);
         vod.setVodDirector(director);
         vod.setTypeName(classifyName);
-        vod.setVodPlayFrom(vod_play_from.toString());
-        vod.setVodPlayUrl(vod_play_url.toString());
+        vod.setVodPlayFrom(super.detailContentVodPlayFrom(lists));
+        vod.setVodPlayUrl(super.detailContentVodPlayUrl(lists));
         SpiderDebug.log("++++++++++++在线之家-detailContent" + Json.toJson(vod));
         return Result.string(vod);
     }
@@ -172,43 +168,5 @@ public class Zxzj extends Spider {
         return Result.string(list);
     }
 
-
-    @Override
-    public String playerContent(String flag, String id, List<String> vipFlags) throws Exception {
-        String content = OkHttp.string(this.siteUrl + id, getHeader());
-        Matcher matcher = Pattern.compile("player_aaaa=(.*?)</script>").matcher(content);
-        String json = matcher.find() ? matcher.group(1) : "";
-        org.json.JSONObject player = new JSONObject(json);
-        String realUrl = player.getString("url");
-        String videoContent = OkHttp.string(realUrl, getHeader());
-        Matcher matcher2 = Pattern.compile("result_v2 =(.*?);").matcher(videoContent);
-        String json2 = matcher2.find() ? matcher2.group(1) : "";
-        org.json.JSONObject jsonObject = new JSONObject(json2);
-        String encodedStr = jsonObject.getString("data");
-        realUrl = new String(new BigInteger(StrUtil.reverse(encodedStr), 16).toByteArray());
-        SpiderDebug.log("++++++++++++在线之家-playerContent" + Json.toJson(realUrl));
-        Map<String, String> header = getVideoHeader();
-        String temp = decodeStr(realUrl);
-        return Result.get().url(ProxyVideo.buildCommonProxyUrl(temp, header)).header(getVideoHeader()).string();
-    }
-
-    String decodeStr(String _0x267828) {
-        int _0x5cd2b5 = (_0x267828.length() - 7) / 2;
-        String _0x2191ed = _0x267828.substring(0, _0x5cd2b5);
-        String _0x35a256 = _0x267828.substring(_0x5cd2b5 + 7);
-        return _0x2191ed + _0x35a256;
-    }
-
-    String cryptJs(String text, String key, String iv) {
-        byte[] key_value = key.getBytes(StandardCharsets.UTF_8);
-        byte[] iv_value = iv.getBytes(StandardCharsets.UTF_8);
-
-
-        AES aes = new AES(Mode.CBC, Padding.PKCS5Padding, key_value, iv_value);
-
-        String content = new String(aes.decrypt(text), StandardCharsets.UTF_8);
-
-        return content;
-    }
 
 }
