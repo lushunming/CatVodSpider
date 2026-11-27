@@ -35,7 +35,7 @@ import java.util.regex.Pattern;
 
 public class ChangZhang extends Spider {
 
-    private String siteUrl = "https://www.czzy77.com/";
+    private String siteUrl = "https://www.4kcz.com/";
     private static final String PUBLISH_URL = "https://www.czzy.site/";
 
     public ChangZhang() {
@@ -134,7 +134,7 @@ public class ChangZhang extends Spider {
         List<Vod> list = new ArrayList<>();
         List<Class> classes = new ArrayList<>();
         LinkedHashMap<String, List<Filter>> filters = new LinkedHashMap<>();
-        Document doc = Jsoup.parse(OkHttp.string(siteUrl));
+        Document doc = Jsoup.parse(OkHttp.string(siteUrl, getHeader()));
 
         for (Element div : doc.select(".navlist > li ")) {
             classes.add(new Class(div.select(" a").attr("href"), div.select(" a").text()));
@@ -163,7 +163,7 @@ public class ChangZhang extends Spider {
         List<Vod> list = new ArrayList<>();
         String target = siteUrl + tid + "/page/" + pg;
         //String filters = extend.get("filters");
-        String html = OkHttp.string(target);
+        String html = OkHttp.string(target,getHeader());
         Document doc = Jsoup.parse(html);
         getVods(list, doc);
         String total = "" + Integer.MAX_VALUE;
@@ -240,8 +240,8 @@ public class ChangZhang extends Spider {
 
     @Override
     public String searchContent(String key, boolean quick) throws Exception {
-        String searchUrl = siteUrl + "/daoyongjiekoshibushiyoubing?q=";
-        String html = OkHttp.string(searchUrl + key);
+        String searchUrl = siteUrl + "/nimasile?q=";
+        String html = OkHttp.string(searchUrl + key,getHeader());
         if (html.contains("Just a moment")) {
             Util.notify("厂长资源需要人机验证");
         }
