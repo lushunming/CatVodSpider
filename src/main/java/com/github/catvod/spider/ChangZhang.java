@@ -70,14 +70,14 @@ public class ChangZhang extends Spider {
 
         for (Element link : links) {
             String href = link.attr("href");
-            if (href.matches("https?://www\\.(czzy|czzymovie|cz4k|cz0101)\\.[a-z]{2,3}/?")) {
+            if (href.matches("https?://www\\.(4kcz|czzymovie|cz4k|cz0101)\\.[a-z]{2,3}/?")) {
                 candidateUrls.add(href);
             }
         }
 
         // 方法2: 从文本内容中提取URL模式
         String bodyText = doc.body().text();
-        Pattern pattern = Pattern.compile("https?://www\\.(czzy|czzymovie|cz4k|cz0101)\\.[a-z]{2,3}/?");
+        Pattern pattern = Pattern.compile("https?://www\\.(4kcz|czzymovie|cz4k|cz0101)\\.[a-z]{2,3}/?");
         Matcher matcher = pattern.matcher(bodyText);
 
         while (matcher.find()) {
@@ -87,15 +87,17 @@ public class ChangZhang extends Spider {
             }
         }
 
-        // 优先级排序：优先选择czzymovie.com，其次是cz4k.com
+
+
         for (String url : candidateUrls) {
-            if (url.contains("czzymovie.com")) {
+            if (url.contains("4kcz.com")) {
                 return url.endsWith("/") ? url : url + "/";
             }
         }
 
+
         for (String url : candidateUrls) {
-            if (url.contains("cz4k.com")) {
+            if (url.contains("czzymovie.com")) {
                 return url.endsWith("/") ? url : url + "/";
             }
         }
